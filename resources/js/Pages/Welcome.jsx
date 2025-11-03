@@ -118,7 +118,7 @@ export default function Welcome({ auth, laravelVersion, phpVersion }) {
                                                 </h2>
 
                                                 <p className="mt-4 text-sm/relaxed">
-                                                    Laravel has wonderful
+                                                    Laravel Laravel has wonderful
                                                     documentation covering every
                                                     aspect of the framework.
                                                     Whether you are a newcomer
