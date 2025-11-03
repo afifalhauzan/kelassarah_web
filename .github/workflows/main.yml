@@ -47,7 +47,7 @@ jobs:
             
             # (PERBAIKAN BARU) Bersihkan semua container "hantu"
             echo "3. Pruning old containers, networks, and images..."
-            sudo docker system prune -af
+            sudo docker container prune -f
             
             # 3. Mulai build
             echo "4. Building new containers..."
