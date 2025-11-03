@@ -1,0 +1,63 @@
+# Nama Workflow: "Deploy to Production VPS"
+name: Deploy to Production VPS
+
+# Trigger: Kapan workflow ini berjalan
+on:
+  push:
+    branches:
+      - main  # Ganti ini jika branch utama Anda 'master'
+
+# Jobs: Daftar pekerjaan yang harus dilakukan
+jobs:
+  deploy:
+    # Menggunakan runner Ubuntu terbaru dari GitHub
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Checkout Kode
+      # Mengunduh kode dari repository Anda ke runner
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # 2. SSH dan Deploy
+      # Ini adalah langkah inti: login ke VPS Anda dan menjalankan perintah
+      - name: Deploy to VPS via SSH
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.VPS_HOST }}        # IP Address VPS Anda
+          username: ${{ secrets.VPS_USER }}   # Username (misal: azureuser)
+          key: ${{ secrets.VPS_SSH_KEY }}       # Kunci SSH private Anda
+          
+          # Perintah yang akan dijalankan di dalam VPS Anda
+          script: |
+            # Masuk ke direktori proyek Anda di VPS
+            cd ${{ secrets.VPS_PATH }}
+            
+            # 1. Ambil kode terbaru
+            echo "1. Pulling latest code..."
+            git pull origin main
+            
+            # 2. Build ulang container
+            # (Menggunakan cache Docker di VPS Anda, jadi ini cepat)
+            echo "2. Building Docker containers..."
+            sudo docker compose build
+            
+            # 3. Restart container dengan image baru
+            echo "3. Restarting Docker containers..."
+            sudo docker compose up -d
+            
+            # 4. Jalankan migrasi database
+            # '--force' penting agar tidak ada prompt interaktif
+            echo "4. Running database migrations..."
+            sudo docker compose exec laravel-app php artisan migrate --force
+            
+            # 5. Build asset frontend (MEMPERBAIKI @viteReactRefresh)
+            echo "5. Building frontend assets..."
+            sudo docker compose exec laravel-app npm run build
+            
+            # 6. Bersihkan cache config/route
+            echo "6. Optimizing application..."
+            sudo docker compose exec laravel-app php artisan optimize:clear
+            
+            echo "Deployment finished successfully!"
+
