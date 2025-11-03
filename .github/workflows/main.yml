@@ -58,16 +58,16 @@ jobs:
             sudo WWWUSER=${{ secrets.WWWUSER }} WWWGROUP=${{ secrets.WWWGROUP }} docker compose up -d
             
             # 5. Jalankan migrasi
-            echo "6. Running database migrations..."
-            sudo docker compose exec laravel-app php artisan migrate --force
-            
-            # 6. Build aset frontend
+            echo "5. Running database migrations..."
+            sudo docker compose exec laravel.test php artisan migrate --force
+
+            # 7. Build aset frontend
             echo "7. Building frontend assets..."
-            sudo docker compose exec laravel-app npm run build
-            
-            # 7. Bersihkan cache
+            sudo docker compose exec laravel.test npm run build
+
+            # 8. Bersihkan cache
             echo "8. Optimizing application..."
-            sudo docker compose exec laravel-app php artisan optimize:clear
+            sudo docker compose exec laravel.test php artisan optimize:clear
             
             echo "Deployment finished successfully!"
 
