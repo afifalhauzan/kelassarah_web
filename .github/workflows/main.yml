@@ -13,6 +13,8 @@ jobs:
     # Menggunakan runner Ubuntu terbaru dari GitHub
     runs-on: ubuntu-latest
 
+    environment: vps_deploy
+
     steps:
       # 1. Checkout Kode
       # Mengunduh kode dari repository Anda ke runner
