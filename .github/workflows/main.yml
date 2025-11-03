@@ -44,7 +44,8 @@ jobs:
             # 2. Matikan semua container yang sedang berjalan
             echo "2. Stopping old containers..."
             # (PERBAIKAN) Menambahkan variabel ke 'down'
-            sudo WWWUSER=${{ secrets.WWWUSER }} WWWGROUP=${{ secrets.WWWGROUP }} docker compose down
+            # (PERBAIKAN BARU) Menambahkan --remove-orphans untuk membersihkan
+            sudo WWWUSER=${{ secrets.WWWUSER }} WWWGROUP=${{ secrets.WWWGROUP }} docker compose down --remove-orphans
             
             # 3. Rangkai semua perintah "wajib" dengan "&&"
             # "&&" berarti "Hanya lanjutkan jika perintah sebelumnya SUKSES"
