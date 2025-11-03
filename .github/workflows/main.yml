@@ -40,21 +40,20 @@ jobs:
             # 1. Ambil kode terbaru
             echo "1. Pulling latest code..."
             git pull origin main
-
-            echo "2. Exporting build variables..."
-            export WWWUSER=1000
-            export WWWGROUP=1000
             
             # 2. (PERBAIKAN ERROR #2)
             # Matikan semua container yang sedang berjalan
-            echo "3. Stopping old containers..."
+            echo "2. Stopping old containers..."
             sudo docker compose down
             
-            # 4. Rangkai semua perintah "wajib" dengan "&&"
+            # 3. Rangkai semua perintah "wajib" dengan "&&"
             # "&&" berarti "Hanya lanjutkan jika perintah sebelumnya SUKSES"
-            echo "4. Running build, migrations, and optimization..."
+            # (PERBAIKAN ERROR #1)
+            # Variabel WWWUSER/WWWGROUP diteruskan langsung ke 'sudo'
+            # agar 'docker compose build' bisa membacanya.
+            echo "3. Running build, migrations, and optimization..."
             
-            sudo docker compose build && \
+            sudo WWWUSER=1000 WWWGROUP=1000 docker compose build && \
             sudo docker compose up -d && \
             sudo docker compose exec laravel-app php artisan migrate --force && \
             sudo docker compose exec laravel-app npm run build && \
