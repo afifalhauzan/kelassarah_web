@@ -63,7 +63,7 @@ jobs:
 
             # 7. Build aset frontend
             echo "7. Building frontend assets..."
-            sudo WWWUSER=${{ secrets.WWWUSER }} WWWGROUP=${{ secrets.WWWGROUP }} docker compose exec laravel.test npm run build
+            sudo WWWUSER=${{ secrets.WWWUSER }} WWWGROUP=${{ secrets.WWWGROUP }} docker compose exec laravel.test npm run production
 
             # 8. Bersihkan cache
             echo "8. Optimizing application..."
