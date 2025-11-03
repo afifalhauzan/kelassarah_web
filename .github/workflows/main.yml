@@ -44,7 +44,15 @@ jobs:
             # 2. Matikan semua container yang sedang berjalan
             echo "2. Stopping old containers..."
             sudo WWWUSER=${{ secrets.WWWUSER }} WWWGROUP=${{ secrets.WWWGROUP }} docker compose down --remove-orphans
-            
+
+            echo "3. Installing Composer dependencies..."
+            sudo WWWUSER=${{ secrets.WWWUSER }} WWWGROUP=${{ secrets.WWWGROUP }} docker run --rm -v $(pwd):/app -w /app composer/composer install --no-dev --optimize-autoloader
+
+            # 5. Install NPM & Build Aset (INI JUGA PENTING)
+            echo "4. Installing NPM dependencies and building assets..."
+            sudo WWWUSER=${{ secrets.WWWUSER }} WWWGROUP=${{ secrets.WWWGROUP }} docker run --rm -v $(pwd):/app -w /app node:20 npm install
+            sudo WWWUSER=${{ secrets.WWWUSER }} WWWGROUP=${{ secrets.WWWGROUP }} docker run --rm -v $(pwd):/app -w /app node:20 npm run build
+
             # (PERBAIKAN BARU) Bersihkan semua container "hantu"
             echo "3. Pruning old containers, networks, and images..."
             sudo docker container prune -f
