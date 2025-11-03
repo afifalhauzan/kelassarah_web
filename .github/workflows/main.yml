@@ -40,18 +40,15 @@ jobs:
             # 1. Ambil kode terbaru
             echo "1. Pulling latest code..."
             git pull origin main
+
+            echo "2. Exporting build variables..."
+            export WWWUSER=1000
+            export WWWGROUP=1000
             
             # 2. (PERBAIKAN ERROR #2)
             # Matikan semua container yang sedang berjalan
-            echo "2. Stopping old containers..."
+            echo "3. Stopping old containers..."
             sudo docker compose down
-            
-            # 3. (PERBAIKAN ERROR #1)
-            # Ekspor nilai default untuk build.
-            # Ini akan dibaca oleh 'docker compose build'
-            echo "3. Exporting build variables..."
-            export WWWUSER=1000
-            export WWWGROUP=1000
             
             # 4. Rangkai semua perintah "wajib" dengan "&&"
             # "&&" berarti "Hanya lanjutkan jika perintah sebelumnya SUKSES"
