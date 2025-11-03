@@ -43,19 +43,30 @@ jobs:
             
             # 2. Matikan semua container yang sedang berjalan
             echo "2. Stopping old containers..."
-            # (PERBAIKAN) Menambahkan variabel ke 'down'
-            # (PERBAIKAN BARU) Menambahkan --remove-orphans untuk membersihkan
             sudo WWWUSER=${{ secrets.WWWUSER }} WWWGROUP=${{ secrets.WWWGROUP }} docker compose down --remove-orphans
             
-            # 3. Rangkai semua perintah "wajib" dengan "&&"
-            # "&&" berarti "Hanya lanjutkan jika perintah sebelumnya SUKSES"
-            echo "3. Running build, migrations, and optimization..."
+            # (PERBAIKAN BARU) Bersihkan semua container "hantu"
+            echo "3. Pruning old containers, networks, and images..."
+            sudo docker system prune -af
             
-            # (PERBAIKAN) Menambahkan variabel ke 'build' dan 'up'
-            sudo WWWUSER=${{ secrets.WWWUSER }} WWWGROUP=${{ secrets.WWWGROUP }} docker compose build && \
-            sudo WWWUSER=${{ secrets.WWWUSER }} WWWGROUP=${{ secrets.WWWGROUP }} docker compose up -d && \
-            sudo docker compose exec laravel-app php artisan migrate --force && \
-            sudo docker compose exec laravel-app npm run build && \
+            # 3. Mulai build
+            echo "4. Building new containers..."
+            sudo WWWUSER=${{ secrets.WWWUSER }} WWWGROUP=${{ secrets.WWWGROUP }} docker compose build
+            
+            # 4. Nyalakan container baru
+            echo "5. Starting new containers..."
+            sudo WWWUSER=${{ secrets.WWWUSER }} WWWGROUP=${{ secrets.WWWGROUP }} docker compose up -d
+            
+            # 5. Jalankan migrasi
+            echo "6. Running database migrations..."
+            sudo docker compose exec laravel-app php artisan migrate --force
+            
+            # 6. Build aset frontend
+            echo "7. Building frontend assets..."
+            sudo docker compose exec laravel-app npm run build
+            
+            # 7. Bersihkan cache
+            echo "8. Optimizing application..."
             sudo docker compose exec laravel-app php artisan optimize:clear
             
             echo "Deployment finished successfully!"
