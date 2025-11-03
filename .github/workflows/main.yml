@@ -13,52 +13,54 @@ jobs:
     # Menggunakan runner Ubuntu terbaru dari GitHub
     runs-on: ubuntu-latest
 
+    # Menggunakan "vps_deploy" environment untuk mengambil secrets
     environment: vps_deploy
 
     steps:
       # 1. Checkout Kode
-      # Mengunduh kode dari repository Anda ke runner
       - name: Checkout repository
         uses: actions/checkout@v4
 
       # 2. SSH dan Deploy
-      # Ini adalah langkah inti: login ke VPS Anda dan menjalankan perintah
       - name: Deploy to VPS via SSH
         uses: appleboy/ssh-action@master
         with:
-          host: ${{ secrets.VPS_HOST }}        # IP Address VPS Anda
-          username: ${{ secrets.VPS_USER }}   # Username (misal: azureuser)
-          key: ${{ secrets.VPS_SSH_KEY }}       # Kunci SSH private Anda
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          key: ${{ secrets.VPS_SSH_KEY }}
           
-          # Perintah yang akan dijalankan di dalam VPS Anda
+          # Menggunakan "set -e" agar skrip otomatis GAGAL
+          # jika ada satu perintah yang error
           script: |
-            # Masuk ke direktori proyek Anda di VPS
+            set -e
+            
+            # Masuk ke direktori proyek
             cd ${{ secrets.VPS_PATH }}
             
             # 1. Ambil kode terbaru
             echo "1. Pulling latest code..."
             git pull origin main
             
-            # 2. Build ulang container
-            # (Menggunakan cache Docker di VPS Anda, jadi ini cepat)
-            echo "2. Building Docker containers..."
-            sudo docker compose build
+            # 2. (PERBAIKAN ERROR #2)
+            # Matikan semua container yang sedang berjalan
+            echo "2. Stopping old containers..."
+            sudo docker compose down
             
-            # 3. Restart container dengan image baru
-            echo "3. Restarting Docker containers..."
-            sudo docker compose up -d
+            # 3. (PERBAIKAN ERROR #1)
+            # Ekspor nilai default untuk build.
+            # Ini akan dibaca oleh 'docker compose build'
+            echo "3. Exporting build variables..."
+            export WWWUSER=1000
+            export WWWGROUP=1000
             
-            # 4. Jalankan migrasi database
-            # '--force' penting agar tidak ada prompt interaktif
-            echo "4. Running database migrations..."
-            sudo docker compose exec laravel-app php artisan migrate --force
+            # 4. Rangkai semua perintah "wajib" dengan "&&"
+            # "&&" berarti "Hanya lanjutkan jika perintah sebelumnya SUKSES"
+            echo "4. Running build, migrations, and optimization..."
             
-            # 5. Build asset frontend (MEMPERBAIKI @viteReactRefresh)
-            echo "5. Building frontend assets..."
-            sudo docker compose exec laravel-app npm run build
-            
-            # 6. Bersihkan cache config/route
-            echo "6. Optimizing application..."
+            sudo docker compose build && \
+            sudo docker compose up -d && \
+            sudo docker compose exec laravel-app php artisan migrate --force && \
+            sudo docker compose exec laravel-app npm run build && \
             sudo docker compose exec laravel-app php artisan optimize:clear
             
             echo "Deployment finished successfully!"
