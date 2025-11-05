@@ -34,6 +34,34 @@ Route::get('/load-test', function () {
     }
 });
 
+Route::get('/load-test-write', function () {
+    try {
+        // 1. Ambil user pertama
+        // Kita asumsikan user ini ada, berdasarkan tes Anda sebelumnya
+        $user = User::first(); 
+        
+        if (!$user) {
+             return response()->json(['error' => 'No users found. Please seed the database.'], 404);
+        }
+
+        // 2. Lakukan operasi TULIS (WRITE)
+        // Ini adalah bagian krusial yang mengalahkan cache
+        $user->update([
+            'name' => 'Load Test ' . Str::random(10)
+        ]);
+
+        // 3. Kembalikan data yang baru saja ditulis
+        return response()->json($user);
+
+    } catch (\Exception $e) {
+        // DI SINI PENTING:
+        // Di bawah load test, Anda MUNGKIN akan mendapat error 500
+        // seperti "Lock wait timeout exceeded" atau "Deadlock found".
+        // Ini NORMAL dan inilah yang sedang kita uji.
+        return response()->json(['error' => $e->getMessage()], 500);
+    }
+});
+
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
