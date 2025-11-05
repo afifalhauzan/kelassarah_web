@@ -38,8 +38,8 @@ Route::get('/load-test-write', function () {
     try {
         // 1. Ambil user pertama
         // Kita asumsikan user ini ada, berdasarkan tes Anda sebelumnya
-        $user = User::first(); 
-        
+        $user = User::first();
+
         if (!$user) {
              return response()->json(['error' => 'No users found. Please seed the database.'], 404);
         }
