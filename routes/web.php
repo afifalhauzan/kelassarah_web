@@ -20,6 +20,19 @@ Route::get('/', function () {
     ]);
 });
 
+Route::get('/load-test', function () {
+    try {
+        $user = User::first();
+        if ($user) {
+            return response()->json($user);
+        } else {
+            return response()->json(['error' => 'No users found'], 404);
+        }
+    } catch (\Exception $e) {
+        return response()->json(['error' => $e->getMessage()], 500);
+    }
+});
+
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
