@@ -9,7 +9,7 @@ class CourseController extends Controller
 {
     public function index()
     {
-        $courses = Course::where('is_published', true)->get();
+        $courses = Course::where('is_published', true)->orderBy('order', 'asc')->get();
         return response()->json($courses);
     }
 
