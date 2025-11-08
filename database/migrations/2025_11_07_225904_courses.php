@@ -17,6 +17,8 @@ return new class extends Migration
             $table->text('description')->nullable();
             $table->integer('order');
             $table->char('is_published', 1)->default('0');
+            $table->longText('knowledge_prompt')->nullable();
+            $table->text('welcome_message')->nullable();
             $table->timestamps();
         });
     }
