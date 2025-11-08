@@ -14,7 +14,7 @@ class MaterialTest extends TestCase
     /** @test */
     public function bisa_mendapatkan_daftar_material_dari_suatu_course()
     {
-        $course = Course::factory()->create();
+        $course = Course::factory()->create(['is_published' => 1]);
         Material::factory()->count(3)->create(['course_id' => $course->id, 'is_published' => 1]);
 
         $response = $this->getJson("/course/{$course->id}/material");

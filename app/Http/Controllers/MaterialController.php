@@ -9,9 +9,13 @@ class MaterialController extends Controller
 {
     public function index($courseID)
     {
-        $materials = Material::where('course_id', $courseID)
-            ->where('is_published', 1)
+        $materials = Material::where('is_published', 1)
+            ->whereHas('course', function ($query) {
+                $query->where('is_published', 1);
+            })
             ->with('course')
+            ->where('course_id', $courseID)
+            ->orderBy('order', 'asc')
             ->get();
 
         return response()->json($materials);
