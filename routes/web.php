@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CourseController;
+use App\Http\Controllers\MaterialController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -42,7 +43,7 @@ Route::get('/load-test-write', function () {
         $user = User::first();
 
         if (!$user) {
-             return response()->json(['error' => 'No users found. Please seed the database.'], 404);
+            return response()->json(['error' => 'No users found. Please seed the database.'], 404);
         }
 
         // 2. Lakukan operasi TULIS (WRITE)
@@ -53,7 +54,6 @@ Route::get('/load-test-write', function () {
 
         // 3. Kembalikan data yang baru saja ditulis
         return response()->json($user);
-
     } catch (\Exception $e) {
         // DI SINI PENTING:
         // Di bawah load test, Anda MUNGKIN akan mendapat error 500
@@ -79,6 +79,15 @@ Route::prefix('course')->group(function () {
     Route::post('/', [CourseController::class, 'store'])->name('course.store');
     Route::put('/{course_id}', [CourseController::class, 'update'])->name('course.update');
     Route::delete('/{course_id}', [CourseController::class, 'destroy'])->name('course.destroy');
+
+    Route::prefix('{course_id}/material')->group(function () {
+        Route::get('/', [MaterialController::class, 'index'])->name('material.index');
+        Route::get('/{material_id}', [MaterialController::class, 'show'])->name('material.show');
+        Route::post('/', [MaterialController::class, 'store'])->name('material.store');
+        Route::put('/{material_id}', [MaterialController::class, 'update'])->name('material.update');
+        Route::delete('/{material_id}', [MaterialController::class, 'destroy'])->name('material.destroy');
+    });
 });
 
-require __DIR__.'/auth.php';
+
+require __DIR__ . '/auth.php';
