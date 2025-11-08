@@ -52,7 +52,7 @@ export default function Welcome({ auth, laravelVersion, phpVersion }) {
                         </div>
                         
                         <div className="max-w-2xl text-center">
-                            <h1 className="text-4xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-6xl">
+                            <h1 className="text-4xl text-gray-900 dark:text-white sm:text-6xl font-lilita">
                                 Belajar Jadi Mudah Bersama <span className="text-indigo-600 dark:text-indigo-400">Kak Sarah</span>
                             </h1>
                             <p className="mt-6 text-lg leading-8 text-gray-600 dark:text-gray-300">
