@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CourseController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -70,6 +71,14 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
+
+Route::prefix('course')->group(function () {
+    Route::get('/', [CourseController::class, 'index'])->name('course.index');
+    Route::get('/{course_id}', [CourseController::class, 'show'])->name('course.show');
+    Route::post('/', [CourseController::class, 'store'])->name('course.store');
+    Route::put('/{course_id}', [CourseController::class, 'update'])->name('course.update');
+    Route::delete('/{course_id}', [CourseController::class, 'destroy'])->name('course.destroy');
 });
 
 require __DIR__.'/auth.php';
