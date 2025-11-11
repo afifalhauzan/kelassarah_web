@@ -10,7 +10,7 @@ export default function Footer() {
                     <div>
                         {/* Logo and Brand Section */}
                         <div className="flex items-center space-x-3">
-                            <ApplicationIcon className="w-12 h-12 text-white" />
+                            <ApplicationIcon className="w-18 h-18 mb-3 text-white" />
                             <span className="text-2xl font-lilita text-white">
                                 Kak Sarah<br />Chatbot
                             </span>
