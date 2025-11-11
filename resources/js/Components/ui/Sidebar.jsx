@@ -13,7 +13,7 @@ export default function Sidebar() {
     return (
         <>
             {/* Mobile Hamburger Button */}
-            <div className="bg-gray-50/50 backdrop-blur-md border-white/20 px-6 py-4 z-40 fixed w-full top-0 left-0">
+            <div className="md:hidden bg-gray-50/50 backdrop-blur-md border-white/20 px-6 py-4 z-40 fixed w-full top-0 left-0">
                 <div className="max-w-7xl mx-auto flex items-center justify-between">
                     {/* Logo and Brand */}
                     <div className="flex items-center space-x-3">
