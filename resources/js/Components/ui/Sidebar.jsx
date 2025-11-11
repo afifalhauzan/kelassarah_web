@@ -62,8 +62,8 @@ export default function Sidebar() {
             )}
 
             {/* Desktop Sidebar */}
-            <div className="hidden md:block h-screen w-64 sticky top-0 bg-white shadow-lg border-r border-gray-200 z-40">
-                <div className="flex flex-col h-full">
+            <div className="hidden md:block h-screen w-64 sticky top-0 bg-white shadow-lg rounded-br-3xl rounded-tr-3xl border-r border-gray-200 z-40 ">
+                <div className="flex flex-col h-full overflow-y-auto">
                     {/* Sidebar Header */}
                     <div className="flex items-center p-6 border-b border-gray-200">
                         <ApplicationIcon className="w-10 h-10 mb-2" />
