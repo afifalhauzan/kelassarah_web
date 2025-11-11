@@ -15,7 +15,7 @@ Route::get('/', function () {
     //     'laravelVersion' => Application::VERSION,
     //     'phpVersion' => PHP_VERSION,
     // ]);
-    return Inertia::render('LandingTest', [
+    return Inertia::render('LandingPage', [
         // 'canLogin' => Route::has('login'),
         // 'canRegister' => Route::has('register'),
         // 'laravelVersion' => Application::VERSION,

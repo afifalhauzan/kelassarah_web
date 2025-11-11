@@ -1,38 +1,14 @@
 import { Head, Link } from '@inertiajs/react';
+import Navbar from '@/Components/ui/Navbar';
+import Footer from '@/Components/ui/Footer';
 
-export default function Welcome({ auth, laravelVersion, phpVersion }) {
+export default function LandingPage({ auth, laravelVersion, phpVersion }) {
     return (
         <>
             <Head title="Selamat Datang di Kak Sarah" />
-            <div className="bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-gray-200 selection:bg-indigo-500 selection:text-white">
-                
-                {/* Header for Login/Register Links */}
-                <header className="absolute top-0 right-0 p-6 z-10">
-                    {auth.user ? (
-                        <Link
-                            href={route('dashboard')}
-                            className="font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline-indigo-500"
-                        >
-                            Dashboard
-                        </Link>
-                    ) : (
-                        <>
-                            <Link
-                                href={route('login')}
-                                className="font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline-indigo-500"
-                            >
-                                Log in
-                            </Link>
-                            <Link
-                                href={route('register')}
-                                className="ml-4 font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline-indigo-500"
-                            >
-                                Register
-                            </Link>
-                        </>
-                    )}
-                </header>
-
+            
+            <div className="bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-200 selection:bg-indigo-500 selection:text-white">
+                <Navbar auth={auth} />
                 {/* Main Content Area */}
                 <main>
                     {/* Section 1: Hero Page */}
@@ -53,7 +29,7 @@ export default function Welcome({ auth, laravelVersion, phpVersion }) {
                         
                         <div className="max-w-2xl text-center">
                             <h1 className="text-4xl text-gray-900 dark:text-white sm:text-6xl font-lilita">
-                                Belajar Jadi Mudah Bersama <span className="text-indigo-600 dark:text-indigo-400">Kak Sarah</span>
+                                Belajar Jadi Mudah Bersama <span className="text-blue-400 dark:text-blue-400">Kak Sarah</span>
                             </h1>
                             <p className="mt-6 text-lg leading-8 text-gray-600 dark:text-gray-300">
                                 Platform Learning Management System (LMS) yang dirancang untuk membuat proses belajar mengajar lebih interaktif, efisien, dan menyenangkan.
@@ -156,14 +132,7 @@ export default function Welcome({ auth, laravelVersion, phpVersion }) {
                     </div>
                 </main>
 
-                {/* Footer */}
-                <footer className="bg-gray-100 dark:bg-gray-900 border-t border-gray-200 dark:border-gray-700">
-                    <div className="mx-auto max-w-7xl px-6 py-12 lg:px-8">
-                        <p className="text-center text-xs leading-5 text-gray-500 dark:text-gray-400">
-                            &copy; {new Date().getFullYear()} Kak Sarah LMS. All rights reserved.
-                        </p>
-                    </div>
-                </footer>
+                <Footer />
             </div>
         </>
     );
