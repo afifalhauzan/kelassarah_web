@@ -1,6 +1,4 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Head } from '@inertiajs/react';
-import Sidebar from '@/Components/ui/Sidebar';
 
 export default function Dashboard() {
     return (
