@@ -54,7 +54,7 @@ export function ChatProvider({ children }) {
         }
     }, [convertApiMessage]);
 
-    // Poll for new messages
+    // Simple polling that just checks if there are new messages and refreshes
     const pollForNewMessages = useCallback(async (courseId) => {
         try {
             const response = await fetch(`/chat/${courseId}/last`, {
@@ -68,48 +68,25 @@ export function ChatProvider({ children }) {
 
             if (response.ok) {
                 const lastMessage = await response.json();
-                console.log('Polling result:', {
-                    lastMessageId: lastMessage?.id,
-                    lastTrackedId: lastMessageIdRef.current,
-                    messageRole: lastMessage?.role,
-                    isNewMessage: lastMessage && lastMessage.id !== lastMessageIdRef.current
-                });
                 
-                // Only add if it's a new message and different from our last tracked message
+                // If we have a new message (different ID from our last tracked)
                 if (lastMessage && lastMessage.id !== lastMessageIdRef.current) {
-                    const convertedMessage = convertApiMessage(lastMessage);
+                    console.log('New message detected, refreshing chat history');
                     
-                    // Use functional update to avoid stale closure issues
-                    setHistory(prev => {
-                        // Check if this message already exists in current history
-                        const messageExists = prev.find(msg => msg.id === lastMessage.id);
-                        
-                        if (!messageExists) {
-                            console.log('Adding new message to history:', convertedMessage);
-                            // Add the new message
-                            lastMessageIdRef.current = lastMessage.id;
-                            
-                            // Update chat status if it was pending and this is an assistant message
-                            if (lastMessage.role === 'assistant') {
-                                setChatStatus("completed");
-                                setTimeout(() => setChatStatus("idle"), 2000);
-                            }
-                            
-                            return [...prev, convertedMessage];
-                        } else {
-                            console.log('Message already exists in history, skipping');
-                        }
-                        
-                        return prev;
-                    });
+                    // Same logic as refresh button - refetch all messages
+                    fetchAllMessages(courseId);
+                    
+                    // Update chat status if this is an assistant message
+                    if (lastMessage.role === 'assistant') {
+                        setChatStatus("completed");
+                        setTimeout(() => setChatStatus("idle"), 2000);
+                    }
                 }
-            } else {
-                console.log('Polling response not ok:', response.status);
             }
         } catch (error) {
             console.error('Error polling for new messages:', error);
         }
-    }, [convertApiMessage]);
+    }, [fetchAllMessages]);
 
     // Start polling when chat is opened
     useEffect(() => {
@@ -148,21 +125,11 @@ export function ChatProvider({ children }) {
             return;
         }
 
-        // Add user message immediately to UI
-        const tempId = Date.now(); // Temporary ID until we get real ID from server
-        const userMessage = {
-            id: tempId,
-            role: "user",
-            message: newMessage,
-            timestamp: new Date().toISOString()
-        };
-        setHistory((prev) => [...prev, userMessage]);
-
-        // Set status to pending
+        // Set status to pending immediately
         setChatStatus("pending");
 
         try {
-            // Send message to API using fetch instead of Inertia router
+            // Send message to API
             const response = await fetch(`/chat/${chatContextCourseld}`, {
                 method: 'POST',
                 headers: {
@@ -179,7 +146,7 @@ export function ChatProvider({ children }) {
                 const result = await response.json();
                 console.log('Message sent successfully:', result);
                 
-                // Refetch all messages to get the real IDs and ensure consistency
+                // Refresh chat history - same logic as refresh button
                 setTimeout(() => {
                     fetchAllMessages(chatContextCourseld);
                 }, 500); // Small delay to allow backend processing
@@ -189,10 +156,6 @@ export function ChatProvider({ children }) {
         } catch (error) {
             console.error('Error sending message:', error);
             setChatStatus("error");
-            
-            // Remove the temporary message on error
-            setHistory(prev => prev.filter(msg => msg.id !== tempId));
-            
             setTimeout(() => setChatStatus("idle"), 3000);
         }
     }, [chatContextCourseld, fetchAllMessages]);
