@@ -35,7 +35,7 @@ class ChatMessageController extends Controller
 
         return response()->json([
             'course_id' => $dataPost['course_id'],
-            'status' => "pendding",
+            'status' => "pending",
         ], 201);
     }
 
