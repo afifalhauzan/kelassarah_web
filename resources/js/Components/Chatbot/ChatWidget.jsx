@@ -10,6 +10,12 @@ export default function ChatWidget() {
 
     return createPortal(
         <>
+            {isOpen && (
+                <div
+                    onClick={() => setisOpen(false)}
+                    className="fixed inset-0 z-40 bg-[#C5C5C5] bg-opacity-50 transition-opacity md:hidden"
+                ></div>
+            )}
             <button
                 onClick={() => setisOpen(true)}
                 className={`fixed bottom-5 right-5 z-50
@@ -26,11 +32,11 @@ export default function ChatWidget() {
 
             <div
                 className={`fixed top-2 bottom-2 right-5 z-50 w-90
-          rounded-3xl bg-white shadow-xl transition-all duration-300 ease-in-out
+          rounded-2xl bg-white shadow-xl transition-all duration-300 ease-in-out
           ${
               isOpen
                   ? "translate-y-0 opacity-100"
-                  : "translate-y-full opacity-0 pointer-events-none" 
+                  : "translate-y-full opacity-0 pointer-events-none"
           }`}
             >
                 <div className="flex h-full flex-col">
