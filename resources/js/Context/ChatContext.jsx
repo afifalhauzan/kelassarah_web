@@ -132,7 +132,8 @@ export function ChatProvider({ children }) {
 
     // Start polling when chat is opened
     useEffect(() => {
-        if (isOpen && chatContextCourseld && !isPolling) {
+        // Start polling when chat opens
+        if (isOpen && chatContextCourseld) {
             console.log('🔄 Starting polling for course:', chatContextCourseld);
             setIsPolling(true);
             
@@ -160,7 +161,7 @@ export function ChatProvider({ children }) {
                 pollingIntervalRef.current = null;
             }
         };
-    }, [isOpen, chatContextCourseld, isPolling, fetchAllMessages, pollForNewMessages]);
+    }, [isOpen, chatContextCourseld, fetchAllMessages, pollForNewMessages]);
 
     const sendMessage = useCallback(async (newMessage) => {
         if (!chatContextCourseld) {
