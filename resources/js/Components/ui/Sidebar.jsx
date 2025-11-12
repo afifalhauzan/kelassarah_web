@@ -62,8 +62,8 @@ export default function Sidebar() {
             )}
 
             {/* Desktop Sidebar */}
-            <div className="hidden md:block min-h-screen w-64 bg-white shadow-lg border-r border-gray-200 z-40">
-                <div className="flex flex-col h-full">
+            <div className="hidden md:block h-screen w-64 sticky top-0 bg-white shadow-lg rounded-br-3xl rounded-tr-3xl border-r border-gray-200 z-40 ">
+                <div className="flex flex-col h-full overflow-y-auto">
                     {/* Sidebar Header */}
                     <div className="flex items-center p-6 border-b border-gray-200">
                         <ApplicationIcon className="w-10 h-10 mb-2" />
@@ -196,7 +196,7 @@ export default function Sidebar() {
                     {/* Mobile Navigation Links */}
                     <nav className="flex-1 px-6 py-6 space-y-4">
                         <Link
-                            href=""
+                            href="dashboard"
                             onClick={() => setIsMobileMenuOpen(false)}
                             className="flex items-center px-4 py-3 text-white hover:text-blue-200 hover:bg-blue-700 rounded-lg transition-colors duration-200"
                         >
@@ -208,7 +208,7 @@ export default function Sidebar() {
                         </Link>
 
                         <Link
-                            href=""
+                            href="courses"
                             onClick={() => setIsMobileMenuOpen(false)}
                             className="flex items-center px-4 py-3 text-white hover:text-blue-200 hover:bg-blue-700 rounded-lg transition-colors duration-200"
                         >
@@ -219,7 +219,7 @@ export default function Sidebar() {
                         </Link>
 
                         <Link
-                            href=""
+                            href="profile"
                             onClick={() => setIsMobileMenuOpen(false)}
                             className="flex items-center px-4 py-3 text-white hover:text-blue-200 hover:bg-blue-700 rounded-lg transition-colors duration-200"
                         >
