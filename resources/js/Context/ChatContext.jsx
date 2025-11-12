@@ -1,5 +1,4 @@
 import { createContext, useContext, useState, useCallback, useEffect, useRef } from "react";
-import { router } from '@inertiajs/react';
 
 const ChatContext = createContext();
 
@@ -143,7 +142,7 @@ export function ChatProvider({ children }) {
         };
     }, [isOpen, chatContextCourseld, isPolling, fetchAllMessages, pollForNewMessages]);
 
-    const sendMessage = useCallback((newMessage) => {
+    const sendMessage = useCallback(async (newMessage) => {
         if (!chatContextCourseld) {
             console.error('No course ID set for chat');
             return;
@@ -162,33 +161,40 @@ export function ChatProvider({ children }) {
         // Set status to pending
         setChatStatus("pending");
 
-        // Send message to API
-        router.post(`/chat/${chatContextCourseld}`, {
-            content: newMessage,
-        }, {
-            preserveState: true,
-            preserveScroll: true,
-            onSuccess: (page) => {
-                console.log('Message sent successfully:', page.props);
+        try {
+            // Send message to API using fetch instead of Inertia router
+            const response = await fetch(`/chat/${chatContextCourseld}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content || ''
+                },
+                body: JSON.stringify({
+                    content: newMessage,
+                })
+            });
+
+            if (response.ok) {
+                const result = await response.json();
+                console.log('Message sent successfully:', result);
                 
                 // Refetch all messages to get the real IDs and ensure consistency
                 setTimeout(() => {
                     fetchAllMessages(chatContextCourseld);
                 }, 500); // Small delay to allow backend processing
-            },
-            onError: (errors) => {
-                console.error('Error sending message:', errors);
-                setChatStatus("error");
-                
-                // Remove the temporary message on error
-                setHistory(prev => prev.filter(msg => msg.id !== tempId));
-                
-                setTimeout(() => setChatStatus("idle"), 3000);
-            },
-            onFinish: () => {
-                // Keep status as pending until we get the assistant response via polling
+            } else {
+                throw new Error(`HTTP error! status: ${response.status}`);
             }
-        });
+        } catch (error) {
+            console.error('Error sending message:', error);
+            setChatStatus("error");
+            
+            // Remove the temporary message on error
+            setHistory(prev => prev.filter(msg => msg.id !== tempId));
+            
+            setTimeout(() => setChatStatus("idle"), 3000);
+        }
     }, [chatContextCourseld, fetchAllMessages]);
 
     const resetChat = useCallback(() => {
