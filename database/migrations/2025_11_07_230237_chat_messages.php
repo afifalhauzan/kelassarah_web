@@ -16,6 +16,7 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->foreignId('course_id')->constrained('courses')->onDelete('cascade');
             $table->enum('role', ['user', 'assistant'])->default('user');
+            $table->enum('status', ['pending', 'completed', 'failed'])->default('pending');
             $table->text('content')->nullable();
             $table->timestamps();
         });
