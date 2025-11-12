@@ -76,6 +76,10 @@ Route::get('/bot-test', function () {
     return Inertia::render('BotTestPage');
 })->middleware(['auth', 'verified'])->name('bot-test');
 
+Route::get('/chat-test', function () {
+    return Inertia::render('ChatTestPage');
+})->middleware(['auth', 'verified'])->name('chat-test');
+
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

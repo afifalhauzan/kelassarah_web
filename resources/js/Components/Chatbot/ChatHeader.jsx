@@ -1,13 +1,15 @@
 import { useChat } from "@/Context/ChatContext";
 
-const getBubbleText = (status) => {
+const getBubbleText = (status, courseId, isPolling) => {
     switch (status) {
         case "pending":
             return "Sedang berpikir...";
         case "completed":
             return "Pertanyaan yang bagus!";
+        case "error":
+            return "Maaf, terjadi kesalahan.";
         default:
-            return "Selamat Datang!";
+            return `Selamat Datang! (Course ${courseId})${isPolling ? ' 🔄' : ''}`;
     }
 };
 
@@ -21,15 +23,29 @@ const getMascotSrc = (status) => {
 };
 
 export default function ChatHeader({ onClose }) {
-    const { chatStatus } = useChat();
+    const { chatStatus, chatContextCourseld, isPolling, resetChat, showResetConsent, setShowResetConsent } = useChat();
 
-    const bubbleText = getBubbleText(chatStatus);
+    const bubbleText = getBubbleText(chatStatus, chatContextCourseld, isPolling);
     const mascotSrc = getMascotSrc(chatStatus);
+
+    const handleResetClick = () => {
+        if (showResetConsent) {
+            resetChat();
+            setShowResetConsent(false);
+        } else {
+            setShowResetConsent(true);
+            setTimeout(() => setShowResetConsent(false), 3000);
+        }
+    };
 
     return (
         <div className="shrink-0 border-b px-4 pt-4">
             <div className="flex items-center justify-between">
-                <button className="text-gray-500 hover:text-gray-700">
+                <button 
+                    onClick={handleResetClick}
+                    className={`text-gray-500 hover:text-gray-700 ${showResetConsent ? 'text-red-500 hover:text-red-700' : ''}`}
+                    title={showResetConsent ? 'Click again to confirm reset' : 'Reset chat history'}
+                >
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
                         className="h-6 w-6"
@@ -41,7 +57,7 @@ export default function ChatHeader({ onClose }) {
                             strokeLinecap="round"
                             strokeLinejoin="round"
                             strokeWidth="2"
-                            d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"
+                            d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
                         />
                     </svg>
                 </button>
@@ -91,6 +107,12 @@ export default function ChatHeader({ onClose }) {
                     ></span>
                 </div>
             </div>
+            
+            {showResetConsent && (
+                <div className="mt-2 text-xs text-red-600 text-center">
+                    Click reset again to confirm
+                </div>
+            )}
         </div>
     );
 }
