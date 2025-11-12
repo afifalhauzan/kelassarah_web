@@ -13,6 +13,7 @@ export function ChatProvider({ children }) {
     const pollingIntervalRef = useRef(null);
     const lastMessageIdRef = useRef(null);
     const waitingForAssistantRef = useRef(false); // Track if we're waiting for assistant response
+    const pollingCounterRef = useRef(0); // Add counter to track polling attempts
 
     // Convert API message format to ChatContext format
     const convertApiMessage = useCallback((apiMessage) => {
@@ -74,6 +75,9 @@ export function ChatProvider({ children }) {
 
     // Simple polling that just checks if there are new messages and refreshes
     const pollForNewMessages = useCallback(async (courseId) => {
+        pollingCounterRef.current += 1;
+        console.log(`🔄 Poll #${pollingCounterRef.current} - Checking for new messages...`);
+        
         try {
             const response = await fetch(`/chat/${courseId}/last`, {
                 method: 'GET',
