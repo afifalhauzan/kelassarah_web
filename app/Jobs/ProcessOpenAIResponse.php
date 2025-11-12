@@ -68,7 +68,7 @@ class ProcessOpenAIResponse implements ShouldQueue
             $apiKey = $apiKeys[$keyIndex];
             $hashKey = substr(md5($apiKey), 0, 8);
 
-            Log::alert("🔑 Menggunakan API key index {$keyIndex} (hash {$hashKey}) untuk User {$this->userId}, Course {$this->courseId}");
+            Log::alert("🔑 Menggunakan  API key index {$keyIndex} (hash {$hashKey}) untuk User {$this->userId}, Course {$this->courseId}");
 
             $systemPrompt = <<<EOT
                 Anda adalah Kak Sarah, Asisten Sejar Cerdas (AI pemandu, canggih, empati) di sidebar LMS untuk siswa SMA/SMK kelas 11. 

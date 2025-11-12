@@ -69,46 +69,67 @@ export function ChatProvider({ children }) {
 
             if (response.ok) {
                 const lastMessage = await response.json();
+                console.log('Polling result:', {
+                    lastMessageId: lastMessage?.id,
+                    lastTrackedId: lastMessageIdRef.current,
+                    messageRole: lastMessage?.role,
+                    isNewMessage: lastMessage && lastMessage.id !== lastMessageIdRef.current
+                });
                 
-                // Only add if it's a new message
+                // Only add if it's a new message and different from our last tracked message
                 if (lastMessage && lastMessage.id !== lastMessageIdRef.current) {
-                    // Check if this message is newer than our current history
-                    const isNewMessage = !history.find(msg => msg.id === lastMessage.id);
+                    const convertedMessage = convertApiMessage(lastMessage);
                     
-                    if (isNewMessage) {
-                        const convertedMessage = convertApiMessage(lastMessage);
-                        setHistory(prev => [...prev, convertedMessage]);
-                        lastMessageIdRef.current = lastMessage.id;
+                    // Use functional update to avoid stale closure issues
+                    setHistory(prev => {
+                        // Check if this message already exists in current history
+                        const messageExists = prev.find(msg => msg.id === lastMessage.id);
                         
-                        // Update chat status if it was pending
-                        if (lastMessage.role === 'assistant') {
-                            setChatStatus("completed");
-                            setTimeout(() => setChatStatus("idle"), 2000);
+                        if (!messageExists) {
+                            console.log('Adding new message to history:', convertedMessage);
+                            // Add the new message
+                            lastMessageIdRef.current = lastMessage.id;
+                            
+                            // Update chat status if it was pending and this is an assistant message
+                            if (lastMessage.role === 'assistant') {
+                                setChatStatus("completed");
+                                setTimeout(() => setChatStatus("idle"), 2000);
+                            }
+                            
+                            return [...prev, convertedMessage];
+                        } else {
+                            console.log('Message already exists in history, skipping');
                         }
-                    }
+                        
+                        return prev;
+                    });
                 }
+            } else {
+                console.log('Polling response not ok:', response.status);
             }
         } catch (error) {
             console.error('Error polling for new messages:', error);
         }
-    }, [history, convertApiMessage]);
+    }, [convertApiMessage]);
 
     // Start polling when chat is opened
     useEffect(() => {
         if (isOpen && chatContextCourseld && !isPolling) {
+            console.log('Starting polling for course:', chatContextCourseld);
             setIsPolling(true);
             
             // Initial load of all messages
             fetchAllMessages(chatContextCourseld);
             
-            // Start polling every 2 seconds
+            // Start polling every 1 second (more aggressive to catch responses faster)
             pollingIntervalRef.current = setInterval(() => {
                 pollForNewMessages(chatContextCourseld);
-            }, 2000);
+            }, 1000);
         }
 
         // Stop polling when chat is closed
         if (!isOpen && pollingIntervalRef.current) {
+            console.log('Stopping polling');
             clearInterval(pollingIntervalRef.current);
             pollingIntervalRef.current = null;
             setIsPolling(false);
@@ -129,8 +150,9 @@ export function ChatProvider({ children }) {
         }
 
         // Add user message immediately to UI
+        const tempId = Date.now(); // Temporary ID until we get real ID from server
         const userMessage = {
-            id: Date.now(), // Temporary ID until we get real ID from server
+            id: tempId,
             role: "user",
             message: newMessage,
             timestamp: new Date().toISOString()
@@ -149,15 +171,17 @@ export function ChatProvider({ children }) {
             onSuccess: (page) => {
                 console.log('Message sent successfully:', page.props);
                 
-                // Update the temporary message with real data if available
-                // The polling system will handle adding the assistant's response
+                // Refetch all messages to get the real IDs and ensure consistency
+                setTimeout(() => {
+                    fetchAllMessages(chatContextCourseld);
+                }, 500); // Small delay to allow backend processing
             },
             onError: (errors) => {
                 console.error('Error sending message:', errors);
                 setChatStatus("error");
                 
                 // Remove the temporary message on error
-                setHistory(prev => prev.filter(msg => msg.id !== userMessage.id));
+                setHistory(prev => prev.filter(msg => msg.id !== tempId));
                 
                 setTimeout(() => setChatStatus("idle"), 3000);
             },
@@ -165,7 +189,7 @@ export function ChatProvider({ children }) {
                 // Keep status as pending until we get the assistant response via polling
             }
         });
-    }, [chatContextCourseld]);
+    }, [chatContextCourseld, fetchAllMessages]);
 
     const resetChat = useCallback(() => {
         setHistory([]);
