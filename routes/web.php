@@ -3,6 +3,7 @@
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\MaterialController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ChatMessageController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -75,6 +76,12 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+
+    Route::get('/chat/{course_id}', [ChatMessageController::class, 'index']);
+    Route::get('/chat/{course_id}/last', [ChatMessageController::class, 'getLastMessage']);
+    Route::post('/chat/{course_id}', [ChatMessageController::class, 'store']);
+
 });
 
 Route::prefix('course')->group(function () {
