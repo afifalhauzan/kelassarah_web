@@ -39,18 +39,24 @@ export function ChatProvider({ children }) {
             if (response.ok) {
                 const messages = await response.json();
                 
+                // Debug: Log all message IDs to understand the pattern
+                console.log('All message IDs:', messages.map(m => `${m.id}(${m.role})`).join(', '));
+                
                 // Find the actual latest message by ID (highest ID number)
                 const latestMessage = messages.length > 0 ? messages.reduce((latest, current) => 
                     current.id > latest.id ? current : latest
                 ) : null;
                 
-                console.log('Fetched messages:', messages.length, 'Latest ID by sort:', messages.length > 0 ? messages[messages.length - 1].id : 'none');
-                console.log('Actual Latest ID by max:', latestMessage?.id || 'none');
+                // Sort by created_at for display
+                const sortedMessages = [...messages].sort((a, b) => new Date(a.created_at) - new Date(b.created_at));
                 
-                // Convert and sort messages by created_at (oldest first for chat history)
-                const convertedMessages = messages
-                    .sort((a, b) => new Date(a.created_at) - new Date(b.created_at))
-                    .map(convertApiMessage);
+                console.log('Fetched messages:', messages.length);
+                console.log('Latest ID by sort:', sortedMessages.length > 0 ? sortedMessages[sortedMessages.length - 1].id : 'none');
+                console.log('Actual Latest ID by max:', latestMessage?.id || 'none');
+                console.log('Latest message role:', latestMessage?.role || 'none');
+                
+                // Convert sorted messages for display
+                const convertedMessages = sortedMessages.map(convertApiMessage);
                 
                 setHistory(convertedMessages);
                 
@@ -83,15 +89,17 @@ export function ChatProvider({ children }) {
                 
                 console.log('Polling check:', {
                     lastMessageId: lastMessage?.id,
+                    lastMessageRole: lastMessage?.role,
                     lastTrackedId: lastMessageIdRef.current,
-                    messageRole: lastMessage?.role,
+                    isNewMessage: lastMessage && lastMessage.id !== lastMessageIdRef.current,
+                    idComparison: lastMessage ? `${lastMessage.id} !== ${lastMessageIdRef.current}` : 'no message',
                     chatStatus: chatStatus,
                     waitingForAssistant: waitingForAssistantRef.current
                 });
                 
                 // If we're waiting for assistant and got a new message
                 if (waitingForAssistantRef.current && lastMessage && lastMessage.id !== lastMessageIdRef.current) {
-                    console.log('New message detected while waiting for assistant, refreshing chat history');
+                    console.log('🎉 New message detected while waiting for assistant, refreshing chat history');
                     
                     // Reset waiting flag
                     waitingForAssistantRef.current = false;
@@ -107,14 +115,14 @@ export function ChatProvider({ children }) {
                 }
                 // Normal polling - check for any new message
                 else if (!waitingForAssistantRef.current && lastMessage && lastMessage.id !== lastMessageIdRef.current) {
-                    console.log('New message detected in normal polling, refreshing chat history');
+                    console.log('🔄 New message detected in normal polling, refreshing chat history');
                     fetchAllMessages(courseId);
                 }
             } else {
-                console.log('Polling response not ok:', response.status);
+                console.log('❌ Polling response not ok:', response.status);
             }
         } catch (error) {
-            console.error('Error polling for new messages:', error);
+            console.error('💥 Error polling for new messages:', error);
         }
     }, [fetchAllMessages, chatStatus]);
 
