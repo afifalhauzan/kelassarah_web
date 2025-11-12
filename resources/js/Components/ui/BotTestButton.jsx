@@ -1,10 +1,59 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { router } from '@inertiajs/react';
 
 export default function BotTestButton() {
     const [isLoading, setIsLoading] = useState(false);
     const [message, setMessage] = useState('');
     const [response, setResponse] = useState(null);
+    const [lastMessage, setLastMessage] = useState(null);
+    const [pollLogs, setPollLogs] = useState([]);
+
+    // Poll the last message endpoint every 1 second
+    useEffect(() => {
+        const pollLastMessage = async () => {
+            try {
+                const response = await fetch('/chat/1/last', {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-Requested-With': 'XMLHttpRequest',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content || ''
+                    }
+                });
+
+                const data = await response.json();
+                const timestamp = new Date().toLocaleTimeString();
+                
+                if (response.ok) {
+                    setLastMessage(data);
+                    setPollLogs(prev => [...prev, {
+                        timestamp,
+                        status: 'success',
+                        data: data
+                    }].slice(-10)); // Keep only last 10 logs
+                } else {
+                    setPollLogs(prev => [...prev, {
+                        timestamp,
+                        status: 'error',
+                        data: data
+                    }].slice(-10));
+                }
+            } catch (error) {
+                const timestamp = new Date().toLocaleTimeString();
+                setPollLogs(prev => [...prev, {
+                    timestamp,
+                    status: 'error',
+                    data: { error: error.message }
+                }].slice(-10));
+            }
+        };
+
+        // Poll immediately and then every 1 second
+        pollLastMessage();
+        const interval = setInterval(pollLastMessage, 1000);
+
+        return () => clearInterval(interval);
+    }, []);
 
     const handleSendMessage = () => {
         if (!message.trim()) {
@@ -84,6 +133,42 @@ export default function BotTestButton() {
                         <p className="text-sm text-gray-600">{response}</p>
                     </div>
                 )}
+
+                {/* Current Last Message */}
+                {lastMessage && (
+                    <div className="p-3 bg-blue-50 border border-blue-200 rounded-md">
+                        <h4 className="text-sm font-medium text-blue-800 mb-1">Current Last Message:</h4>
+                        <div className="text-xs text-blue-600 font-mono">
+                            <pre className="whitespace-pre-wrap">{JSON.stringify(lastMessage, null, 2)}</pre>
+                        </div>
+                    </div>
+                )}
+
+                {/* Polling Logs */}
+                <div className="p-3 bg-gray-900 border border-gray-700 rounded-md">
+                    <h4 className="text-sm font-medium text-white mb-2">Polling Logs (Updates every 1s):</h4>
+                    <div className="max-h-40 overflow-y-auto">
+                        {pollLogs.length === 0 ? (
+                            <p className="text-xs text-gray-400">No logs yet...</p>
+                        ) : (
+                            <div className="space-y-1">
+                                {pollLogs.map((log, index) => (
+                                    <div key={index} className="text-xs">
+                                        <span className="text-gray-400">[{log.timestamp}]</span>
+                                        <span className={`ml-2 ${log.status === 'success' ? 'text-green-400' : 'text-red-400'}`}>
+                                            {log.status.toUpperCase()}
+                                        </span>
+                                        <div className="text-gray-300 ml-4 mt-1">
+                                            <pre className="whitespace-pre-wrap font-mono">
+                                                {JSON.stringify(log.data, null, 2)}
+                                            </pre>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        )}
+                    </div>
+                </div>
             </div>
         </div>
     );

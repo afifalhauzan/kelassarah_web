@@ -1,12 +1,16 @@
 import { Head } from '@inertiajs/react';
+import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import BotTestButton from '@/Components/ui/BotTestButton';
 
 export default function BotTestPage({ auth }) {
     return (
-        <>
+        <AuthenticatedLayout
+            user={auth.user}
+            header={<h2 className="font-semibold text-xl text-gray-800 leading-tight">Bot Test</h2>}
+        >
             <Head title="Bot Test" />
 
-            <div className="py-12 bg-gray-100 min-h-screen">
+            <div className="py-12">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
                     <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                         <div className="p-6 text-gray-900">
@@ -27,12 +31,13 @@ export default function BotTestPage({ auth }) {
                                     <li>The message will be sent to <code className="bg-gray-200 px-1 rounded">POST /chat/1</code></li>
                                     <li>Course ID is set to 1 for testing purposes</li>
                                     <li>The API will process the message and queue an OpenAI response</li>
+                                    <li>The component polls <code className="bg-gray-200 px-1 rounded">GET /chat/1/last</code> every 1 second to check for new messages</li>
                                 </ul>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </>
+        </AuthenticatedLayout>
     );
 }
