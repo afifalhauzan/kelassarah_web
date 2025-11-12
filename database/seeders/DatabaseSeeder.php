@@ -2,6 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Models\Course;
+use App\Models\Material;
 use App\Models\User;
 use App\Models\Material;
 use App\Models\Course;
@@ -20,5 +22,6 @@ class DatabaseSeeder extends Seeder
         User::factory(10)->create();
         Material::factory(10)->create();
         Course::factory(10)->create();
+        
     }
 }
