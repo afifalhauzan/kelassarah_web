@@ -39,9 +39,9 @@ export function ChatProvider({ children }) {
 
             setChatStatus("completed");
 
-            setTimeout(() => {
-                setChatStatus("idle");
-            }, 2000);
+            // setTimeout(() => {
+            //     setChatStatus("idle");
+            // }, 2000);
         }, 4000);
     }, []);
 

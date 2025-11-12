@@ -29,7 +29,7 @@ export default function ChatHeader({ onClose }) {
     return (
         <div className="shrink-0 border-b px-4 pt-4">
             <div className="flex items-center justify-between">
-                <button className="text-gray-500 hover:text-gray-700">
+                <button className="text-gray-500 hover:text-gray-700 hidden md:block">
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
                         className="h-6 w-6"
@@ -46,7 +46,10 @@ export default function ChatHeader({ onClose }) {
                     </svg>
                 </button>
 
-                <h3 className="font-bold text-lg">Kak Sarah</h3>
+                <h3 className="font-bold text-lg md:flex-1 md:text-center">
+                    Kak Sarah
+                </h3>
+
                 <button
                     onClick={onClose}
                     className="text-gray-500 hover:text-gray-700"
@@ -79,9 +82,7 @@ export default function ChatHeader({ onClose }) {
                     className="h-20 w-auto -ml-4"
                 />
 
-                <div
-                    className="relative rounded-lg bg-slate-200 px-3 py-2 text-sm text-gray-800"
-                >
+                <div className="relative rounded-lg bg-slate-200 px-3 py-2 text-sm text-gray-800">
                     {bubbleText}
                     <span
                         className="absolute -left-1 top-1/2 h-2 w-2 -translate-y-1/2 rotate-45 transform bg-slate-200"
