@@ -129,7 +129,7 @@ export function ChatProvider({ children }) {
     // Start polling when chat is opened
     useEffect(() => {
         if (isOpen && chatContextCourseld && !isPolling) {
-            console.log('Starting polling for course:', chatContextCourseld);
+            console.log('🔄 Starting polling for course:', chatContextCourseld);
             setIsPolling(true);
             
             // Initial load of all messages
@@ -137,13 +137,14 @@ export function ChatProvider({ children }) {
             
             // Start polling every 1 second (more aggressive to catch responses faster)
             pollingIntervalRef.current = setInterval(() => {
+                console.log('⏱️ Polling tick at', new Date().toLocaleTimeString());
                 pollForNewMessages(chatContextCourseld);
             }, 1000);
         }
 
         // Stop polling when chat is closed
         if (!isOpen && pollingIntervalRef.current) {
-            console.log('Stopping polling');
+            console.log('⏹️ Stopping polling');
             clearInterval(pollingIntervalRef.current);
             pollingIntervalRef.current = null;
             setIsPolling(false);
