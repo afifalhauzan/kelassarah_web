@@ -12,6 +12,7 @@ export function ChatProvider({ children }) {
     
     const pollingIntervalRef = useRef(null);
     const lastMessageIdRef = useRef(null);
+    const waitingForAssistantRef = useRef(false); // Track if we're waiting for assistant response
 
     // Convert API message format to ChatContext format
     const convertApiMessage = useCallback((apiMessage) => {
@@ -37,6 +38,8 @@ export function ChatProvider({ children }) {
 
             if (response.ok) {
                 const messages = await response.json();
+                console.log('Fetched messages:', messages.length, 'Latest ID:', messages.length > 0 ? messages[messages.length - 1].id : 'none');
+                
                 // Convert and sort messages by created_at (oldest first for chat history)
                 const convertedMessages = messages
                     .sort((a, b) => new Date(a.created_at) - new Date(b.created_at))
@@ -44,9 +47,10 @@ export function ChatProvider({ children }) {
                 
                 setHistory(convertedMessages);
                 
-                // Update last message ID for polling reference
+                // Always update last message ID for polling reference
                 if (messages.length > 0) {
                     lastMessageIdRef.current = messages[messages.length - 1].id;
+                    console.log('Updated lastMessageIdRef to:', lastMessageIdRef.current);
                 }
             }
         } catch (error) {
@@ -69,9 +73,20 @@ export function ChatProvider({ children }) {
             if (response.ok) {
                 const lastMessage = await response.json();
                 
-                // If we have a new message (different ID from our last tracked)
-                if (lastMessage && lastMessage.id !== lastMessageIdRef.current) {
-                    console.log('New message detected, refreshing chat history');
+                console.log('Polling check:', {
+                    lastMessageId: lastMessage?.id,
+                    lastTrackedId: lastMessageIdRef.current,
+                    messageRole: lastMessage?.role,
+                    chatStatus: chatStatus,
+                    waitingForAssistant: waitingForAssistantRef.current
+                });
+                
+                // If we're waiting for assistant and got a new message
+                if (waitingForAssistantRef.current && lastMessage && lastMessage.id !== lastMessageIdRef.current) {
+                    console.log('New message detected while waiting for assistant, refreshing chat history');
+                    
+                    // Reset waiting flag
+                    waitingForAssistantRef.current = false;
                     
                     // Same logic as refresh button - refetch all messages
                     fetchAllMessages(courseId);
@@ -82,11 +97,18 @@ export function ChatProvider({ children }) {
                         setTimeout(() => setChatStatus("idle"), 2000);
                     }
                 }
+                // Normal polling - check for any new message
+                else if (!waitingForAssistantRef.current && lastMessage && lastMessage.id !== lastMessageIdRef.current) {
+                    console.log('New message detected in normal polling, refreshing chat history');
+                    fetchAllMessages(courseId);
+                }
+            } else {
+                console.log('Polling response not ok:', response.status);
             }
         } catch (error) {
             console.error('Error polling for new messages:', error);
         }
-    }, [fetchAllMessages]);
+    }, [fetchAllMessages, chatStatus]);
 
     // Start polling when chat is opened
     useEffect(() => {
@@ -127,6 +149,10 @@ export function ChatProvider({ children }) {
 
         // Set status to pending immediately
         setChatStatus("pending");
+        
+        // Set waiting flag to track assistant response
+        waitingForAssistantRef.current = true;
+        console.log('Sending message, set waitingForAssistant to true');
 
         try {
             // Send message to API
@@ -146,7 +172,7 @@ export function ChatProvider({ children }) {
                 const result = await response.json();
                 console.log('Message sent successfully:', result);
                 
-                // Refresh chat history - same logic as refresh button
+                // Refresh chat history to get the user message - don't update ref yet
                 setTimeout(() => {
                     fetchAllMessages(chatContextCourseld);
                 }, 500); // Small delay to allow backend processing
@@ -156,6 +182,7 @@ export function ChatProvider({ children }) {
         } catch (error) {
             console.error('Error sending message:', error);
             setChatStatus("error");
+            waitingForAssistantRef.current = false;
             setTimeout(() => setChatStatus("idle"), 3000);
         }
     }, [chatContextCourseld, fetchAllMessages]);
