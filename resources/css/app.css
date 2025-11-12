@@ -14,6 +14,17 @@
   
   --font-lilita:
     'Lilita One', ui-sans-serif, system-ui, sans-serif;
+
+  --color-blue-50: oklch(0.984 0.010 259.6);
+  --color-blue-100: oklch(0.906 0.047 259.3);
+  --color-blue-200: oklch(0.803 0.100 258.9);
+  --color-blue-300: oklch(0.655 0.165 260.0);
+  --color-blue-400: oklch(0.518 0.187 260.5);
+  --color-blue-500: oklch(0.435 0.176 260.8);
+  --color-blue-600: oklch(0.354 0.155 261.2);
+  --color-blue-700: oklch(0.279 0.130 261.6);
+  --color-blue-800: oklch(0.179 0.083 262.1);
+  --color-blue-900: oklch(0.087 0.040 262.5);
 }
 
 /*

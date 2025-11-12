@@ -1,6 +1,8 @@
 import ApplicationLogo from '@/Components/shared/ApplicationLogo';
 import { Link } from '@inertiajs/react';
 
+{ /* kita gapake ini ges langsung di LandingPage aja */ }
+
 export default function GuestLayout({ children }) {
     return (
         <div className="flex min-h-screen flex-col items-center bg-gray-100 pt-6 sm:justify-center sm:pt-0">

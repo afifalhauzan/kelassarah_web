@@ -15,7 +15,7 @@ Route::get('/', function () {
     //     'laravelVersion' => Application::VERSION,
     //     'phpVersion' => PHP_VERSION,
     // ]);
-    return Inertia::render('LandingTest', [
+    return Inertia::render('LandingPage', [
         // 'canLogin' => Route::has('login'),
         // 'canRegister' => Route::has('register'),
         // 'laravelVersion' => Application::VERSION,
@@ -66,6 +66,10 @@ Route::get('/load-test-write', function () {
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
+
+Route::get('/courses', function () {
+    return Inertia::render('Courses');
+})->middleware(['auth', 'verified'])->name('courses');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
