@@ -38,7 +38,14 @@ export function ChatProvider({ children }) {
 
             if (response.ok) {
                 const messages = await response.json();
-                console.log('Fetched messages:', messages.length, 'Latest ID:', messages.length > 0 ? messages[messages.length - 1].id : 'none');
+                
+                // Find the actual latest message by ID (highest ID number)
+                const latestMessage = messages.length > 0 ? messages.reduce((latest, current) => 
+                    current.id > latest.id ? current : latest
+                ) : null;
+                
+                console.log('Fetched messages:', messages.length, 'Latest ID by sort:', messages.length > 0 ? messages[messages.length - 1].id : 'none');
+                console.log('Actual Latest ID by max:', latestMessage?.id || 'none');
                 
                 // Convert and sort messages by created_at (oldest first for chat history)
                 const convertedMessages = messages
@@ -47,10 +54,11 @@ export function ChatProvider({ children }) {
                 
                 setHistory(convertedMessages);
                 
-                // Always update last message ID for polling reference
-                if (messages.length > 0) {
-                    lastMessageIdRef.current = messages[messages.length - 1].id;
-                    console.log('Updated lastMessageIdRef to:', lastMessageIdRef.current);
+                // Use the actual latest message ID (highest ID) for polling reference
+                if (latestMessage) {
+                    const oldRef = lastMessageIdRef.current;
+                    lastMessageIdRef.current = latestMessage.id;
+                    console.log('Updated lastMessageIdRef from:', oldRef, 'to:', lastMessageIdRef.current);
                 }
             }
         } catch (error) {
