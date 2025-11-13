@@ -1,5 +1,4 @@
 import { createContext, useContext, useState, useCallback, useEffect, useRef } from "react";
-import { router } from '@inertiajs/react';
 
 const ChatContext = createContext();
 
@@ -29,24 +28,23 @@ export function ChatProvider({ children }) {
     // Fetch all messages for the course
     const fetchAllMessages = useCallback(async (courseId) => {
         try {
-            router.get(`/chat/${courseId}`, {}, {
-                onSuccess: (response) => {
-                    const messages = response;
-                    
-                    // Process the messages
-                    handleFetchedMessages(messages);
-                },
-                onError: (error) => {
-                    console.error('Error fetching messages:', error);
-                },
-                preserveState: true,
-                preserveScroll: true,
-                only: []
+            const response = await fetch(`/chat/${courseId}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content || ''
+                }
             });
+
+            if (response.ok) {
+                const messages = await response.json();
+                handleFetchedMessages(messages);
+            }
         } catch (error) {
             console.error('Error fetching messages:', error);
         }
-    }, []);
+    }, [handleFetchedMessages]);
 
     // Helper function to process fetched messages
     const handleFetchedMessages = useCallback((messages) => {
@@ -89,21 +87,25 @@ export function ChatProvider({ children }) {
         console.log(`🔄 Poll #${pollingCounterRef.current} - Checking for new messages...`);
         
         try {
-            router.get(`/chat/${courseId}/last`, {}, {
-                onSuccess: (lastMessage) => {
-                    handlePollingResponse(lastMessage, courseId);
-                },
-                onError: (error) => {
-                    console.error('💥 Error polling for new messages:', error);
-                },
-                preserveState: true,
-                preserveScroll: true,
-                only: []
+            const response = await fetch(`/chat/${courseId}/last`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content || ''
+                }
             });
+
+            if (response.ok) {
+                const lastMessage = await response.json();
+                handlePollingResponse(lastMessage, courseId);
+            } else {
+                console.log('❌ Polling response not ok:', response.status);
+            }
         } catch (error) {
             console.error('💥 Error polling for new messages:', error);
         }
-    }, []);
+    }, [handlePollingResponse]);
 
     // Helper function to handle polling response
     const handlePollingResponse = useCallback((lastMessage, courseId) => {
@@ -188,26 +190,29 @@ export function ChatProvider({ children }) {
 
         try {
             // Send message to API
-            router.post(`/chat/${chatContextCourseld}`, {
-                content: newMessage,
-            }, {
-                onSuccess: (result) => {
-                    console.log('Message sent successfully:', result);
-                    
-                    // Refresh chat history to get the user message - don't update ref yet
-                    setTimeout(() => {
-                        fetchAllMessages(chatContextCourseld);
-                    }, 500); // Small delay to allow backend processing
+            const response = await fetch(`/chat/${chatContextCourseld}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content || ''
                 },
-                onError: (error) => {
-                    console.error('Error sending message:', error);
-                    setChatStatus("error");
-                    waitingForAssistantRef.current = false;
-                    setTimeout(() => setChatStatus("idle"), 3000);
-                },
-                preserveState: true,
-                preserveScroll: true
+                body: JSON.stringify({
+                    content: newMessage,
+                })
             });
+
+            if (response.ok) {
+                const result = await response.json();
+                console.log('Message sent successfully:', result);
+                
+                // Refresh chat history to get the user message - don't update ref yet
+                setTimeout(() => {
+                    fetchAllMessages(chatContextCourseld);
+                }, 500); // Small delay to allow backend processing
+            } else {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
         } catch (error) {
             console.error('Error sending message:', error);
             setChatStatus("error");
