@@ -5,14 +5,14 @@ import ProgressCard from "@/Components/Dashboard/ProgressCard";
 import CourseSlider from "@/Components/Dashboard/CourseSlider";
 
 export default function Dashboard() {
-    const { auth, courses } = usePage().props;
+    const { auth, courses = [] } = usePage().props;
     const [isLoading, setIsLoading] = useState(false);
 
-    // If courses are not passed as props, fetch them
+    // If courses are not passed as props or empty, fetch them
     useEffect(() => {
-        if (!courses) {
+        if (!courses || courses.length === 0) {
             setIsLoading(true);
-            router.get('/course', {}, {
+            router.get('/courses', {}, {
                 only: ['courses'],
                 onSuccess: () => {
                     setIsLoading(false);
