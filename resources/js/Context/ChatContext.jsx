@@ -1,23 +1,21 @@
 import { createContext, useContext, useState, useCallback, useEffect, useRef } from "react";
-
+import { router } from '@inertiajs/react'; // <-- 1. Import Inertia's router
 
 const ChatContext = createContext();
-const { auth } = usePage().props;
 
 export function ChatProvider({ children }) {
     const [isOpen, setisOpen] = useState(false);
     const [history, setHistory] = useState([]);
     const [showResetConsent, setShowResetConsent] = useState(false);
-    const [chatContextCourseld, setChatContextCourseld] = useState(1); // Default to course 1
+    const [chatContextCourseld, setChatContextCourseld] = useState(1);
     const [chatStatus, setChatStatus] = useState("idle");
     const [isPolling, setIsPolling] = useState(false);
     
     const pollingIntervalRef = useRef(null);
     const lastMessageIdRef = useRef(null);
-    const waitingForAssistantRef = useRef(false); // Track if we're waiting for assistant response
-    const pollingCounterRef = useRef(0); // Add counter to track polling attempts
+    const waitingForAssistantRef = useRef(false);
+    const pollingCounterRef = useRef(0);
 
-    // Convert API message format to ChatContext format
     const convertApiMessage = useCallback((apiMessage) => {
         return {
             id: apiMessage.id,
@@ -27,126 +25,65 @@ export function ChatProvider({ children }) {
         };
     }, []);
 
-    // Fetch all messages for the course
-    const fetchAllMessages = useCallback(async (courseId) => {
-        try {
-            const response = await fetch(`/chat/${courseId}`, {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-Requested-With': 'XMLHttpRequest',
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content || ''
-                }
-            });
-
-            if (response.ok) {
-                const messages = await response.json();
-                
-                // Debug: Log all message IDs to understand the pattern
-                console.log('All message IDs:', messages.map(m => `${m.id}(${m.role})`).join(', '));
-                
-                // Find the actual latest message by ID (highest ID number)
-                const latestMessage = messages.length > 0 ? messages.reduce((latest, current) => 
-                    current.id > latest.id ? current : latest
-                ) : null;
-                
-                // Sort by created_at for display
-                const sortedMessages = [...messages].sort((a, b) => new Date(a.created_at) - new Date(b.created_at));
-                
-                console.log('Fetched messages:', messages.length);
-                console.log('Latest ID by sort:', sortedMessages.length > 0 ? sortedMessages[sortedMessages.length - 1].id : 'none');
-                console.log('Actual Latest ID by max:', latestMessage?.id || 'none');
-                console.log('Latest message role:', latestMessage?.role || 'none');
-                
-                // Convert sorted messages for display
-                const convertedMessages = sortedMessages.map(convertApiMessage);
-                
-                setHistory(convertedMessages);
-                
-                // Use the actual latest message ID (highest ID) for polling reference
-                if (latestMessage) {
-                    const oldRef = lastMessageIdRef.current;
-                    lastMessageIdRef.current = latestMessage.id;
-                    console.log('Updated lastMessageIdRef from:', oldRef, 'to:', lastMessageIdRef.current);
-                }
-            }
-        } catch (error) {
-            console.error('Error fetching messages:', error);
-        }
-    }, [convertApiMessage]);
-
-    // Simple polling that just checks if there are new messages and refreshes
-    const pollForNewMessages = useCallback(async (courseId) => {
+    /**
+     * This new function replaces BOTH fetchAllMessages and pollForNewMessages.
+     * It uses Inertia's `router.get` to ask for *only* the 'messages' prop.
+     */
+    const refreshMessages = useCallback((courseId) => {
         pollingCounterRef.current += 1;
-        console.log(`🔄 Poll #${pollingCounterRef.current} - Checking for new messages...`);
-        
-        try {
-            const response = await fetch(`/chat/${courseId}/last`, {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-Requested-With': 'XMLHttpRequest',
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content || ''
-                }
-            });
+        console.log(`🔄 Poll #${pollingCounterRef.current} - Refreshing messages...`);
 
-            if (response.ok) {
-                const lastMessage = await response.json();
+        router.get(`/chat/${courseId}`, {}, {
+            // This is the magic!
+            only: ['messages'], // Only fetch the 'messages' prop
+            preserveState: true,
+            preserveScroll: true,
+            
+            onSuccess: (page) => {
+                const newMessages = page.props.messages;
+                console.log('Refreshed messages:', newMessages.length);
                 
-                console.log('Polling check:', {
-                    lastMessageId: lastMessage?.id,
-                    lastMessageRole: lastMessage?.role,
-                    lastTrackedId: lastMessageIdRef.current,
-                    isNewMessage: lastMessage && lastMessage.id !== lastMessageIdRef.current,
-                    idComparison: lastMessage ? `${lastMessage.id} !== ${lastMessageIdRef.current}` : 'no message',
-                    chatStatus: chatStatus,
-                    waitingForAssistant: waitingForAssistantRef.current
-                });
+                // Convert and update history
+                const convertedMessages = newMessages.map(convertApiMessage);
+                setHistory(convertedMessages);
+
+                // Find the actual latest message
+                const latestMessage = newMessages.length > 0 ? newMessages.reduce((a, b) => a.id > b.id ? a : b) : null;
                 
-                // If we're waiting for assistant and got a new message
-                if (waitingForAssistantRef.current && lastMessage && lastMessage.id !== lastMessageIdRef.current) {
-                    console.log('🎉 New message detected while waiting for assistant, refreshing chat history');
+                if (latestMessage) {
+                    // Update the last message ID
+                    lastMessageIdRef.current = latestMessage.id;
                     
-                    // Reset waiting flag
-                    waitingForAssistantRef.current = false;
-                    
-                    // Same logic as refresh button - refetch all messages
-                    fetchAllMessages(courseId);
-                    
-                    // Update chat status if this is an assistant message
-                    if (lastMessage.role === 'assistant') {
+                    // Check if the assistant has responded
+                    if (waitingForAssistantRef.current && latestMessage.role === 'assistant') {
+                        console.log('🎉 Assistant response detected!');
+                        waitingForAssistantRef.current = false;
                         setChatStatus("completed");
                         setTimeout(() => setChatStatus("idle"), 2000);
                     }
                 }
-                // Normal polling - check for any new message
-                else if (!waitingForAssistantRef.current && lastMessage && lastMessage.id !== lastMessageIdRef.current) {
-                    console.log('🔄 New message detected in normal polling, refreshing chat history');
-                    fetchAllMessages(courseId);
-                }
-            } else {
-                console.log('❌ Polling response not ok:', response.status);
+            },
+            onError: (errors) => {
+                console.error('💥 Error refreshing messages:', errors);
+                // NOTE: Inertia will AUTOMATICALLY handle 419 errors by refreshing the page.
             }
-        } catch (error) {
-            console.error('💥 Error polling for new messages:', error);
-        }
-    }, [fetchAllMessages, chatStatus]);
+        });
+    }, [convertApiMessage]); // Added convertApiMessage dependency
 
     // Start polling when chat is opened
     useEffect(() => {
-        // Start polling when chat opens
         if (isOpen && chatContextCourseld) {
             console.log('🔄 Starting polling for course:', chatContextCourseld);
             setIsPolling(true);
             
             // Initial load of all messages
-            fetchAllMessages(chatContextCourseld);
+            refreshMessages(chatContextCourseld);
             
-            // Start polling every 1 second (more aggressive to catch responses faster)
+            // Start polling (5 seconds is much saner for a server than 1)
             pollingIntervalRef.current = setInterval(() => {
                 console.log('⏱️ Polling tick at', new Date().toLocaleTimeString());
-                pollForNewMessages(chatContextCourseld);
-            }, 1000);
+                refreshMessages(chatContextCourseld);
+            }, 5000); // <-- Poll every 5 seconds
         }
 
         // Stop polling when chat is closed
@@ -160,68 +97,59 @@ export function ChatProvider({ children }) {
         return () => {
             if (pollingIntervalRef.current) {
                 clearInterval(pollingIntervalRef.current);
-                pollingIntervalRef.current = null;
             }
         };
-    }, [isOpen, chatContextCourseld, fetchAllMessages, pollForNewMessages]);
+    }, [isOpen, chatContextCourseld, refreshMessages]); // Swapped to refreshMessages
 
+    /**
+     * This is the new `sendMessage` using `router.post`.
+     * It's simpler and doesn't need hacks.
+     */
     const sendMessage = useCallback(async (newMessage) => {
-        if (!chatContextCourseld) {
-            console.error('No course ID set for chat');
-            return;
-        }
+        if (!chatContextCourseld) return;
 
-        // Set status to pending immediately
         setChatStatus("pending");
-        
-        // Set waiting flag to track assistant response
         waitingForAssistantRef.current = true;
         console.log('Sending message, set waitingForAssistant to true');
-        console.log('User id : ', auth.user.id);
 
-        try {
-            // Send message to API
-            const response = await fetch(`/chat/${chatContextCourseld}`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-Requested-With': 'XMLHttpRequest',
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content || ''
-                },
-                body: JSON.stringify({
-                    content: newMessage,
-                })
-            });
-
-            if (response.ok) {
-                const result = await response.json();
-                console.log('Message sent successfully:', result);
+        router.post(`/chat/${chatContextCourseld}`, {
+            content: newMessage,
+            // user_id: auth.user.id // You can pass this if needed
+        }, {
+            preserveState: true,
+            preserveScroll: true,
+            
+            onSuccess: () => {
+                console.log('Message sent! Inertia will refresh props.');
+                // NO MORE setTimeout HACK!
+                // The `redirect()->back()` from the controller forces
+                // Inertia to re-fetch, which hits the `index` method.
+                // This triggers our `refreshMessages` logic automatically
+                // because the `messages` prop will change.
                 
-                // Refresh chat history to get the user message - don't update ref yet
-                setTimeout(() => {
-                    fetchAllMessages(chatContextCourseld);
-                }, 500); // Small delay to allow backend processing
-            } else {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-        } catch (error) {
-            console.error('Error sending message:', error);
-            setChatStatus("error");
-            waitingForAssistantRef.current = false;
-            setTimeout(() => setChatStatus("idle"), 3000);
-        }
-    }, [chatContextCourseld, fetchAllMessages]);
+                // We'll manually call refreshMessages to be 100% sure
+                // the new "user" message appears instantly.
+                refreshMessages(chatContextCourseld);
+            },
+            onError: (errors) => {
+                console.error('Error sending message:', errors);
+                setChatStatus("error");
+                waitingForAssistantRef.current = false;
+                setTimeout(() => setChatStatus("idle"), 3000);
+            },
+        });
+    }, [chatContextCourseld, refreshMessages]); // Added refreshMessages
 
+    // Reset chat logic (now just calls refresh)
     const resetChat = useCallback(() => {
         setHistory([]);
         setChatStatus("idle");
         lastMessageIdRef.current = null;
         
-        // Refetch messages after reset
         if (isOpen && chatContextCourseld) {
-            fetchAllMessages(chatContextCourseld);
+            refreshMessages(chatContextCourseld);
         }
-    }, [isOpen, chatContextCourseld, fetchAllMessages]);
+    }, [isOpen, chatContextCourseld, refreshMessages]); // Added refreshMessages
 
     const value = {
         isOpen,
@@ -236,7 +164,7 @@ export function ChatProvider({ children }) {
         chatStatus,
         sendMessage,
         isPolling,
-        fetchAllMessages,
+        fetchAllMessages: refreshMessages, // Expose the new function
     };
 
     return (
