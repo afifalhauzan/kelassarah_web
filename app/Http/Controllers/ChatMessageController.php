@@ -4,75 +4,54 @@ namespace App\Http\Controllers;
 
 use App\Jobs\ProcessOpenAIResponse;
 use App\Models\ChatMessage;
-use App\Models\Course;
 use Illuminate\Http\Request;
 
 class ChatMessageController extends Controller
 {
-    public function index(Course $course)
+    public function index(Request $request, $courseId)
     {
-        // Load messages for the course and authenticated user
-        $messages = $course->messages()
-            ->where('user_id', auth()->id())
-            ->orderBy('created_at', 'desc')
-            ->get()
-            ->map(fn ($msg) => [
-                'id' => $msg->id,
-                'role' => $msg->role,
-                'content' => $msg->content,
-                'created_at' => $msg->created_at
-            ]);
-
-        return inertia('ChatProvider', [
-            'course' => $course,
-            'messages' => $messages,
+        $validated = $request->validate([
+            'user_id' => 'sometimes|integer',
         ]);
+
+        $messages = ChatMessage::with(['user', 'course'])->where('course_id', $courseId)->where('user_id', $validated['user_id'] ?? auth()->id())->orderBy('created_at', 'desc')->get();
+        return response()->json($messages);
     }
     
-    public function store(Request $request, Course $course)
+    public function store(Request $request, $courseId)
     {
         $validated = $request->validate([
             'content' => 'required|string',
+            'user_id' => 'sometimes|integer',
         ]);
 
-        $validated['course_id'] = $course->id;
-        $validated['user_id'] = auth()->id();
+        $validated['course_id'] = $courseId;
+        $validated['user_id'] = $validated['user_id'] ?? auth()->id();
         $validated['role'] = 'user';
 
         $dataPost = ChatMessage::create($validated);
 
         ProcessOpenAIResponse::dispatch($dataPost->id, $validated['user_id'], $validated['course_id'], $validated['content']);
 
-        return inertia('ChatProvider', [
-            'course' => $course,
-            'status' => 'pending',
-            'messages' => $course->messages()
-                ->where('user_id', auth()->id())
-                ->orderBy('created_at', 'desc')
-                ->get()
-                ->map(fn ($msg) => [
-                    'id' => $msg->id,
-                    'role' => $msg->role,
-                    'content' => $msg->content,
-                    'created_at' => $msg->created_at
-                ])
-        ]);
+        return response()->json([
+            'course_id' => $dataPost['course_id'],
+            'status' => "pending",
+        ], 201);
     }
 
-    public function getLastMessage(Course $course)
+    public function getLastMessage(Request $request, $courseId)
     {
-        $lastMessage = $course->messages()
-            ->where('user_id', auth()->id())
+        $validated = $request->validate([
+            'user_id' => 'sometimes|integer',
+        ]);
+
+        $lastMessage = ChatMessage::where('course_id', $courseId)
+            ->where('user_id', $validated['user_id'] ?? auth()->id())
             ->orderBy('created_at', 'desc')
             ->first();
 
         if ($lastMessage) {
-            return response()->json([
-                'id' => $lastMessage->id,
-                'role' => $lastMessage->role,
-                'content' => $lastMessage->content,
-                'created_at' => $lastMessage->created_at
-            ]);
+            return response()->json($lastMessage);
         } else {
             return response()->json(['message' => 'No messages found'], 404);
         }
