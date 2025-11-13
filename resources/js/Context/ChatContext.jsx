@@ -29,7 +29,7 @@ export function ChatProvider({ children }) {
     // Fetch all messages for the course
     const fetchAllMessages = useCallback(async (courseId) => {
         try {
-            const response = await axios.get(`/api/chat/${courseId}`, {
+            const response = await axios.get(`/chat/${courseId}`, {
                 headers: {
                     'Accept': 'application/json',
                     'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content || ''
@@ -84,7 +84,7 @@ export function ChatProvider({ children }) {
         console.log(`🔄 Poll #${pollingCounterRef.current} - Checking for new messages...`);
         
         try {
-            const response = await axios.get(`/api/chat/${courseId}/last`, {
+            const response = await axios.get(`/chat/${courseId}/last`, {
                 headers: {
                     'Accept': 'application/json',
                     'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content || ''
@@ -181,7 +181,7 @@ export function ChatProvider({ children }) {
 
         try {
             // Send message to API
-            const response = await axios.post(`/api/chat/${chatContextCourseld}`, {
+            const response = await axios.post(`/chat/${chatContextCourseld}`, {
                 content: newMessage,
             }, {
                 headers: {
