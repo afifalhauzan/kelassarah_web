@@ -1,56 +1,13 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { useEffect, useState } from "react";
-import { Head, usePage } from "@inertiajs/react";
-import ProgressCard from "@/Components/dashboard_main/ProgressCard";
-import CourseSlider from "@/Components/dashboard_main/CourseSlider";
 
 export default function Dashboard() {
-    const { auth } = usePage().props;
-
-    // useEffect(() => {
-    //     axios
-    //         .get(route("courses.index"))
-    //         .then((response) => {
-    //             setCourses(response.data);
-    //             setIsLoading(false);
-    //         })
-    //         .catch((error) => {
-    //             console.error("Gagal ngambil data courses:", error);
-    //             setIsLoading(false);
-    //         });
-    // }, []);
-
-    // nanti ganti ke inertia request kalo udah siap backendnya
-
     return (
         <AuthenticatedLayout>
-            {/* <Head title="Dashboard" /> */}
-
-            <div className="py-4">
-                <div className="max-w-7xl mx-auto px-2">
-                    <div className="overflow-hidden">
-                        <div className="p-6 md:p-8 text-gray-900">
-                            <h1 className="text-2xl font-bold text-gray-800">
-                                Halo {auth.user.name}!
-                            </h1>
-                            <p className="text-gray-500 mt-1">
-                                Selamat datang kembali di beranda
-                            </p>
-
-                            <div className="mt-8">
-                                <ProgressCard
-                                    title="Politik Etis dan kebangkitan kaum terpelajar"
-                                    progress={65}
-                                />
-                            </div>
-
-                            {/* {isLoading ? (
-                                <div className="mt-12 text-center">
-                                    <p>Lagi ngambil data kursus...</p>
-                                </div>
-                            ) : (
-                                <CourseSlider courses={courses} />
-                            )} */}
+            <div className="py-12">
+                <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
+                    <div className="overflow-hidden bg-white shadow-xs sm:rounded-lg">
+                        <div className="p-6 text-gray-900">
+                            You're logged in!
                         </div>
                     </div>
                 </div>
