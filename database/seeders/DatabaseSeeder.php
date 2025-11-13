@@ -7,7 +7,6 @@ use App\Models\Material;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use Database\Seeders\UserSiswaSeeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -21,5 +20,6 @@ class DatabaseSeeder extends Seeder
         User::factory(10)->create();
         Material::factory(10)->create();
         Course::factory(10)->create();
+        
     }
 }

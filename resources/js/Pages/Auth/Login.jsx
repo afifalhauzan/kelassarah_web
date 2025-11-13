@@ -7,9 +7,8 @@ import GuestLayout from '@/Layouts/GuestLayout';
 import { Head, Link, useForm } from '@inertiajs/react';
 
 export default function Login({ status, canResetPassword }) {
-    // 1. Changed 'email' to 'username' here
     const { data, setData, post, processing, errors, reset } = useForm({
-        username: '',
+        email: '',
         password: '',
         remember: false,
     });
@@ -33,22 +32,21 @@ export default function Login({ status, canResetPassword }) {
             )}
 
             <form onSubmit={submit}>
-                {/* 2. This entire block is changed from 'email' to 'username' */}
                 <div>
-                    <InputLabel htmlFor="username" value="Username" />
+                    <InputLabel htmlFor="email" value="Email" />
 
                     <TextInput
-                        id="username"
-                        type="text"
-                        name="username"
-                        value={data.username}
+                        id="email"
+                        type="email"
+                        name="email"
+                        value={data.email}
                         className="mt-1 block w-full"
                         autoComplete="username"
                         isFocused={true}
-                        onChange={(e) => setData('username', e.target.value)}
+                        onChange={(e) => setData('email', e.target.value)}
                     />
 
-                    <InputError message={errors.username} className="mt-2" />
+                    <InputError message={errors.email} className="mt-2" />
                 </div>
 
                 <div className="mt-4">
