@@ -108,34 +108,36 @@ export function ChatProvider({ children }) {
         console.log(`🔄 Poll #${pollingCounterRef.current} - Checking for new messages...`);
         
         try {
-            router.get(`/chat/${courseId}/last`, {}, {
-                only: ['lastMessage'],
-                onSuccess: (page) => {
-                    const lastMessage = page.props.lastMessage;
-                    if (lastMessage) {
-                        console.log('Polling check:', {
-                            lastMessageId: lastMessage?.id,
-                            lastMessageRole: lastMessage?.role,
-                            lastTrackedId: lastMessageIdRef.current,
-                            isNewMessage: lastMessage && lastMessage.id !== lastMessageIdRef.current,
-                            idComparison: lastMessage ? `${lastMessage.id} !== ${lastMessageIdRef.current}` : 'no message',
-                            chatStatus: chatStatus,
-                            waitingForAssistant: waitingForAssistantRef.current
-                        });
-                        
-                        handlePollingResponse(lastMessage, courseId);
-                    }
-                },
-                onError: (error) => {
-                    console.error('💥 Error polling for new messages:', error);
-                },
-                preserveState: true,
-                preserveScroll: true
+            const response = await fetch(`/chat/${courseId}/last`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content || ''
+                }
             });
+
+            if (response.ok) {
+                const lastMessage = await response.json();
+                
+                console.log('Polling check:', {
+                    lastMessageId: lastMessage?.id,
+                    lastMessageRole: lastMessage?.role,
+                    lastTrackedId: lastMessageIdRef.current,
+                    isNewMessage: lastMessage && lastMessage.id !== lastMessageIdRef.current,
+                    idComparison: lastMessage ? `${lastMessage.id} !== ${lastMessageIdRef.current}` : 'no message',
+                    chatStatus: chatStatus,
+                    waitingForAssistant: waitingForAssistantRef.current
+                });
+                
+                handlePollingResponse(lastMessage, courseId);
+            } else {
+                console.log('❌ Polling response not ok:', response.status);
+            }
         } catch (error) {
             console.error('💥 Error polling for new messages:', error);
         }
-    }, [fetchAllMessages, chatStatus]);
+    }, [handlePollingResponse]);
 
     // Start polling when chat is opened
     useEffect(() => {

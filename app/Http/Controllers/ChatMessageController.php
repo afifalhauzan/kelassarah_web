@@ -23,7 +23,7 @@ class ChatMessageController extends Controller
                 'created_at' => $msg->created_at
             ]);
 
-        return inertia('Chat/Index', [
+        return inertia('ChatProvider', [
             'course' => $course,
             'messages' => $messages,
         ]);
@@ -43,7 +43,7 @@ class ChatMessageController extends Controller
 
         ProcessOpenAIResponse::dispatch($dataPost->id, $validated['user_id'], $validated['course_id'], $validated['content']);
 
-        return inertia('Chat/Index', [
+        return inertia('ChatProvider', [
             'course' => $course,
             'status' => 'pending',
             'messages' => $course->messages()
@@ -67,21 +67,14 @@ class ChatMessageController extends Controller
             ->first();
 
         if ($lastMessage) {
-            return inertia('Chat/LastMessage', [
-                'course' => $course,
-                'lastMessage' => [
-                    'id' => $lastMessage->id,
-                    'role' => $lastMessage->role,
-                    'content' => $lastMessage->content,
-                    'created_at' => $lastMessage->created_at
-                ]
+            return response()->json([
+                'id' => $lastMessage->id,
+                'role' => $lastMessage->role,
+                'content' => $lastMessage->content,
+                'created_at' => $lastMessage->created_at
             ]);
         } else {
-            return inertia('Chat/LastMessage', [
-                'course' => $course,
-                'lastMessage' => null,
-                'message' => 'No messages found'
-            ]);
+            return response()->json(['message' => 'No messages found'], 404);
         }
     }
 }
