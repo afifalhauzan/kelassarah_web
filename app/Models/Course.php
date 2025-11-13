@@ -17,4 +17,14 @@ class Course extends Model
         'knowledge_prompt',
         'welcome_message',
     ];
+
+    public function messages()
+    {
+        return $this->hasMany(ChatMessage::class);
+    }
+
+    public function materials()
+    {
+        return $this->hasMany(Material::class);
+    }
 }

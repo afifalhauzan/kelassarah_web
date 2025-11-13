@@ -65,7 +65,23 @@ Route::get('/load-test-write', function () {
 });
 
 Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
+    $courses = \App\Models\Course::where('is_published', true)
+        ->orderBy('order', 'asc')
+        ->get()
+        ->map(fn ($course) => [
+            'id' => $course->id,
+            'title' => $course->title,
+            'description' => $course->description,
+            'order' => $course->order,
+            'is_published' => $course->is_published,
+            'knowledge_prompt' => $course->knowledge_prompt,
+            'welcome_message' => $course->welcome_message,
+            'created_at' => $course->created_at
+        ]);
+
+    return Inertia::render('Dashboard', [
+        'courses' => $courses
+    ]);
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::get('/courses', function () {
@@ -92,17 +108,17 @@ Route::middleware('auth')->group(function () {
 
 Route::prefix('course')->group(function () {
     Route::get('/', [CourseController::class, 'index'])->name('course.index');
-    Route::get('/{course_id}', [CourseController::class, 'show'])->name('course.show');
+    Route::get('/{course}', [CourseController::class, 'show'])->name('course.show');
     Route::post('/', [CourseController::class, 'store'])->name('course.store');
-    Route::put('/{course_id}', [CourseController::class, 'update'])->name('course.update');
-    Route::delete('/{course_id}', [CourseController::class, 'destroy'])->name('course.destroy');
+    Route::put('/{course}', [CourseController::class, 'update'])->name('course.update');
+    Route::delete('/{course}', [CourseController::class, 'destroy'])->name('course.destroy');
 
-    Route::prefix('{course_id}/material')->group(function () {
+    Route::prefix('{course}/material')->group(function () {
         Route::get('/', [MaterialController::class, 'index'])->name('material.index');
-        Route::get('/{material_id}', [MaterialController::class, 'show'])->name('material.show');
+        Route::get('/{material}', [MaterialController::class, 'show'])->name('material.show');
         Route::post('/', [MaterialController::class, 'store'])->name('material.store');
-        Route::put('/{material_id}', [MaterialController::class, 'update'])->name('material.update');
-        Route::delete('/{material_id}', [MaterialController::class, 'destroy'])->name('material.destroy');
+        Route::put('/{material}', [MaterialController::class, 'update'])->name('material.update');
+        Route::delete('/{material}', [MaterialController::class, 'destroy'])->name('material.destroy');
     });
 });
 

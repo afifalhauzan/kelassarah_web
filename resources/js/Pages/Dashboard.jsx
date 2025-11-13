@@ -1,26 +1,31 @@
 import { useEffect, useState } from "react";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import { Head, usePage } from "@inertiajs/react";
+import { Head, usePage, router } from "@inertiajs/react";
 import ProgressCard from "@/Components/Dashboard/ProgressCard";
 import CourseSlider from "@/Components/Dashboard/CourseSlider";
 
 export default function Dashboard() {
-    const { auth } = usePage().props;
-    // const [courses, setCourses] = useState([]);
-    // const [isLoading, setIsLoading] = useState(true);
+    const { auth, courses } = usePage().props;
+    const [isLoading, setIsLoading] = useState(false);
 
-    // useEffect(() => {
-    //     axios
-    //         .get(route("courses.index"))
-    //         .then((response) => {
-    //             setCourses(response.data);
-    //             setIsLoading(false);
-    //         })
-    //         .catch((error) => {
-    //             console.error("Gagal ngambil data courses:", error);
-    //             setIsLoading(false);
-    //         });
-    // }, []);
+    // If courses are not passed as props, fetch them
+    useEffect(() => {
+        if (!courses) {
+            setIsLoading(true);
+            router.get('/course', {}, {
+                only: ['courses'],
+                onSuccess: () => {
+                    setIsLoading(false);
+                },
+                onError: () => {
+                    setIsLoading(false);
+                },
+                preserveState: true,
+                preserveScroll: true
+            });
+        }
+    }, [courses]);
+
     return (
         <AuthenticatedLayout>
             <Head title="Dashboard" />
@@ -43,13 +48,17 @@ export default function Dashboard() {
                                 />
                             </div>
 
-                            {/* {isLoading ? (
+                            {isLoading ? (
                                 <div className="mt-12 text-center">
                                     <p>Lagi ngambil data kursus...</p>
                                 </div>
-                            ) : (
+                            ) : courses && courses.length > 0 ? (
                                 <CourseSlider courses={courses} /> 
-                            )} */}
+                            ) : (
+                                <div className="mt-12 text-center">
+                                    <p className="text-gray-500">Belum ada kursus tersedia</p>
+                                </div>
+                            )}
                         </div>
                     </div>
                 </div>

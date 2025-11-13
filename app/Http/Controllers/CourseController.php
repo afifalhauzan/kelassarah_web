@@ -9,8 +9,23 @@ class CourseController extends Controller
 {
     public function index()
     {
-        $courses = Course::where('is_published', true)->orderBy('order', 'asc')->get();
-        return response()->json($courses);
+        $courses = Course::where('is_published', true)
+            ->orderBy('order', 'asc')
+            ->get()
+            ->map(fn ($course) => [
+                'id' => $course->id,
+                'title' => $course->title,
+                'description' => $course->description,
+                'order' => $course->order,
+                'is_published' => $course->is_published,
+                'knowledge_prompt' => $course->knowledge_prompt,
+                'welcome_message' => $course->welcome_message,
+                'created_at' => $course->created_at
+            ]);
+
+        return inertia('Course/Index', [
+            'courses' => $courses,
+        ]);
     }
 
     public function store(Request $request)
@@ -26,19 +41,59 @@ class CourseController extends Controller
 
         $course = Course::create($validated);
 
-        return response()->json($course, 201);
+        return inertia('Course/Index', [
+            'courses' => Course::where('is_published', true)
+                ->orderBy('order', 'asc')
+                ->get()
+                ->map(fn ($c) => [
+                    'id' => $c->id,
+                    'title' => $c->title,
+                    'description' => $c->description,
+                    'order' => $c->order,
+                    'is_published' => $c->is_published,
+                    'knowledge_prompt' => $c->knowledge_prompt,
+                    'welcome_message' => $c->welcome_message,
+                    'created_at' => $c->created_at
+                ]),
+            'message' => 'Course created successfully',
+            'newCourse' => [
+                'id' => $course->id,
+                'title' => $course->title,
+                'description' => $course->description,
+                'order' => $course->order,
+                'is_published' => $course->is_published,
+                'knowledge_prompt' => $course->knowledge_prompt,
+                'welcome_message' => $course->welcome_message,
+                'created_at' => $course->created_at
+            ]
+        ]);
     }
 
-    public function show($id)
+    public function show(Course $course)
     {
-        $course = Course::findOrFail($id);
-        return response()->json($course);
+        return inertia('Course/Show', [
+            'course' => [
+                'id' => $course->id,
+                'title' => $course->title,
+                'description' => $course->description,
+                'order' => $course->order,
+                'is_published' => $course->is_published,
+                'knowledge_prompt' => $course->knowledge_prompt,
+                'welcome_message' => $course->welcome_message,
+                'created_at' => $course->created_at
+            ],
+            'materials' => $course->materials()->get()->map(fn ($material) => [
+                'id' => $material->id,
+                'title' => $material->title,
+                'content' => $material->content,
+                'order' => $material->order,
+                'created_at' => $material->created_at
+            ])
+        ]);
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, Course $course)
     {
-        $course = Course::findOrFail($id);
-
         $validated = $request->validate([
             'title' => 'sometimes|required|string|max:255',
             'description' => 'sometimes|nullable|string',
@@ -50,13 +105,47 @@ class CourseController extends Controller
 
         $course->update($validated);
 
-        return response()->json($course);
+        return inertia('Course/Show', [
+            'course' => [
+                'id' => $course->id,
+                'title' => $course->title,
+                'description' => $course->description,
+                'order' => $course->order,
+                'is_published' => $course->is_published,
+                'knowledge_prompt' => $course->knowledge_prompt,
+                'welcome_message' => $course->welcome_message,
+                'created_at' => $course->created_at
+            ],
+            'materials' => $course->materials()->get()->map(fn ($material) => [
+                'id' => $material->id,
+                'title' => $material->title,
+                'content' => $material->content,
+                'order' => $material->order,
+                'created_at' => $material->created_at
+            ]),
+            'message' => 'Course updated successfully'
+        ]);
     }
 
-    public function destroy($id)
+    public function destroy(Course $course)
     {
-        $course = Course::findOrFail($id);
         $course->delete();
-        return response()->json(null, 204);
+        
+        return inertia('Course/Index', [
+            'courses' => Course::where('is_published', true)
+                ->orderBy('order', 'asc')
+                ->get()
+                ->map(fn ($c) => [
+                    'id' => $c->id,
+                    'title' => $c->title,
+                    'description' => $c->description,
+                    'order' => $c->order,
+                    'is_published' => $c->is_published,
+                    'knowledge_prompt' => $c->knowledge_prompt,
+                    'welcome_message' => $c->welcome_message,
+                    'created_at' => $c->created_at
+                ]),
+            'message' => 'Course deleted successfully'
+        ]);
     }
 }
