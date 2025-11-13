@@ -81,19 +81,13 @@ Route::get('/chat-test', function () {
 })->middleware(['auth', 'verified'])->name('chat-test');
 
 Route::middleware('auth')->group(function () {
-    // Profile routes (these were already correct)
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    // --- CHAT ROUTES (MOVED INSIDE) ---
-    // This route handles the initial page load AND all polling
-    Route::get('/chat/{course_id}', [ChatMessageController::class, 'index'])->name('chat.index');
-    
-    // This route handles sending a new message
-    Route::post('/chat/{course_id}', [ChatMessageController::class, 'store'])->name('chat.store');
-    
-    // The '/chat/{course_id}/last' route is deleted.
+    Route::get('/chat/{course_id}', [ChatMessageController::class, 'index']);
+    Route::get('/chat/{course_id}/last', [ChatMessageController::class, 'getLastMessage']);
+    Route::post('/chat/{course_id}', [ChatMessageController::class, 'store']);
 });
 
 Route::prefix('course')->group(function () {

@@ -10,9 +10,7 @@ Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
 
-// Route::middleware('auth:sanctum')->group(function () {
-//     Route::get('/chat/{course_id}', [ChatMessageController::class, 'index']);
-//     Route::get('/chat/{course_id}/last', [ChatMessageController::class, 'getLastMessage']);
-//     Route::post('/chat/{course_id}', [ChatMessageController::class, 'store']);
-// });
+Route::get('/chat/{course_id}', [ChatMessageController::class, 'index']);
+Route::get('/chat/{course_id}/last', [ChatMessageController::class, 'getLastMessage']);
+Route::post('/chat/{course_id}', [ChatMessageController::class, 'store']);
 
