@@ -3,7 +3,7 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, usePage } from "@inertiajs/react";
 import ProgressCard from "@/Components/feature/lms/ProgressCard";
 import CourseSlider from "@/Components/feature/lms/CourseSlider";
-import route from "ziggy-js";
+// import route from "ziggy-js";
 
 export default function Dashboard() {
     const { auth } = usePage().props;
