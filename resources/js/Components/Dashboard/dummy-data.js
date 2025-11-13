@@ -1,0 +1,48 @@
+// Kita export datanya biar bisa di-impor di mana aja
+export const dummyCourses = [
+    {
+        id: 1,
+        slug: 'politik-etis',
+        title: 'Politik Etis dan kebangkitan kaum terpelajar',
+        thumbnail: '/dashboard/image5.png', // Ganti pake path gambar asli nanti
+        progress: 65,
+        modulesCompleted: 7,
+        totalModules: 10,
+    },
+    {
+        id: 2,
+        slug: 'organisasi-pergerakan',
+        title: 'Organisasi pergerakan nasional',
+        thumbnail: 'https://via.placeholder.com/320x160.png?text=Kursus+2',
+        progress: 85,
+        modulesCompleted: 9,
+        totalModules: 10,
+    },
+    {
+        id: 3,
+        slug: 'perkembangan-organisasi',
+        title: 'Perkembangan organisasi pemuda dan gagasan persatuan',
+        thumbnail: 'https://via.placeholder.com/320x160.png?text=Kursus+3',
+        progress: 20,
+        modulesCompleted: 2,
+        totalModules: 10,
+    },
+    {
+        id: 4,
+        slug: 'kongres-pemuda',
+        title: 'Kongres Pemuda',
+        thumbnail: 'https://via.placeholder.com/320x160.png?text=Kursus+4',
+        progress: 0,
+        modulesCompleted: 0,
+        totalModules: 10,
+    },
+    {
+        id: 5,
+        slug: 'kursus-lain',
+        title: 'Kursus Lainnya untuk Tes Slider',
+        thumbnail: 'https://via.placeholder.com/320x160.png?text=Kursus+5',
+        progress: 10,
+        modulesCompleted: 1,
+        totalModules: 10,
+    },
+];
