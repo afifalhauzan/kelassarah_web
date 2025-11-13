@@ -34,7 +34,6 @@ export function ChatProvider({ children }) {
                     'Accept': 'application/json',
                     'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content || ''
                 },
-                withCredentials: true
             });
 
             handleFetchedMessages(response.data);
@@ -89,7 +88,6 @@ export function ChatProvider({ children }) {
                     'Accept': 'application/json',
                     'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content || ''
                 },
-                withCredentials: true
             });
 
             handlePollingResponse(response.data, courseId);
@@ -188,7 +186,6 @@ export function ChatProvider({ children }) {
                     'Accept': 'application/json',
                     'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content || ''
                 },
-                withCredentials: true
             });
 
             console.log('Message sent successfully:', response.data);
