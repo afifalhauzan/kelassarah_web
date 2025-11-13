@@ -1,5 +1,4 @@
 import { createContext, useContext, useState, useCallback, useEffect, useRef } from "react";
-import axios from 'axios';
 
 const ChatContext = createContext();
 
@@ -29,51 +28,48 @@ export function ChatProvider({ children }) {
     // Fetch all messages for the course
     const fetchAllMessages = useCallback(async (courseId) => {
         try {
-            const response = await axios.get(`/chat/${courseId}`, {
+            const response = await fetch(`/chat/${courseId}`, {
+                method: 'GET',
                 headers: {
-                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest',
                     'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content || ''
-                },
+                }
             });
 
-            handleFetchedMessages(response.data);
-        } catch (error) {
-            console.error('Error fetching messages:', error);
-        }
-    }, [handleFetchedMessages]);
-
-    // Helper function to process fetched messages
-    const handleFetchedMessages = useCallback((messages) => {
-        try {
-            // Debug: Log all message IDs to understand the pattern
-            console.log('All message IDs:', messages.map(m => `${m.id}(${m.role})`).join(', '));
-            
-            // Find the actual latest message by ID (highest ID number)
-            const latestMessage = messages.length > 0 ? messages.reduce((latest, current) => 
-                current.id > latest.id ? current : latest
-            ) : null;
-            
-            // Sort by created_at for display
-            const sortedMessages = [...messages].sort((a, b) => new Date(a.created_at) - new Date(b.created_at));
-            
-            console.log('Fetched messages:', messages.length);
-            console.log('Latest ID by sort:', sortedMessages.length > 0 ? sortedMessages[sortedMessages.length - 1].id : 'none');
-            console.log('Actual Latest ID by max:', latestMessage?.id || 'none');
-            console.log('Latest message role:', latestMessage?.role || 'none');
-            
-            // Convert sorted messages for display
-            const convertedMessages = sortedMessages.map(convertApiMessage);
-            
-            setHistory(convertedMessages);
-            
-            // Use the actual latest message ID (highest ID) for polling reference
-            if (latestMessage) {
-                const oldRef = lastMessageIdRef.current;
-                lastMessageIdRef.current = latestMessage.id;
-                console.log('Updated lastMessageIdRef from:', oldRef, 'to:', lastMessageIdRef.current);
+            if (response.ok) {
+                const messages = await response.json();
+                
+                // Debug: Log all message IDs to understand the pattern
+                console.log('All message IDs:', messages.map(m => `${m.id}(${m.role})`).join(', '));
+                
+                // Find the actual latest message by ID (highest ID number)
+                const latestMessage = messages.length > 0 ? messages.reduce((latest, current) => 
+                    current.id > latest.id ? current : latest
+                ) : null;
+                
+                // Sort by created_at for display
+                const sortedMessages = [...messages].sort((a, b) => new Date(a.created_at) - new Date(b.created_at));
+                
+                console.log('Fetched messages:', messages.length);
+                console.log('Latest ID by sort:', sortedMessages.length > 0 ? sortedMessages[sortedMessages.length - 1].id : 'none');
+                console.log('Actual Latest ID by max:', latestMessage?.id || 'none');
+                console.log('Latest message role:', latestMessage?.role || 'none');
+                
+                // Convert sorted messages for display
+                const convertedMessages = sortedMessages.map(convertApiMessage);
+                
+                setHistory(convertedMessages);
+                
+                // Use the actual latest message ID (highest ID) for polling reference
+                if (latestMessage) {
+                    const oldRef = lastMessageIdRef.current;
+                    lastMessageIdRef.current = latestMessage.id;
+                    console.log('Updated lastMessageIdRef from:', oldRef, 'to:', lastMessageIdRef.current);
+                }
             }
         } catch (error) {
-            console.error('Error processing messages:', error);
+            console.error('Error fetching messages:', error);
         }
     }, [convertApiMessage]);
 
@@ -83,51 +79,54 @@ export function ChatProvider({ children }) {
         console.log(`🔄 Poll #${pollingCounterRef.current} - Checking for new messages...`);
         
         try {
-            const response = await axios.get(`/chat/${courseId}/last`, {
+            const response = await fetch(`/chat/${courseId}/last`, {
+                method: 'GET',
                 headers: {
-                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest',
                     'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content || ''
-                },
+                }
             });
 
-            handlePollingResponse(response.data, courseId);
+            if (response.ok) {
+                const lastMessage = await response.json();
+                
+                console.log('Polling check:', {
+                    lastMessageId: lastMessage?.id,
+                    lastMessageRole: lastMessage?.role,
+                    lastTrackedId: lastMessageIdRef.current,
+                    isNewMessage: lastMessage && lastMessage.id !== lastMessageIdRef.current,
+                    idComparison: lastMessage ? `${lastMessage.id} !== ${lastMessageIdRef.current}` : 'no message',
+                    chatStatus: chatStatus,
+                    waitingForAssistant: waitingForAssistantRef.current
+                });
+                
+                // If we're waiting for assistant and got a new message
+                if (waitingForAssistantRef.current && lastMessage && lastMessage.id !== lastMessageIdRef.current) {
+                    console.log('🎉 New message detected while waiting for assistant, refreshing chat history');
+                    
+                    // Reset waiting flag
+                    waitingForAssistantRef.current = false;
+                    
+                    // Same logic as refresh button - refetch all messages
+                    fetchAllMessages(courseId);
+                    
+                    // Update chat status if this is an assistant message
+                    if (lastMessage.role === 'assistant') {
+                        setChatStatus("completed");
+                        setTimeout(() => setChatStatus("idle"), 2000);
+                    }
+                }
+                // Normal polling - check for any new message
+                else if (!waitingForAssistantRef.current && lastMessage && lastMessage.id !== lastMessageIdRef.current) {
+                    console.log('🔄 New message detected in normal polling, refreshing chat history');
+                    fetchAllMessages(courseId);
+                }
+            } else {
+                console.log('❌ Polling response not ok:', response.status);
+            }
         } catch (error) {
             console.error('💥 Error polling for new messages:', error);
-        }
-    }, [handlePollingResponse]);
-
-    // Helper function to handle polling response
-    const handlePollingResponse = useCallback((lastMessage, courseId) => {
-        console.log('Polling check:', {
-            lastMessageId: lastMessage?.id,
-            lastMessageRole: lastMessage?.role,
-            lastTrackedId: lastMessageIdRef.current,
-            isNewMessage: lastMessage && lastMessage.id !== lastMessageIdRef.current,
-            idComparison: lastMessage ? `${lastMessage.id} !== ${lastMessageIdRef.current}` : 'no message',
-            chatStatus: chatStatus,
-            waitingForAssistant: waitingForAssistantRef.current
-        });
-        
-        // If we're waiting for assistant and got a new message
-        if (waitingForAssistantRef.current && lastMessage && lastMessage.id !== lastMessageIdRef.current) {
-            console.log('🎉 New message detected while waiting for assistant, refreshing chat history');
-            
-            // Reset waiting flag
-            waitingForAssistantRef.current = false;
-            
-            // Same logic as refresh button - refetch all messages
-            fetchAllMessages(courseId);
-            
-            // Update chat status if this is an assistant message
-            if (lastMessage.role === 'assistant') {
-                setChatStatus("completed");
-                setTimeout(() => setChatStatus("idle"), 2000);
-            }
-        }
-        // Normal polling - check for any new message
-        else if (!waitingForAssistantRef.current && lastMessage && lastMessage.id !== lastMessageIdRef.current) {
-            console.log('🔄 New message detected in normal polling, refreshing chat history');
-            fetchAllMessages(courseId);
         }
     }, [fetchAllMessages, chatStatus]);
 
@@ -157,12 +156,12 @@ export function ChatProvider({ children }) {
         }
 
         return () => {
-        if (pollingIntervalRef.current) {
-            clearInterval(pollingIntervalRef.current);
-            pollingIntervalRef.current = null;
+            if (pollingIntervalRef.current) {
+                clearInterval(pollingIntervalRef.current);
+                pollingIntervalRef.current = null;
             }
         };
-        }, [isOpen, chatContextCourseld, fetchAllMessages, pollForNewMessages]);
+    }, [isOpen, chatContextCourseld, fetchAllMessages, pollForNewMessages]);
 
     const sendMessage = useCallback(async (newMessage) => {
         if (!chatContextCourseld) {
@@ -179,21 +178,29 @@ export function ChatProvider({ children }) {
 
         try {
             // Send message to API
-            const response = await axios.post(`/chat/${chatContextCourseld}`, {
-                content: newMessage,
-            }, {
+            const response = await fetch(`/chat/${chatContextCourseld}`, {
+                method: 'POST',
                 headers: {
-                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest',
                     'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content || ''
                 },
+                body: JSON.stringify({
+                    content: newMessage,
+                })
             });
 
-            console.log('Message sent successfully:', response.data);
-            
-            // Refresh chat history to get the user message - don't update ref yet
-            setTimeout(() => {
-                fetchAllMessages(chatContextCourseld);
-            }, 500); // Small delay to allow backend processing
+            if (response.ok) {
+                const result = await response.json();
+                console.log('Message sent successfully:', result);
+                
+                // Refresh chat history to get the user message - don't update ref yet
+                setTimeout(() => {
+                    fetchAllMessages(chatContextCourseld);
+                }, 500); // Small delay to allow backend processing
+            } else {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
         } catch (error) {
             console.error('Error sending message:', error);
             setChatStatus("error");
