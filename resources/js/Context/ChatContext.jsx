@@ -1,6 +1,8 @@
 import { createContext, useContext, useState, useCallback, useEffect, useRef } from "react";
 
+
 const ChatContext = createContext();
+const { auth } = usePage().props;
 
 export function ChatProvider({ children }) {
     const [isOpen, setisOpen] = useState(false);
@@ -175,6 +177,7 @@ export function ChatProvider({ children }) {
         // Set waiting flag to track assistant response
         waitingForAssistantRef.current = true;
         console.log('Sending message, set waitingForAssistant to true');
+        console.log('User id : ', auth.user.id);
 
         try {
             // Send message to API
