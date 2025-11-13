@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, usePage } from "@inertiajs/react";
-import ProgressCard from "@/Components/feature/lms/ProgressCard";
-import CourseSlider from "@/Components/feature/lms/CourseSlider";
+import ProgressCard from "@/Components/dashboard/ProgressCard";
+import CourseSlider from "@/Components/dashboard/CourseSlider";
 
 export default function Dashboard() {
     const { auth } = usePage().props;
