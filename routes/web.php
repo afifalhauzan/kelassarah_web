@@ -85,9 +85,9 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    Route::get('/chat/{course_id}', [ChatMessageController::class, 'index']);
-    Route::get('/chat/{course_id}/last', [ChatMessageController::class, 'getLastMessage']);
-    Route::post('/chat/{course_id}', [ChatMessageController::class, 'store']);
+    Route::get('/chat/{course}', [ChatMessageController::class, 'index']);
+    Route::get('/chat/{course}/last', [ChatMessageController::class, 'getLastMessage']);
+    Route::post('/chat/{course}', [ChatMessageController::class, 'store']);
 });
 
 Route::prefix('course')->group(function () {
