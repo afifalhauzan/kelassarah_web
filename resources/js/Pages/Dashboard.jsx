@@ -3,25 +3,24 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, usePage } from "@inertiajs/react";
 import ProgressCard from "@/Components/feature/lms/ProgressCard";
 import CourseSlider from "@/Components/feature/lms/CourseSlider";
-import route from "ziggy-js";
 
 export default function Dashboard() {
     const { auth } = usePage().props;
-    const [courses, setCourses] = useState([]);
-    const [isLoading, setIsLoading] = useState(true);
+    // const [courses, setCourses] = useState([]);
+    // const [isLoading, setIsLoading] = useState(true);
 
-    useEffect(() => {
-        axios
-            .get(route("courses.index"))
-            .then((response) => {
-                setCourses(response.data);
-                setIsLoading(false);
-            })
-            .catch((error) => {
-                console.error("Gagal ngambil data courses:", error);
-                setIsLoading(false);
-            });
-    }, []);
+    // useEffect(() => {
+    //     axios
+    //         .get(route("courses.index"))
+    //         .then((response) => {
+    //             setCourses(response.data);
+    //             setIsLoading(false);
+    //         })
+    //         .catch((error) => {
+    //             console.error("Gagal ngambil data courses:", error);
+    //             setIsLoading(false);
+    //         });
+    // }, []);
     return (
         <AuthenticatedLayout>
             <Head title="Dashboard" />
@@ -44,13 +43,13 @@ export default function Dashboard() {
                                 />
                             </div>
 
-                            {isLoading ? (
+                            {/* {isLoading ? (
                                 <div className="mt-12 text-center">
                                     <p>Lagi ngambil data kursus...</p>
                                 </div>
                             ) : (
                                 <CourseSlider courses={courses} /> 
-                            )}
+                            )} */}
                         </div>
                     </div>
                 </div>
