@@ -7,7 +7,11 @@ export default function CourseCard({ course }) {
         <div className="shrink-0 w-80">
             {" "}
             <div className="bg-white rounded-xl shadow-lg overflow-hidden transition-transform duration-300 hover:scale-[1.02]">
-                <Link href={route("course.show", id)}>
+                <a 
+                    href="https://drive.google.com/drive/folders/1-oXFpHPpmBSAs_vnG_ivOhZGX-Wu0W0H?usp=sharing"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
                     {/* <img
                         src={thumbnail}
                         alt={title}
@@ -23,7 +27,7 @@ export default function CourseCard({ course }) {
                             </p>
                         )}
                     </div>
-                </Link>
+                </a>
             </div>
         </div>
     );
