@@ -29,12 +29,12 @@ export function ChatProvider({ children }) {
     // Fetch all messages for the course
     const fetchAllMessages = useCallback(async (courseId) => {
         try {
-            const response = await axios.get(`/chat/${courseId}`, {
+            const response = await axios.get(`/api/chat/${courseId}`, {
                 headers: {
-                    'Content-Type': 'application/json',
-                    'X-Requested-With': 'XMLHttpRequest',
+                    'Accept': 'application/json',
                     'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content || ''
-                }
+                },
+                withCredentials: true
             });
 
             handleFetchedMessages(response.data);
@@ -84,12 +84,12 @@ export function ChatProvider({ children }) {
         console.log(`🔄 Poll #${pollingCounterRef.current} - Checking for new messages...`);
         
         try {
-            const response = await axios.get(`/chat/${courseId}/last`, {
+            const response = await axios.get(`/api/chat/${courseId}/last`, {
                 headers: {
-                    'Content-Type': 'application/json',
-                    'X-Requested-With': 'XMLHttpRequest',
+                    'Accept': 'application/json',
                     'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content || ''
-                }
+                },
+                withCredentials: true
             });
 
             handlePollingResponse(response.data, courseId);
@@ -181,14 +181,14 @@ export function ChatProvider({ children }) {
 
         try {
             // Send message to API
-            const response = await axios.post(`/chat/${chatContextCourseld}`, {
+            const response = await axios.post(`/api/chat/${chatContextCourseld}`, {
                 content: newMessage,
             }, {
                 headers: {
-                    'Content-Type': 'application/json',
-                    'X-Requested-With': 'XMLHttpRequest',
+                    'Accept': 'application/json',
                     'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content || ''
-                }
+                },
+                withCredentials: true
             });
 
             console.log('Message sent successfully:', response.data);
