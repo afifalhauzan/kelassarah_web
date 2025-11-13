@@ -43,7 +43,7 @@ export default function Dashboard() {
 
                             <div className="mt-8">
                                 <ProgressCard
-                                    title="Politik Etis dan kebangkitan kaum terpelajar"
+                                    title="Orientasi Jurnalis Muda - Memahami Lanskap Pergerakan"
                                     progress={65}
                                 />
                             </div>
