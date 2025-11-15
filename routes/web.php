@@ -88,6 +88,10 @@ Route::get('/courses', function () {
     return Inertia::render('Courses');
 })->middleware(['auth', 'verified'])->name('courses');
 
+Route::get('/credits', function () {
+    return Inertia::render('Credits');
+})->name('credits');
+
 Route::get('/bot-test', function () {
     return Inertia::render('BotTestPage');
 })->middleware(['auth', 'verified'])->name('bot-test');

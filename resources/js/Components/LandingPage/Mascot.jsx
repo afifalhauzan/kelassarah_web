@@ -1,74 +1,53 @@
 export default function Mascot() {
     return (
-        <section id="fitur" className="bg-gray-100 py-24 sm:py-32 relative">
+        <section id="mascot" className="bg-blue-500 py-16 sm:py-24 relative overflow-hidden">
             <div className="mx-auto max-w-7xl px-6 lg:px-8">
-                {/* Star decorations */}
-                <div className="absolute top-15 md:top-25 left-80 text-yellow-400 text-4xl">
-                    ✨
-                </div>
-                <div className="absolute top-45 md:top-35 right-80 text-yellow-400 text-4xl">
-                    ✨
-                </div>
-                
-                {/* Title */}
-                <div className="text-center mb-16">
-                    <h2 className="text-4xl md:text-5xl font-lilita text-blue-400 mb-8">
-                        Kenapa Belajar Bareng Kak Sarah?
-                    </h2>
-                </div>
-                
-                {/* Features Grid */}
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-6xl mx-auto">
-                    {/* Feature Card 1 */}
-                    <div className="bg-white rounded-xl p-8 shadow-lg text-center hover:shadow-xl transition-shadow duration-300">
-                        <div className="mb-6 flex justify-center">
-                            {/* Placeholder icon */}
-                            <div className="w-20 h-20 bg-blue-100 rounded-lg flex items-center justify-center">
-                                📚
-                            </div>
-                        </div>
-                        <h3 className="text-lg font-semibold text-gray-900 mb-2 leading-tight">
-                            Strategi Pembelajaran Berbasis Narasi
-                        </h3>
+                {/* Stars Layer - z-10 */}
+                {/* <div className="absolute inset-0 z-10">
+                    <img
+                        src="/images/mascot_stars.png"
+                        alt="Decorative stars"
+                        className="w-full h-full object-contain"
+                    />
+                </div> */}
+
+                {/* Content Container - z-20 */}
+                <div className="relative z-20">
+                    {/* Title */}
+                    <div className="text-center mb-10">
+                        <h2 className="font-lilita text-3xl md:text-4xl lg:text-5xl text-white mb-8 tracking-relaxed">
+                            Kenalan Yuk dengan Kak Sarah!
+                        </h2>
                     </div>
 
-                    {/* Feature Card 2 */}
-                    <div className="bg-white rounded-xl p-8 shadow-lg text-center hover:shadow-xl transition-shadow duration-300">
-                        <div className="mb-6 flex justify-center">
-                            {/* Placeholder icon */}
-                            <div className="w-20 h-20 bg-blue-100 rounded-lg flex items-center justify-center">
-                                📚
-                            </div>
-                        </div>
-                        <h3 className="text-lg font-semibold text-gray-900 mb-2 leading-tight">
-                            Strategi Pembelajaran Berbasis Narasi
-                        </h3>
+                    {/* Background Layer - z-0 */}
+                    <div className="absolute z-0 scale-100 md:scale-50 w-full md:-top-15">
+                        <img
+                            src="/images/mascot_bg.png"
+                            alt="Mascot background"
+                            className="w-full h-full object-cover opacity-20"
+                        />
                     </div>
 
-                    {/* Feature Card 3 */}
-                    <div className="bg-white rounded-xl p-8 shadow-lg text-center hover:shadow-xl transition-shadow duration-300">
-                        <div className="mb-6 flex justify-center">
-                            {/* Placeholder icon */}
-                            <div className="w-20 h-20 bg-blue-100 rounded-lg flex items-center justify-center">
-                                📚
-                            </div>
+                    {/* Mascot Container */}
+                    <div className="flex justify-center mb-12">
+                        <div className="relative max-w-lg w-4/5 md:w-1/2 lg:w-1/3">
+                            {/* Mascot Image - z-30 */}
+                            <img
+                                src="/images/mascot_main.svg"
+                                alt="Kak Sarah mascot with speech bubbles"
+                                className="w-full h-auto object-contain relative z-30"
+                            />
                         </div>
-                        <h3 className="text-lg font-semibold text-gray-900 mb-2 leading-tight">
-                            Strategi Pembelajaran Berbasis Narasi
-                        </h3>
                     </div>
 
-                    {/* Feature Card 4 */}
-                    <div className="bg-white rounded-xl p-8 shadow-lg text-center hover:shadow-xl transition-shadow duration-300">
-                        <div className="mb-6 flex justify-center">
-                            {/* Placeholder icon */}
-                            <div className="w-20 h-20 bg-blue-100 rounded-lg flex items-center justify-center">
-                                📚
-                            </div>
-                        </div>
-                        <h3 className="text-lg font-semibold text-gray-900 mb-2 leading-tight">
-                            Strategi Pembelajaran Berbasis Narasi
-                        </h3>
+                    {/* Description */}
+                    <div className="text-center max-w-4xl mx-auto">
+                        <p className="text-md md:text-lg text-white leading-relaxed">
+                            Aku Kak Sarah, AI cerdas dan ramah yang siap bantu kamu memahami pelajaran dengan
+                            <br className="hidden md:block" />
+                            cara seru dan personal!
+                        </p>
                     </div>
                 </div>
             </div>
