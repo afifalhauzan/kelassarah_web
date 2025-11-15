@@ -1,5 +1,6 @@
 import { createContext, useContext, useState, useCallback, useEffect, useRef } from "react";
 import { usePage } from "@inertiajs/react";
+import axios from "axios";
 
 const ChatContext = createContext();
 
@@ -30,8 +31,7 @@ export function ChatProvider({ children }) {
     // Fetch all messages for the course
     const fetchAllMessages = useCallback(async (courseId) => {
         try {
-            const response = await fetch(`/chat/${courseId}`, {
-                method: 'GET',
+            const response = await axios.get(`/chat/${courseId}`, {
                 headers: {
                     'Content-Type': 'application/json',
                     'X-Requested-With': 'XMLHttpRequest',
@@ -39,9 +39,8 @@ export function ChatProvider({ children }) {
                 }
             });
 
-            if (response.ok) {
-                const messages = await response.json();
-
+            if (response.status === 200) {
+                const messages = response.data;
                 // Debug: Log all message IDs to understand the pattern
                 console.log('All message IDs:', messages.map(m => `${m.id}(${m.role})`).join(', '));
 
@@ -81,8 +80,7 @@ export function ChatProvider({ children }) {
         console.log(`🔄 Poll #${pollingCounterRef.current} - Checking for new messages...`);
 
         try {
-            const response = await fetch(`/chat/${courseId}/last`, {
-                method: 'GET',
+            const response = await axios.get(`/chat/${courseId}/last`, {
                 headers: {
                     'Content-Type': 'application/json',
                     'X-Requested-With': 'XMLHttpRequest',
@@ -90,8 +88,8 @@ export function ChatProvider({ children }) {
                 }
             });
 
-            if (response.ok) {
-                const lastMessage = await response.json();
+            if (response.status === 200) {
+                const lastMessage = response.data;
 
                 console.log('Polling check:', {
                     lastMessageId: lastMessage?.id,
@@ -180,20 +178,18 @@ export function ChatProvider({ children }) {
 
         try {
             // Send message to API
-            const response = await fetch(`/chat/${chatContextCourseld}`, {
-                method: 'POST',
+            const response = await axios.post(`/chat/${chatContextCourseld}`, {
+                content: newMessage,
+            }, {
                 headers: {
                     'Content-Type': 'application/json',
                     'X-Requested-With': 'XMLHttpRequest',
                     'X-CSRF-TOKEN': csrf_token,
-                },
-                body: JSON.stringify({
-                    content: newMessage,
-                })
+                }
             });
 
-            if (response.ok) {
-                const result = await response.json();
+            if (response.status === 200) {
+                const result = response.data;
                 console.log('Message sent successfully:', result);
 
                 // Refresh chat history to get the user message - don't update ref yet
