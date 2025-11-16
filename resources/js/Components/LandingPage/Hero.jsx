@@ -19,7 +19,7 @@ export default function Hero() {
                 </div> */}
                 
                 {/* Main Content Container */}
-                <div className="flex flex-col md:flex-row items-center gap-8 md:gap-12 mt-12 md:mt-4">
+                <div className="flex flex-col md:flex-row items-center gap-8 md:gap-12 mt-18 md:mt-4">
                     {/* Left Content - Text */}
                     <div className="flex-1 text-center md:text-left">
                         <h1 className="font-lilita text-5xl md:text-5xl lg:text-6xl text-blue-400 mb-6 tracking-wide">
