@@ -26,7 +26,7 @@ export default function ChatWidget() {
                 <img
                     src="/chatbot/chatbot-bubble.svg"
                     alt="Buka Chat Kak Sarah"
-                    className="h-24 w-auto"
+                    className="h-35 w-auto"
                 />
             </button>
 
