@@ -40,15 +40,15 @@ export default function Show({ course, lessons }) {
                                 {course.title}
                             </h1>
 
-                            <div className="mt-4 rounded-lg">
+                            <div className="mt-4 rounded-lg border border-gray-400">
                                 {/* Header Biru */}
-                                <div className="bg-blue-600 text-white rounded-lg p-4">
+                                <div className="bg-blue-600 text-white rounded-t-lg p-4">
                                     <h3 className="text-xl font-bold">
                                         Deskripsi singkat
                                     </h3>
                                 </div>
                                 {/* Konten Putih */}
-                                <div className="py-4 px-2">
+                                <div className="p-4">
                                     <p className="text-gray-700 leading-relaxed">
                                         {course.description}
                                     </p>

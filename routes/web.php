@@ -4,6 +4,7 @@ use App\Http\Controllers\CourseController;
 use App\Http\Controllers\MaterialController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ChatMessageController;
+use App\Http\Controllers\QuizController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -40,16 +41,12 @@ Route::get('/load-test', function () {
 
 Route::get('/load-test-write', function () {
     try {
-        // 1. Ambil user pertama
-        // Kita asumsikan user ini ada, berdasarkan tes Anda sebelumnya
         $user = User::first();
 
         if (!$user) {
             return response()->json(['error' => 'No users found. Please seed the database.'], 404);
         }
 
-        // 2. Lakukan operasi TULIS (WRITE)
-        // Ini adalah bagian krusial yang mengalahkan cache
         $user->update([
             'name' => 'Load Test ' . Str::random(10)
         ]);
@@ -57,10 +54,6 @@ Route::get('/load-test-write', function () {
         // 3. Kembalikan data yang baru saja ditulis
         return response()->json($user);
     } catch (\Exception $e) {
-        // DI SINI PENTING:
-        // Di bawah load test, Anda MUNGKIN akan mendapat error 500
-        // seperti "Lock wait timeout exceeded" atau "Deadlock found".
-        // Ini NORMAL dan inilah yang sedang kita uji.
         return response()->json(['error' => $e->getMessage()], 500);
     }
 });
@@ -74,15 +67,11 @@ Route::get('/dashboard', function () {
                         'id' => $course->id,
                         'title' => $course->title,
                         'description' => $course->description,
-                        'thumbnail' => match ($course->order) {
-                            1 => 'https://upload.wikimedia.org/wikipedia/commons/e/e0/Logo_Budi_Utomo.png',
-                            2 => 'https://upload.wikimedia.org/wikipedia/commons/7/77/Museum_Sumpah_Pemuda_01.jpg',
-                            default => 'https://via.placeholder.com/320x160.png?text=' . $course->id,
-                        },
-                        'slug' => Str::slug($course->title), 
+                        'thumbnail' => $course->thumbnail_url, 
+                        'slug' => Str::slug($course->title),
                         'progress' => 0, 
                         'modulesCompleted' => 0,
-                        'totalModules' => $course->materials()->count() + $course->quizzes()->count(), 
+                        'totalModules' => $course->materials()->count() + $course->quizzes()->count(),
                     ]);
 
     return Inertia::render('Dashboard', [
@@ -115,6 +104,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/chat/{course_id}', [ChatMessageController::class, 'index']);
     Route::get('/chat/{course_id}/last', [ChatMessageController::class, 'getLastMessage']);
     Route::post('/chat/{course_id}', [ChatMessageController::class, 'store']);
+
+    Route::get('/quiz/{quiz}', [QuizController::class, 'show'])->name('quiz.show');
+    Route::post('/quiz/{quiz}/submit', [QuizController::class, 'submit'])->name('quiz.submit');
 });
 
 Route::prefix('course')->group(function () {

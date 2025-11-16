@@ -75,20 +75,17 @@ export default function LessonAccordion({ lesson }) {
                     {material_type === "video" && (
                         <div className="w-full aspect-video bg-gray-200 rounded-lg flex items-center justify-center">
                             <p className="text-gray-500">
-                                Placeholder Video (Nunggu BE)
+                                Placeholder Video (Buatin kak 😁)
                             </p>
-                            {/* Nanti bisa pake: <iframe src={content_url} ... /> */}
                         </div>
                     )}
 
                     {material_type === "document" &&
-                        // Cek kalo 'content_text' ada (buat materi teks)
                         (content_text ? (
                             <div className="prose max-w-none">
                                 <p>{content_text}</p>
                             </div>
                         ) : (
-                            // Kalo 'content_url' ada (buat PDF)
                             <PdfViewer pdfUrl={content_url} />
                         ))}
                 </div>

@@ -17,30 +17,56 @@ const QuizIcon = () => (
     </svg>
 );
 
+const CompletedIcon = () => (
+    <svg
+        className="w-6 h-6 mr-3 text-white"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+    >
+        <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth="2"
+            d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+        />
+    </svg>
+);
+
 export default function LessonList({ lessons }) {
     return (
         <div className="space-y-4">
             {lessons.map((lesson) => (
                 <div key={`${lesson.lesson_type}-${lesson.id}`}>
-                    {/* --- REVISI UTAMA DI SINI --- */}
-
-                    {/* 1. Kalo tipenya 'quiz', render sebagai <button disabled> */}
                     {lesson.lesson_type === "quiz" && (
-                        <button
-                            disabled // <-- Bikin tombolnya "mati"
-                            className="flex w-full items-center p-4 bg-blue-600 text-white rounded-lg shadow-md transition opacity-70 cursor-not-allowed" // <-- Ganti style-nya
+                        <Link
+                            href={route("quiz.show", lesson.id)}
+                            className={`flex w-full items-center p-4 rounded-lg shadow-md transition
+                                ${
+                                    lesson.is_completed
+                                        ? "bg-green-600 hover:bg-green-700 text-white"
+                                        : "bg-blue-600 hover:bg-blue-700 text-white"
+                                }
+                            `}
                         >
-                            <QuizIcon />
+                            {lesson.is_completed ? (
+                                <CompletedIcon />
+                            ) : (
+                                <QuizIcon />
+                            )}
+
                             <span className="text-lg font-medium">
                                 {lesson.title}
                             </span>
-                            <span className="ml-auto text-xs text-blue-200">
-                                (Segera Hadir)
-                            </span>
-                        </button>
+
+                            {lesson.is_completed && (
+                                <span className="ml-auto text-xs text-green-100 font-semibold">
+                                    (Selesai)
+                                </span>
+                            )}
+                        </Link>
                     )}
 
-                    {/* 2. Kalo tipenya 'material', render sebagai <LessonAccordion> */}
                     {lesson.lesson_type === "material" && (
                         <LessonAccordion lesson={lesson} />
                     )}

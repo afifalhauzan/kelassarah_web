@@ -4,8 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Option; // <-- Import 'Option'
-use App\Models\Quiz;   // <-- Import 'Quiz'
+use App\Models\Option;
+use App\Models\Quiz;
+use App\Models\UserAnswer;
 
 class Question extends Model
 {
@@ -24,5 +25,13 @@ class Question extends Model
     public function options()
     {
         return $this->hasMany(Option::class);
+    }
+
+    /**
+     * Dapetin semua jawaban user buat pertanyaan ini.
+     */
+    public function userAnswers()
+    {
+        return $this->hasMany(UserAnswer::class);
     }
 }
