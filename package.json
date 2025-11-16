@@ -24,6 +24,8 @@
     },
     "dependencies": {
         "@formkit/auto-animate": "^0.9.0",
-        "embla-carousel-react": "^8.6.0"
+        "embla-carousel-react": "^8.6.0",
+        "react-icons": "^5.5.0",
+        "react-pdf": "^10.2.0"
     }
 }

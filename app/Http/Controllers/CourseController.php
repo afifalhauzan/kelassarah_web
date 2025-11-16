@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Course;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class CourseController extends Controller
 {
@@ -16,27 +17,20 @@ class CourseController extends Controller
                 'id' => $course->id,
                 'title' => $course->title,
                 'description' => $course->description,
+                'order' => $course->order,
                 
-                // --- REVISI THUMBNAIL DI SINI ---
                 'thumbnail' => match ($course->order) {
-                    1 => 'https://upload.wikimedia.org/wikipedia/commons/e/e0/Logo_Budi_Utomo.png', // Gambar Budi Utomo
-                    2 => 'https://upload.wikimedia.org/wikipedia/commons/7/77/Museum_Sumpah_Pemuda_01.jpg', // Gambar Museum Sumpah Pemuda
-                    default => 'https://via.placeholder.com/320x160.png?text=' . $course->id, // Placeholder
+                    1 => 'https://upload.wikimedia.org/wikipedia/commons/e/e0/Logo_Budi_Utomo.png',
+                    2 => 'https://upload.wikimedia.org/wikipedia/commons/7/77/Museum_Sumpah_Pemuda_01.jpg',
+                    default => 'https://via.placeholder.com/320x160.png?text=' . $course->id,
                 },
-                'slug' => \Illuminate\Support\Str::slug($course->title),
+                'slug' => Str::slug($course->title),
                 'progress' => 0, 
                 'modulesCompleted' => 0,
-                'totalModules' => $course->materials()->count() > 0 ? $course->materials()->count() : 5, 
-                // --- AKHIR REVISI ---
-
-                'order' => $course->order,
-                'is_published' => $course->is_published,
-                'knowledge_prompt' => $course->knowledge_prompt,
-                'welcome_message' => $course->welcome_message,
-                'created_at' => $course->created_at
+                'totalModules' => $course->materials()->count() + $course->quizzes()->count(), 
             ]);
 
-        return inertia('Course/Index', [
+        return inertia('Courses', [ 
             'courses' => $courses,
         ]);
     }
@@ -54,54 +48,41 @@ class CourseController extends Controller
 
         $course = Course::create($validated);
 
-        return inertia('Course/Index', [
-            'courses' => Course::where('is_published', true)
-                ->orderBy('order', 'asc')
-                ->get()
-                ->map(fn ($c) => [
-                    'id' => $c->id,
-                    'title' => $c->title,
-                    'description' => $c->description,
-                    'order' => $c->order,
-                    'is_published' => $c->is_published,
-                    'knowledge_prompt' => $c->knowledge_prompt,
-                    'welcome_message' => $c->welcome_message,
-                    'created_at' => $c->created_at
-                ]),
-            'message' => 'Course created successfully',
-            'newCourse' => [
-                'id' => $course->id,
-                'title' => $course->title,
-                'description' => $course->description,
-                'order' => $course->order,
-                'is_published' => $course->is_published,
-                'knowledge_prompt' => $course->knowledge_prompt,
-                'welcome_message' => $course->welcome_message,
-                'created_at' => $course->created_at
-            ]
-        ]);
+        // Redirect back or wherever appropriate
+        return redirect()->route('course.index')->with('message', 'Course created successfully');
     }
 
     public function show(Course $course)
     {
+        $materials = $course->materials()->orderBy('order', 'asc')->get()->map(fn ($material) => [
+            'id' => $material->id,
+            'title' => $material->title,
+            'order' => $material->order,
+            'lesson_type' => 'material',
+            'material_type' => $material->type, // 'video' atau 'document'
+            'content_text' => $material->content_text,
+            'content_url' => $material->content_url,
+        ]);
+
+        $quizzes = $course->quizzes()->orderBy('order', 'asc')->get()->map(fn ($quiz) => [
+            'id' => $quiz->id,
+            'title' => $quiz->title,
+            'order' => $quiz->order,
+            'lesson_type' => 'quiz',
+            'material_type' => null, 
+            'content_text' => null,
+            'content_url' => null,
+        ]);
+
+        $lessons = $materials->merge($quizzes)->sortBy('order')->values();
+
         return inertia('Course/Show', [
             'course' => [
                 'id' => $course->id,
                 'title' => $course->title,
                 'description' => $course->description,
-                'order' => $course->order,
-                'is_published' => $course->is_published,
-                'knowledge_prompt' => $course->knowledge_prompt,
-                'welcome_message' => $course->welcome_message,
-                'created_at' => $course->created_at
             ],
-            'materials' => $course->materials()->get()->map(fn ($material) => [
-                'id' => $material->id,
-                'title' => $material->title,
-                'content' => $material->content,
-                'order' => $material->order,
-                'created_at' => $material->created_at
-            ])
+            'lessons' => $lessons 
         ]);
     }
 
@@ -117,48 +98,15 @@ class CourseController extends Controller
         ]);
 
         $course->update($validated);
-
-        return inertia('Course/Show', [
-            'course' => [
-                'id' => $course->id,
-                'title' => $course->title,
-                'description' => $course->description,
-                'order' => $course->order,
-                'is_published' => $course->is_published,
-                'knowledge_prompt' => $course->knowledge_prompt,
-                'welcome_message' => $course->welcome_message,
-                'created_at' => $course->created_at
-            ],
-            'materials' => $course->materials()->get()->map(fn ($material) => [
-                'id' => $material->id,
-                'title' => $material->title,
-                'content' => $material->content,
-                'order' => $material->order,
-                'created_at' => $material->created_at
-            ]),
-            'message' => 'Course updated successfully'
-        ]);
+        
+        // Redirect back
+        return redirect()->back()->with('message', 'Course updated successfully');
     }
 
     public function destroy(Course $course)
     {
         $course->delete();
         
-        return inertia('Course/Index', [
-            'courses' => Course::where('is_published', true)
-                ->orderBy('order', 'asc')
-                ->get()
-                ->map(fn ($c) => [
-                    'id' => $c->id,
-                    'title' => $c->title,
-                    'description' => $c->description,
-                    'order' => $c->order,
-                    'is_published' => $c->is_published,
-                    'knowledge_prompt' => $c->knowledge_prompt,
-                    'welcome_message' => $c->welcome_message,
-                    'created_at' => $c->created_at
-                ]),
-            'message' => 'Course deleted successfully'
-        ]);
+        return redirect()->route('course.index')->with('message', 'Course deleted successfully');
     }
 }

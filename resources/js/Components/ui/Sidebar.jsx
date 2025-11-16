@@ -10,20 +10,14 @@ export default function Sidebar() {
         setIsMobileMenuOpen(!isMobileMenuOpen);
     };
 
-    // --- REVISI UTAMA DI SINI ---
-    // 1. Kita cek route mana yang lagi aktif
-    // (Nama route 'dashboard', 'courses', 'profile.edit' kita ambil dari file web.php)
     const isBerandaActive = route().current("dashboard");
     const isCoursesActive = route().current("courses");
     const isProfilActive = route().current("profile.edit");
-    // --- AKHIR REVISI ---
 
     return (
         <>
-            {/* Mobile Hamburger Button */}
             <div className="md:hidden bg-gray-50/50 backdrop-blur-md border-white/20 px-6 py-4 z-40 fixed w-full top-0 left-0">
                 <div className="max-w-7xl mx-auto flex items-center justify-between">
-                    {/* Logo and Brand */}
                     <div className="flex items-center space-x-3">
                         <ApplicationIcon className="w-12 h-12 mb-2" />
                         <span className="text-lg md:text-2xl font-lilita text-blue-400">
@@ -35,7 +29,6 @@ export default function Sidebar() {
                         onClick={toggleMobileMenu}
                         className="p-2 bg-gray-50 rounded-lg shadow-lg text-gray-700 hover:bg-blue-50"
                     >
-                        {/* ... (Icon SVG hamburger) ... */}
                         <svg
                             className="w-6 h-6"
                             fill="none"

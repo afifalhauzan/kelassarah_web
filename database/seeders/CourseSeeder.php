@@ -26,7 +26,7 @@ class CourseSeeder extends Seeder
                 'title' => 'Misi Investigasi - Menggali Perspektif Para Delegasi',
                 'description' => 'Bacalah materi terkait bagaimana peran para Tokoh Pergerakan Nasional dalam merancang Sumpah Pemuda yang kita kenal saat ini! Selanjutnya, coba tanyakan Kak Sarah untuk terkait materi ini, Anda juga bisa berdialog dengan tokoh-tokoh tertentu untuk menggali informasi lebih dalam!',
                 'order' => 2,
-                'is_published' => true,
+                'is_published' => true, 
                 'knowledge_prompt' => 'Another system prompt for AI. Customize based on course subject matter.',
                 'welcome_message' => 'Welcome to the second course! Here\'s what you need to know to get started.',
             ],
