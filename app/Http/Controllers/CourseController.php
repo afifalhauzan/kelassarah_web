@@ -15,6 +15,7 @@ class CourseController extends Controller
             ->map(fn ($course) => [
                 'id' => $course->id,
                 'title' => $course->title,
+                'thumbnail_url' => $course->thumbnail_url,
                 'description' => $course->description,
                 'order' => $course->order,
                 'is_published' => $course->is_published,
@@ -37,6 +38,7 @@ class CourseController extends Controller
             'is_published' => 'nullable|boolean',
             'knowledge_prompt' => 'nullable|string',
             'welcome_message' => 'nullable|string',
+            'thumbnail_url' => 'nullable|string',
         ]);
 
         $course = Course::create($validated);
@@ -48,6 +50,7 @@ class CourseController extends Controller
                 ->map(fn ($c) => [
                     'id' => $c->id,
                     'title' => $c->title,
+                    'thumbnail_url' => $c->thumbnail_url,
                     'description' => $c->description,
                     'order' => $c->order,
                     'is_published' => $c->is_published,
@@ -59,6 +62,7 @@ class CourseController extends Controller
             'newCourse' => [
                 'id' => $course->id,
                 'title' => $course->title,
+                'thumbnail_url' => $course->thumbnail_url,
                 'description' => $course->description,
                 'order' => $course->order,
                 'is_published' => $course->is_published,
@@ -75,6 +79,7 @@ class CourseController extends Controller
             'course' => [
                 'id' => $course->id,
                 'title' => $course->title,
+                'thumbnail_url' => $course->thumbnail_url,
                 'description' => $course->description,
                 'order' => $course->order,
                 'is_published' => $course->is_published,
@@ -109,6 +114,7 @@ class CourseController extends Controller
             'course' => [
                 'id' => $course->id,
                 'title' => $course->title,
+                'thumbnail_url' => $course->thumbnail_url,
                 'description' => $course->description,
                 'order' => $course->order,
                 'is_published' => $course->is_published,
@@ -138,6 +144,7 @@ class CourseController extends Controller
                 ->map(fn ($c) => [
                     'id' => $c->id,
                     'title' => $c->title,
+                    'thumbnail_url' => $c->thumbnail_url,
                     'description' => $c->description,
                     'order' => $c->order,
                     'is_published' => $c->is_published,
