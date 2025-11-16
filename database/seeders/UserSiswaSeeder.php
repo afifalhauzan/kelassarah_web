@@ -118,6 +118,7 @@ class UserSiswaSeeder extends Seeder
             
             $usersToInsert[] = [
                 'name'     => $fullName,
+                'username' => $data[0],
                 'email'    => $email,
                 // Menggunakan Hash::make() untuk berjaga-jaga jika Model Casts tidak berfungsi, 
                 // namun jika model menggunakan casts, Eloquent akan me-hash 
