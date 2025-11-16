@@ -120,6 +120,10 @@ Route::get('/courses', function () {
     ]);
 })->middleware(['auth', 'verified'])->name('courses');
 
+Route::get('/credits', function () {
+    return Inertia::render('Credits');
+})->name('credits');
+
 Route::get('/bot-test', function () {
     return Inertia::render('BotTestPage');
 })->middleware(['auth', 'verified'])->name('bot-test');

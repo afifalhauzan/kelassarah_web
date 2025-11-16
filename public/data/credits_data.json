@@ -1,0 +1,55 @@
+[
+  {
+    "name": "Afiif Al Hauzaan Alfian",
+    "role": "Tech Lead & Frontend Developer",
+    "contact": "https://www.linkedin.com/in/afiif-al-hauzaan-alfian/",
+    "type": "dev"
+  },
+  {
+    "name": "Arif Ammar Sya'bani",
+    "role": "Frontend Developer",
+    "contact": "https://www.linkedin.com/in/reynarifammar/",
+    "type": "dev"
+  },
+  {
+    "name": "Achmad Hasbil Wafi Rahmawan",
+    "role": "Backend Developer",
+    "contact": "https://www.linkedin.com/in/achmad-hasbil/",
+    "type": "dev"
+  },
+  {
+    "name": "Shananda Putri Aisyah",
+    "role": "UI/UX Designer",
+    "contact": "https://www.linkedin.com/in/shanandaputriaisyah/",
+    "type": "dev"
+  },
+  {
+    "name": "Naila Rahma Ningrum",
+    "role": "UI/UX Designer",
+    "contact": "https://www.linkedin.com/in/nailarahn/",
+    "type": "dev"
+  },
+  {
+    "name": "Ghefira Addien Mifta Mu'afa",
+    "role": "UI/UX Designer",
+    "contact": "https://www.linkedin.com/in/ghefira-addien-mifta-mu-afa/",
+    "type": "dev"
+  },
+  {
+    "name": "Alexander Immanuel Widjanarko",
+    "role": "Team & Content Lead",
+    "contact": "https://www.linkedin.com/in/alexander-imanuel-widjanarko/",
+    "type": "content"
+  },{
+    "name": "Isri Amirul Haq",
+    "role": "Education Specialist",
+    "contact": "https://www.linkedin.com/in/isri-amirul-haq-430924289/",
+    "type": "content"
+  },
+  {
+    "name": "Yuven Reksa Pradana",
+    "role": "Content Manager & Consultant",
+    "contact": "https://www.linkedin.com/in/yuvenr/",
+    "type": "content"
+  }
+]

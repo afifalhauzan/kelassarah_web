@@ -21,19 +21,19 @@ export default function Footer() {
                         <div className="flex flex-col space-y-2">
                             <h3 className="text-lg font-semibold mb-3">Navigasi</h3>
                             <NavLink
-                                href="home"
+                                href="#home"
                                 className="text-left text-white/80 hover:text-white"
                             >
                                 Home
                             </NavLink>
                             <NavLink
-                                href="maskot"
+                                href="#mascot"
                                 className="text-left text-white/80 hover:text-white"
                             >
                                 Maskot
                             </NavLink>
                             <NavLink
-                                href="manfaat"
+                                href="#fitur"
                                 className="text-left text-white/80 hover:text-white"
                             >
                                 Manfaat
@@ -44,7 +44,8 @@ export default function Footer() {
                         <div className="flex flex-col space-y-2">
                             <h3 className="text-lg font-semibold mb-3">Sosial Media</h3>
                             <a
-                                href="#"
+                                href="https://youtu.be/kAfjAYVrv7Y"
+                                target='_blank'
                                 className="flex items-center space-x-2 text-white/80 hover:text-white transition-colors duration-200"
                             >
                                 <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
@@ -61,12 +62,12 @@ export default function Footer() {
             <div className="border-t border-blue-500 bg-blue-600">
                 <div className="max-w-7xl mx-auto px-6 py-4">
                     <div className="text-center">
-                        <a
-                            href="#"
+                        <Link
+                            href="/credits"
                             className="text-white/80 hover:text-white transition-colors duration-200"
                         >
                             Kak Sarah Chatbot Team, 2025
-                        </a>
+                        </Link>
                     </div>
                 </div>
             </div>
