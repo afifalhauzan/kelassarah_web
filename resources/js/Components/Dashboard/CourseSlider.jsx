@@ -2,7 +2,7 @@ import React, { useCallback } from "react";
 import useEmblaCarousel from "embla-carousel-react";
 import CourseCard from "./CourseCard";
 
-// Terima 'courses' dari props (bukan dummy data)
+// Terima 'courses' dari props
 export default function CourseSlider({ courses }) {
     const [emblaRef, emblaApi] = useEmblaCarousel({
         loop: false,
@@ -68,7 +68,7 @@ export default function CourseSlider({ courses }) {
 
             <div className="overflow-hidden" ref={emblaRef}>
                 <div className="flex -ml-4">
-                    {/* "Mapping kan aja" data 'courses' dari props */}
+                    {/* Mapping data 'courses' dari props */}
                     {courses.map((course) => (
                         <div key={course.id} className="pl-4 shrink-0">
                             <CourseCard course={course} />

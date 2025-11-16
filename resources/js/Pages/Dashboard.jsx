@@ -3,6 +3,7 @@ import { Head, usePage } from "@inertiajs/react";
 import ProgressCard from "@/Components/Dashboard/ProgressCard";
 import CourseSlider from "@/Components/Dashboard/CourseSlider";
 
+// Terima 'courses' dari props, kasih default array kosong
 export default function Dashboard({ courses = [] }) {
     const { auth } = usePage().props;
 
@@ -10,7 +11,7 @@ export default function Dashboard({ courses = [] }) {
         <AuthenticatedLayout>
             <Head title="Dashboard" />
 
-            <div className="py-12">
+            <div className="py-8">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
                     <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                         <div className="p-6 md:p-8 text-gray-900">
@@ -28,10 +29,7 @@ export default function Dashboard({ courses = [] }) {
                                 />
                             </div>
 
-                            {/* Sekarang 'courses' gak bakal error. 
-                              Kalo datanya kosong, dia bakal nge-map array kosong (hasilnya gak nampilin apa-apa).
-                              Kalo datanya ada, dia bakal nampilin slider-nya.
-                            */}
+                            {/* Oper data 'courses' asli ke CourseSlider */}
                             <CourseSlider courses={courses} />
                         </div>
                     </div>

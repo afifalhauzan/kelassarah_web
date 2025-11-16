@@ -1,31 +1,44 @@
+import { Link } from "@inertiajs/react";
+
 export default function CourseCard({ course }) {
-    const { id, title, description } = course;
+    // 1. Ambil data LENGKAP yang udah disiapin web.php
+    const {
+        id,
+        title,
+        description,
+        slug,
+        thumbnail,
+        progress,
+        modulesCompleted,
+        totalModules,
+    } = course;
 
     return (
         <div className="shrink-0 w-80">
-            {" "}
             <div className="bg-white rounded-xl shadow-lg overflow-hidden transition-transform duration-300 hover:scale-[1.02]">
-                <a 
-                    href="https://drive.google.com/drive/folders/1-oXFpHPpmBSAs_vnG_ivOhZGX-Wu0W0H?usp=sharing"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                >
-                    {/* <img
-                        src={thumbnail}
+                {/* 2. Kita pake <Link> (Inertia) dan 'slug' (atau 'id')
+                  Sesuai web.php (baris 112), route 'course.show' nerima '{course}' (ID)
+                */}
+                <Link href={route("course.show", id)}>
+                    <img
+                        src={thumbnail} // <-- Pake thumbnail dari props
                         alt={title}
                         className="w-full h-40 object-cover"
-                    /> */}
+                    />
+
                     <div className="p-5">
-                        <h3 className="text-lg font-bold text-gray-800 truncate">
+                        <h3
+                            className="text-lg font-bold text-gray-800 truncate"
+                            title={title}
+                        >
                             {title}
                         </h3>
-                        {description && (
-                            <p className="text-gray-600 text-sm mt-2 line-clamp-2">
-                                {description}
-                            </p>
-                        )}
+
+                        <p className="text-sm text-gray-500 mt-2 h-10 overflow-hidden line-clamp-2">
+                            {description}
+                        </p>
                     </div>
-                </a>
+                </Link>
             </div>
         </div>
     );

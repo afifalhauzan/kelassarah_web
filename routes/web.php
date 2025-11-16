@@ -8,6 +8,7 @@ use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Models\User;
+use App\Models\Course;
 
 Route::get('/', function () {
     // return Inertia::render('Welcome', [
@@ -65,27 +66,58 @@ Route::get('/load-test-write', function () {
 });
 
 Route::get('/dashboard', function () {
-    $courses = \App\Models\Course::where('is_published', true)
-        ->orderBy('order', 'asc')
-        ->get()
-        ->map(fn ($course) => [
-            'id' => $course->id,
-            'title' => $course->title,
-            'description' => $course->description,
-            'order' => $course->order,
-            'is_published' => $course->is_published,
-            'knowledge_prompt' => $course->knowledge_prompt,
-            'welcome_message' => $course->welcome_message,
-            'created_at' => $course->created_at
-        ]);
+    
+    // 2. Kita "Nyontek" logika dari CourseController
+    $courses = Course::where('is_published', true)
+                    ->orderBy('order', 'asc')
+                    ->get()
+                    // 3. Kita "Modif JSON" (tambahin field yg kurang)
+                    ->map(fn ($course) => [ 
+                        'id' => $course->id,
+                        'title' => $course->title,
+                        'description' => $course->description,
+                        // 4. "TAMBAHIN SENDIRI" field placeholder-nya
+                        'slug' => \Illuminate\Support\Str::slug($course->title), // Bikin slug
+                        'thumbnail' => match ($course->order) {
+                            1 => 'https://upload.wikimedia.org/wikipedia/commons/e/e0/Logo_Budi_Utomo.png', // Gambar Budi Utomo
+                            2 => 'https://upload.wikimedia.org/wikipedia/commons/7/77/Museum_Sumpah_Pemuda_01.jpg', // Gambar Museum Sumpah Pemuda
+                            default => 'https://via.placeholder.com/320x160.png?text=' . $course->id, // Placeholder
+                        }, // Placeholder thumbnail
+                        'progress' => 0, // Placeholder progress
+                        'modulesCompleted' => 0, // Placeholder
+                        'totalModules' => $course->materials()->count() > 0 ? $course->materials()->count() : 5, // Placeholder total
+                    ]);
 
+    // 5. KIRIM DATANYA KE 'Dashboard'
     return Inertia::render('Dashboard', [
         'courses' => $courses
     ]);
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::get('/courses', function () {
-    return Inertia::render('Courses');
+    
+    // 2. Kita "curi" logika dari controller & dashboard
+    $courses = Course::where('is_published', true)
+                    ->orderBy('order', 'asc')
+                    ->get()
+                    // 3. Kita "Modif JSON" (tambahin thumbnail)
+                    ->map(fn ($course) => [ 
+                        'id' => $course->id,
+                        'title' => $course->title,
+                        'description' => $course->description,
+                        
+                        // "TAMBAHIN SENDIRI" thumbnail-nya
+                        'thumbnail' => match ($course->order) {
+                            1 => 'https://upload.wikimedia.org/wikipedia/commons/e/e0/Logo_Budi_Utomo.png',
+                            2 => 'https://upload.wikimedia.org/wikipedia/commons/7/77/Museum_Sumpah_Pemuda_01.jpg',
+                            default => 'https://via.placeholder.com/320x160.png?text=' . $course->id,
+                        },
+                    ]);
+
+    // 4. KIRIM DATANYA KE 'Courses.jsx'
+    return Inertia::render('Courses', [
+        'courses' => $courses
+    ]);
 })->middleware(['auth', 'verified'])->name('courses');
 
 Route::get('/bot-test', function () {

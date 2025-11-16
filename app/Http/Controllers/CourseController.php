@@ -16,6 +16,19 @@ class CourseController extends Controller
                 'id' => $course->id,
                 'title' => $course->title,
                 'description' => $course->description,
+                
+                // --- REVISI THUMBNAIL DI SINI ---
+                'thumbnail' => match ($course->order) {
+                    1 => 'https://upload.wikimedia.org/wikipedia/commons/e/e0/Logo_Budi_Utomo.png', // Gambar Budi Utomo
+                    2 => 'https://upload.wikimedia.org/wikipedia/commons/7/77/Museum_Sumpah_Pemuda_01.jpg', // Gambar Museum Sumpah Pemuda
+                    default => 'https://via.placeholder.com/320x160.png?text=' . $course->id, // Placeholder
+                },
+                'slug' => \Illuminate\Support\Str::slug($course->title),
+                'progress' => 0, 
+                'modulesCompleted' => 0,
+                'totalModules' => $course->materials()->count() > 0 ? $course->materials()->count() : 5, 
+                // --- AKHIR REVISI ---
+
                 'order' => $course->order,
                 'is_published' => $course->is_published,
                 'knowledge_prompt' => $course->knowledge_prompt,
