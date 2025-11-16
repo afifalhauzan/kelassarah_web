@@ -18,7 +18,7 @@ return new class extends Migration
             $table->text('content_text')->nullable();
             $table->integer('order');
             $table->char('is_published', 1)->default('0');
-            $table->enum('type', ['video', 'document'])->default('video');
+            $table->enum('type', ['text', 'video', 'document'])->default('text');
             $table->string('content_url')->nullable();
             $table->string('subtitle_url')->nullable();
             $table->timestamps();
