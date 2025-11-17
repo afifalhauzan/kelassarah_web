@@ -5,6 +5,7 @@ use App\Http\Controllers\MaterialController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ChatMessageController;
 use App\Http\Controllers\QuizController;
+use App\Http\Controllers\OnboardingController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -59,6 +60,7 @@ Route::get('/load-test-write', function () {
 });
 
 Route::get('/dashboard', function () {
+    $user = auth()->user();
     
     $courses = Course::where('is_published', true)
                     ->orderBy('order', 'asc')
@@ -75,7 +77,8 @@ Route::get('/dashboard', function () {
                     ]);
 
     return Inertia::render('Dashboard', [
-        'courses' => $courses
+        'courses' => $courses,
+        'showOnboarding' => !$user->has_completed_onboarding
     ]);
 })->middleware(['auth', 'verified'])->name('dashboard');
 
@@ -100,6 +103,11 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    
+    Route::get('/onboarding/status', [OnboardingController::class, 'status'])
+        ->name('onboarding.status');
+    Route::post('/onboarding/complete', [OnboardingController::class, 'complete'])
+        ->name('onboarding.complete');
 
     Route::get('/chat/{course_id}', [ChatMessageController::class, 'index']);
     Route::get('/chat/{course_id}/last', [ChatMessageController::class, 'getLastMessage']);
