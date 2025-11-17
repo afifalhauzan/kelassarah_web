@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Quiz;
 
 class Course extends Model
 {
@@ -16,6 +17,7 @@ class Course extends Model
         'is_published',
         'knowledge_prompt',
         'welcome_message',
+        'thumbnail_url',
     ];
 
     public function messages()
@@ -26,5 +28,10 @@ class Course extends Model
     public function materials()
     {
         return $this->hasMany(Material::class);
+    }
+
+    public function quizzes()
+    {
+        return $this->hasMany(Quiz::class);
     }
 }

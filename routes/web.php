@@ -4,10 +4,12 @@ use App\Http\Controllers\CourseController;
 use App\Http\Controllers\MaterialController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ChatMessageController;
+use App\Http\Controllers\QuizController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Models\User;
+use App\Models\Course;
 
 Route::get('/', function () {
     // return Inertia::render('Welcome', [
@@ -39,16 +41,12 @@ Route::get('/load-test', function () {
 
 Route::get('/load-test-write', function () {
     try {
-        // 1. Ambil user pertama
-        // Kita asumsikan user ini ada, berdasarkan tes Anda sebelumnya
         $user = User::first();
 
         if (!$user) {
             return response()->json(['error' => 'No users found. Please seed the database.'], 404);
         }
 
-        // 2. Lakukan operasi TULIS (WRITE)
-        // Ini adalah bagian krusial yang mengalahkan cache
         $user->update([
             'name' => 'Load Test ' . Str::random(10)
         ]);
@@ -56,37 +54,35 @@ Route::get('/load-test-write', function () {
         // 3. Kembalikan data yang baru saja ditulis
         return response()->json($user);
     } catch (\Exception $e) {
-        // DI SINI PENTING:
-        // Di bawah load test, Anda MUNGKIN akan mendapat error 500
-        // seperti "Lock wait timeout exceeded" atau "Deadlock found".
-        // Ini NORMAL dan inilah yang sedang kita uji.
         return response()->json(['error' => $e->getMessage()], 500);
     }
 });
 
 Route::get('/dashboard', function () {
-    $courses = \App\Models\Course::where('is_published', true)
-        ->orderBy('order', 'asc')
-        ->get()
-        ->map(fn ($course) => [
-            'id' => $course->id,
-            'title' => $course->title,
-            'description' => $course->description,
-            'order' => $course->order,
-            'is_published' => $course->is_published,
-            'knowledge_prompt' => $course->knowledge_prompt,
-            'welcome_message' => $course->welcome_message,
-            'created_at' => $course->created_at
-        ]);
+    
+    $courses = Course::where('is_published', true)
+                    ->orderBy('order', 'asc')
+                    ->get()
+                    ->map(fn ($course) => [ 
+                        'id' => $course->id,
+                        'title' => $course->title,
+                        'description' => $course->description,
+                        'thumbnail' => $course->thumbnail_url, 
+                        'slug' => Str::slug($course->title),
+                        'progress' => 0, 
+                        'modulesCompleted' => 0,
+                        'totalModules' => $course->materials()->count() + $course->quizzes()->count(),
+                    ]);
 
     return Inertia::render('Dashboard', [
         'courses' => $courses
     ]);
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::get('/courses', function () {
-    return Inertia::render('Courses');
-})->middleware(['auth', 'verified'])->name('courses');
+// Halaman 'Kursus Saya' sekarang manggil 'CourseController'
+Route::get('/courses', [CourseController::class, 'index'])
+    ->middleware(['auth', 'verified'])
+    ->name('courses');
 
 Route::get('/credits', function () {
     return Inertia::render('Credits');
@@ -108,6 +104,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/chat/{course_id}', [ChatMessageController::class, 'index']);
     Route::get('/chat/{course_id}/last', [ChatMessageController::class, 'getLastMessage']);
     Route::post('/chat/{course_id}', [ChatMessageController::class, 'store']);
+
+    Route::get('/quiz/{quiz}', [QuizController::class, 'show'])->name('quiz.show');
+    Route::post('/quiz/{quiz}/submit', [QuizController::class, 'submit'])->name('quiz.submit');
 });
 
 Route::prefix('course')->group(function () {

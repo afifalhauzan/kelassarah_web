@@ -1,40 +1,21 @@
-import { useEffect, useState } from "react";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import { Head, usePage, router } from "@inertiajs/react";
+import { Head, usePage } from "@inertiajs/react";
 import ProgressCard from "@/Components/Dashboard/ProgressCard";
 import CourseSlider from "@/Components/Dashboard/CourseSlider";
 
-export default function Dashboard() {
-    const { auth, courses = [] } = usePage().props;
-    const [isLoading, setIsLoading] = useState(false);
-
-    // If courses are not passed as props or empty, fetch them
-    useEffect(() => {
-        if (!courses || courses.length === 0) {
-            setIsLoading(true);
-            router.get('/courses', {}, {
-                only: ['courses'],
-                onSuccess: () => {
-                    setIsLoading(false);
-                },
-                onError: () => {
-                    setIsLoading(false);
-                },
-                preserveState: true,
-                preserveScroll: true
-            });
-        }
-    }, [courses]);
+// Terima 'courses' dari props, kasih default array kosong
+export default function Dashboard({ courses = [] }) {
+    const { auth } = usePage().props;
 
     return (
         <AuthenticatedLayout>
             <Head title="Dashboard" />
 
-            <div className="py-4">
-                <div className="max-w-7xl mx-auto px-2">
-                    <div className="overflow-hidden">
+            <div className="py-8">
+                <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
+                    <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                         <div className="p-6 md:p-8 text-gray-900">
-                            <h1 className="text-2xl font-bold text-gray-800">
+                            <h1 className="text-3xl font-bold text-gray-800">
                                 Halo {auth.user.name}!
                             </h1>
                             <p className="text-gray-500 mt-1">
@@ -43,22 +24,13 @@ export default function Dashboard() {
 
                             <div className="mt-8">
                                 <ProgressCard
-                                    title="Orientasi Jurnalis Muda - Memahami Lanskap Pergerakan"
+                                    title="Politik Etis dan kebangkitan kaum terpelajar"
                                     progress={65}
                                 />
                             </div>
 
-                            {isLoading ? (
-                                <div className="mt-12 text-center">
-                                    <p>Lagi ngambil data kursus...</p>
-                                </div>
-                            ) : courses && courses.length > 0 ? (
-                                <CourseSlider courses={courses} /> 
-                            ) : (
-                                <div className="mt-12 text-center">
-                                    <p className="text-gray-500">Belum ada kursus tersedia</p>
-                                </div>
-                            )}
+                            {/* Oper data 'courses' asli ke CourseSlider */}
+                            <CourseSlider courses={courses} />
                         </div>
                     </div>
                 </div>

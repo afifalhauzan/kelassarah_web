@@ -2,7 +2,8 @@ import React, { useCallback } from "react";
 import useEmblaCarousel from "embla-carousel-react";
 import CourseCard from "./CourseCard";
 
-export default function CourseSlider({ courses = [] }) {
+// Terima 'courses' dari props
+export default function CourseSlider({ courses }) {
     const [emblaRef, emblaApi] = useEmblaCarousel({
         loop: false,
         align: "start",
@@ -16,18 +17,6 @@ export default function CourseSlider({ courses = [] }) {
     const scrollNext = useCallback(() => {
         if (emblaApi) emblaApi.scrollNext();
     }, [emblaApi]);
-
-    // Return early if no courses
-    if (!courses || courses.length === 0) {
-        return (
-            <div className="mt-12 text-center">
-                <h2 className="text-2xl font-bold text-gray-800 mb-4">
-                    Kursus tersedia
-                </h2>
-                <p className="text-gray-500">Belum ada kursus tersedia</p>
-            </div>
-        );
-    }
 
     return (
         <div className="mt-12">
@@ -78,9 +67,9 @@ export default function CourseSlider({ courses = [] }) {
             </div>
 
             <div className="overflow-hidden" ref={emblaRef}>
-                <div className="flex -ml-4">
+                <div className="flex -ml-2">
                     {courses.map((course) => (
-                        <div key={course.id} className="pl-4 shrink-0">
+                        <div key={course.id} className="pl-4 shrink-0 py-4">
                             <CourseCard course={course} />
                         </div>
                     ))}

@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Course;
+use App\Models\Quiz;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Auth;
 
 class CourseController extends Controller
 {
@@ -18,13 +21,14 @@ class CourseController extends Controller
                 'thumbnail_url' => $course->thumbnail_url,
                 'description' => $course->description,
                 'order' => $course->order,
-                'is_published' => $course->is_published,
-                'knowledge_prompt' => $course->knowledge_prompt,
-                'welcome_message' => $course->welcome_message,
-                'created_at' => $course->created_at
+                'thumbnail' => $course->thumbnail_url,
+                'slug' => Str::slug($course->title),
+                'progress' => 0, 
+                'modulesCompleted' => 0,
+                'totalModules' => $course->materials()->count() + $course->quizzes()->count(), 
             ]);
 
-        return inertia('Course/Index', [
+        return inertia('Courses', [ 
             'courses' => $courses,
         ]);
     }
@@ -73,27 +77,47 @@ class CourseController extends Controller
         ]);
     }
 
-    public function show(Course $course)
+   public function show(Course $course)
     {
+        $userId = Auth::id();
+        $completedQuizIds = Quiz::where('course_id', $course->id)
+            ->whereHas('questions.userAnswers', fn($query) => 
+                $query->where('user_id', $userId)
+            )
+            ->pluck('id')
+            ->flip();
+
+        $materials = $course->materials()->orderBy('order', 'asc')->get()->map(fn ($material) => [
+            'id' => $material->id,
+            'title' => $material->title,
+            'order' => $material->order,
+            'lesson_type' => 'material',
+            'material_type' => $material->type, 
+            'content_text' => $material->content_text,
+            'content_url' => $material->content_url,
+            'is_completed' => false,
+        ]);
+
+        $quizzes = $course->quizzes()->orderBy('order', 'asc')->get()->map(fn ($quiz) => [
+            'id' => $quiz->id,
+            'title' => $quiz->title,
+            'order' => $quiz->order,
+            'lesson_type' => 'quiz', 
+            'material_type' => null, 
+            'content_text' => null,
+            'content_url' => null,
+            'is_completed' => $completedQuizIds->has($quiz->id),
+        ]);
+
+        $lessons = $materials->merge($quizzes)->sortBy('order')->values();
+
         return inertia('Course/Show', [
             'course' => [
                 'id' => $course->id,
                 'title' => $course->title,
-                'thumbnail_url' => $course->thumbnail_url,
                 'description' => $course->description,
-                'order' => $course->order,
-                'is_published' => $course->is_published,
-                'knowledge_prompt' => $course->knowledge_prompt,
-                'welcome_message' => $course->welcome_message,
-                'created_at' => $course->created_at
             ],
-            'materials' => $course->materials()->get()->map(fn ($material) => [
-                'id' => $material->id,
-                'title' => $material->title,
-                'content' => $material->content,
-                'order' => $material->order,
-                'created_at' => $material->created_at
-            ])
+            'lessons' => $lessons
         ]);
     }
 
