@@ -159,6 +159,14 @@ class MaterialController extends Controller
     {
         $material = Material::with('course')->where('course_id', $courseID)->findOrFail($id);
         $material->delete();
+        if ($material->type !== "text") {
+            if ($material->content_url && Storage::disk('public')->exists($material->content_url)) {
+                Storage::disk('public')->delete($material->content_url);
+            }
+            if ($material->subtitle_url && Storage::disk('public')->exists($material->subtitle_url)) {
+                Storage::disk('public')->delete($material->subtitle_url);
+            }
+        }
         return response()->json(null, 204);
     }
 }
