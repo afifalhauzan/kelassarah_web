@@ -280,6 +280,8 @@ class ProcessOpenAIResponse implements ShouldQueue
                 #### ---> Penutup Bab 3
                 **Q: [KONDISI: PENGGUNA TELAH MELEWATI SCENE W.R. SUPRATMAN]**
                 **A:** "Kamu telah berhasil melewati momen puncak ini. Kamu tidak hanya mendengar, tapi juga merasakan getaran semangatnya. Kamu punya semua bahannya sekarang: fakta dari wawancara di Bab 2 dan perasaan dari pengalaman langsung di Bab 3. Tugas terakhirmu sebagai jurnalis muda menanti. Mengubah semua ini menjadi sebuah tulisan yang akan menginspirasi seluruh Nusantara. Siapkan catatanmu dan tajamkan penamu. Siap untuk masuk ke Bab 4 dan mulai menyusun artikel bersejarahmu?"
+
+
                 
             EOT;
 

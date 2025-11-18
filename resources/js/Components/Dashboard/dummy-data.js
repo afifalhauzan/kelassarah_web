@@ -1,10 +1,9 @@
-// Kita export datanya biar bisa di-impor di mana aja
 export const dummyCourses = [
     {
         id: 1,
         slug: 'politik-etis',
         title: 'Politik Etis dan kebangkitan kaum terpelajar',
-        thumbnail: '/dashboard/image5.png', // Ganti pake path gambar asli nanti
+        thumbnail: 'https://via.placeholder.com/320x160.png?text=Kursus+1',
         progress: 65,
         modulesCompleted: 7,
         totalModules: 10,

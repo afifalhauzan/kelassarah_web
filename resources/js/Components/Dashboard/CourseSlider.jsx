@@ -2,6 +2,7 @@ import React, { useCallback } from "react";
 import useEmblaCarousel from "embla-carousel-react";
 import CourseCard from "./CourseCard";
 
+// Terima 'courses' dari props
 export default function CourseSlider({ courses }) {
     const [emblaRef, emblaApi] = useEmblaCarousel({
         loop: false,
@@ -66,9 +67,9 @@ export default function CourseSlider({ courses }) {
             </div>
 
             <div className="overflow-hidden" ref={emblaRef}>
-                <div className="flex -ml-4">
+                <div className="flex -ml-2">
                     {courses.map((course) => (
-                        <div key={course.id} className="pl-4 shrink-0">
+                        <div key={course.id} className="pl-4 shrink-0 py-4">
                             <CourseCard course={course} />
                         </div>
                     ))}

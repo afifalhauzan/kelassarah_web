@@ -8,6 +8,8 @@ use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Database\Seeders\UserSiswaSeeder;
+use Database\Seeders\CourseSeeder;
+use Database\Seeders\QuizSeeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -18,8 +20,9 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        User::factory(10)->create();
-        Material::factory(10)->create();
-        Course::factory(10)->create();
+        $this->call([
+            CourseSeeder::class,
+            QuizSeeder::class,
+        ]);
     }
 }

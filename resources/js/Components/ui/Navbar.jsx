@@ -32,19 +32,19 @@ export default function Navbar({ auth }) {
                     {/* Navigation Links - Desktop */}
                     <div className="hidden md:flex items-center space-x-10">
                         <NavLink
-                            href="home"
+                            href="#hero"
                             className="text-gray-700 hover:text-blue-600"
                         >
                             Home
                         </NavLink>
                         <NavLink
-                            href="maskot"
+                            href="#mascot"
                             className="text-gray-700 hover:text-blue-600"
                         >
                             Maskot
                         </NavLink>
                         <NavLink
-                            href="manfaat"
+                            href="#fitur"
                             className="text-gray-700 hover:text-blue-600"
                         >
                             Manfaat
@@ -152,21 +152,21 @@ export default function Navbar({ auth }) {
                     {/* Mobile Navigation Links */}
                     <div className="flex-1 px-6 py-4 space-y-4">
                         <NavLink
-                            href="home"
+                            href="#hero"
                             onClick={() => handleNavClick('home')}
                             className="block w-full text-left py-3 px-4 text-white hover:text-blue-200 hover:bg-blue-700 rounded-lg"
                         >
                             Home
                         </NavLink>
                         <NavLink
-                            href="maskot"
+                            href="#mascot"
                             onClick={() => handleNavClick('maskot')}
                             className="block w-full text-left py-3 px-4 text-white hover:text-blue-200 hover:bg-blue-700 rounded-lg"
                         >
                             Maskot
                         </NavLink>
                         <NavLink
-                            href="manfaat"
+                            href="#fitur"
                             onClick={() => handleNavClick('manfaat')}
                             className="block w-full text-left py-3 px-4 text-white hover:text-blue-200 hover:bg-blue-700 rounded-lg"
                         >
