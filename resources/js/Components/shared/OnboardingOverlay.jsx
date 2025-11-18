@@ -32,15 +32,15 @@ export default function OnboardingOverlay({ onClose }) {
         },
         {
             title: "Jelajahi Kursus Sejarah",
-            content: "Anda dapat menjelajahi berbagai materi sejarah dengan mengakses fitur Kursus",
+            content: "Kamu dapat menjelajahi berbagai materi sejarah dengan mengakses fitur Kursus",
         },
         {
             title: "Chat dengan Sarah",
-            content: "Butuh bantuan? Saya siap membantu Anda 24/7! Kamu dapat mengakses fitur chat dibawah ini kapan saja!",
+            content: "Butuh bantuan? Saya siap membantu kamu 24/7! Kamu dapat mengakses fitur chat dibawah ini kapan saja!",
         },
         {
             title: "Siap Belajar?",
-            content: "Sekarang Anda siap memulai perjalanan belajar sejarah yang penuh eksplorasi!",
+            content: "Sekarang kamu siap memulai perjalanan belajar sejarah yang penuh eksplorasi!",
         }
     ];
 
