@@ -98,7 +98,7 @@ export default function QuizActive({ course, quiz, questions, onFinish }) {
                 answers={answers}
                 currentQuestionIndex={currentQuestionIndex}
                 onQuestionSelect={goToQuestion}
-                totalTimeMinutes={90}
+                totalTimeMinutes={10}
                 disabled={isSubmitting}
             />
         </div>

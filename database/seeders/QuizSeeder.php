@@ -22,7 +22,7 @@ class QuizSeeder extends Seeder
 
             $quiz = Quiz::create([
                 'course_id' => $course->id,
-                'title' => 'Kuis - ' . $course->title,
+                'title' => $course->id == 1 ? 'Pre Test - ' . $course->title : 'Post Test - ' . $course->title,
                 'content' => 'Uji pemahamanmu tentang materi ' . $course->title,
                 'order' => 99,
                 'is_published' => '1',
