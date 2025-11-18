@@ -163,11 +163,21 @@ export function ChatProvider({ children }) {
         };
     }, [isOpen, chatContextCourseld, fetchAllMessages, pollForNewMessages]);
 
+    function getCookie(name) {
+        return document.cookie
+            .split('; ')
+            .find(row => row.startsWith(name + '='))
+            ?.split('=')[1];
+    }
+
     const sendMessage = useCallback(async (newMessage) => {
         if (!chatContextCourseld) {
             console.error('No course ID set for chat');
             return;
         }
+
+        const rawToken = getCookie('XSRF-TOKEN');
+        const token = rawToken ? decodeURIComponent(rawToken) : null;
 
         // Set status to pending immediately
         setChatStatus("pending");
@@ -183,8 +193,9 @@ export function ChatProvider({ children }) {
                 headers: {
                     'Content-Type': 'application/json',
                     'X-Requested-With': 'XMLHttpRequest',
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content || ''
+                    'X-XSRF-TOKEN': token || ''
                 },
+                credentials: 'include',      
                 body: JSON.stringify({
                     content: newMessage,
                 })
