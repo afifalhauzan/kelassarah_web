@@ -37,8 +37,8 @@ class AuthenticatedSessionController extends Controller
 
         // Role-based redirection
         if ($user->role === 'guru') {
-            // 🛑 WAS: return redirect()->away(...) or redirect()->route(...)
-            // ✅ FIX: Force a hard window.location change
+            // WAS: return redirect()->away(...) or redirect()->route(...)
+            // FIX: Force a hard window.location change
             return Inertia::location(route('guru.course.create'));
         }
 

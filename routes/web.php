@@ -83,8 +83,38 @@ Route::domain(env('APP_TEACHER_DOMAIN'))->group(function () {
 
         // Course Management for teachers
         Route::get('/course', function () {
-            return Inertia::render('Guru/TambahCourse');
+            $courses = Course::orderBy('order', 'asc')->get()->map(fn ($c) => [
+                'id' => $c->id,
+                'title' => $c->title,
+                'thumbnail_url' => $c->thumbnail_url,
+                'description' => $c->description,
+                'order' => $c->order,
+                'is_published' => $c->is_published,
+                'knowledge_prompt' => $c->knowledge_prompt,
+                'welcome_message' => $c->welcome_message,
+                'created_at' => $c->created_at
+            ]);
+            return Inertia::render('Guru/TambahCourse', [
+                'courses' => $courses
+            ]);
         })->name('guru.course.create');
+        
+        // Add edit route
+        Route::get('/course/edit/{course}', function (Course $course) {
+            return Inertia::render('Guru/EditCourse', [
+                'course' => [
+                    'id' => $course->id,
+                    'title' => $course->title,
+                    'thumbnail_url' => $course->thumbnail_url,
+                    'description' => $course->description,
+                    'order' => $course->order,
+                    'is_published' => $course->is_published,
+                    'knowledge_prompt' => $course->knowledge_prompt,
+                    'welcome_message' => $course->welcome_message,
+                    'created_at' => $course->created_at
+                ]
+            ]);
+        })->name('guru.course.edit');
         Route::post('/course/add', [CourseController::class, 'store'])->name('guru.course.store');
         Route::put('/course/{course}', [CourseController::class, 'update'])->name('guru.course.update');
         Route::delete('/course/{course}', [CourseController::class, 'destroy'])->name('guru.course.destroy');

@@ -21,7 +21,7 @@ export default function TambahMateri({ courses = [], showOnboarding = false }) {
                                 Halo {auth.user.name}!
                             </h1>
                             <p className="text-gray-500 mt-1">
-                                Selamat datang kembali di beranda
+                                Tambah Materi
                             </p>
 
                         </div>
