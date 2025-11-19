@@ -19,7 +19,7 @@ export default function TambahCourse({ courses = [], message = '' }) {
         e.preventDefault();
         setIsSubmitting(true);
         
-        router.post('/course/add', formData, {
+        router.post(route('guru.course.store'), formData, {
             onSuccess: () => {
                 setShowCreateForm(false);
                 setFormData({
@@ -41,7 +41,7 @@ export default function TambahCourse({ courses = [], message = '' }) {
 
     const handleDelete = (courseId) => {
         if (confirm('Apakah Anda yakin ingin menghapus course ini?')) {
-            router.delete(`/course/${courseId}`);
+            router.delete(route('guru.course.destroy', courseId));
         }
     };
 
@@ -205,7 +205,7 @@ export default function TambahCourse({ courses = [], message = '' }) {
                                                     <td className="py-3 px-4">
                                                         <div className="flex gap-2">
                                                             <Link
-                                                                href={`/course/edit/${course.id}`}
+                                                                href={route('guru.course.edit', course.id)}
                                                                 className="bg-blue-500 hover:bg-blue-600 text-white p-2 rounded-lg transition-colors"
                                                             >
                                                                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

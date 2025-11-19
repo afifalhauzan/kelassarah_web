@@ -33,13 +33,13 @@ export default function EditCourse({ course }) {
         e.preventDefault();
         setIsSubmitting(true);
         
-        router.put(`/course/${course.id}`, formData, {
+        router.put(route('guru.course.update', course.id), formData, {
             onSuccess: () => {
                 setIsSubmitting(false);
                 setMessage('Course updated successfully!');
                 // Redirect back to course list after 2 seconds
                 setTimeout(() => {
-                    router.get('/course');
+                    router.get(route('guru.course.create'));
                 }, 2000);
             },
             onError: (errors) => {
@@ -72,7 +72,7 @@ export default function EditCourse({ course }) {
                                     <p className="text-sm text-gray-500">Update course information</p>
                                 </div>
                                 <Link
-                                    href="/course"
+                                    href={route('guru.course.create')}
                                     className="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-colors"
                                 >
                                     <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -206,7 +206,7 @@ export default function EditCourse({ course }) {
                                             {isSubmitting ? 'Updating...' : 'Update Course'}
                                         </button>
                                         <Link
-                                            href="/course"
+                                            href={route('guru.course.create')}
                                             className="bg-gray-500 hover:bg-gray-600 text-white px-6 py-2 rounded-lg font-medium transition-colors"
                                         >
                                             Cancel
