@@ -27,12 +27,22 @@ class AuthenticatedSessionController extends Controller
     /**
      * Handle an incoming authentication request.
      */
-    public function store(LoginRequest $request): RedirectResponse
+    public function store(LoginRequest $request)
     {
         $request->authenticate();
 
         $request->session()->regenerate();
 
+        $user = $request->user();
+
+        // Role-based redirection
+        if ($user->role === 'guru') {
+            // 🛑 WAS: return redirect()->away(...) or redirect()->route(...)
+            // ✅ FIX: Force a hard window.location change
+            return Inertia::location(route('guru.course.create'));
+        }
+
+        // Default redirect for students
         return redirect()->intended(route('dashboard', absolute: false));
     }
 

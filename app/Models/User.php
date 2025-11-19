@@ -22,6 +22,7 @@ class User extends Authenticatable
         'username', // Add this
         'email',
         'password',
+        'role',
         'has_completed_onboarding',
     ];
 

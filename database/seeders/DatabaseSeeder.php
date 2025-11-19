@@ -8,6 +8,7 @@ use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Database\Seeders\UserSiswaSeeder;
+use Database\Seeders\UserGuruSeeder;
 use Database\Seeders\CourseSeeder;
 use Database\Seeders\QuizSeeder;
 
@@ -24,6 +25,7 @@ class DatabaseSeeder extends Seeder
             CourseSeeder::class,
             QuizSeeder::class,
             UserSiswaSeeder::class,
+            UserGuruSeeder::class,
         ]);
     }
 }
