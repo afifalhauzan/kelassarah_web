@@ -190,7 +190,7 @@ export default function Sidebar() {
                         <div className="p-4 border-t border-gray-200">
                             <Link
                                 method="post"
-                                href={route("logout")}
+                                href={route("guru.logout")}
                                 as="button"
                                 className="w-full flex items-center px-4 py-3 text-red-600 hover:bg-red-50 rounded-lg transition-colors duration-200"
                             >
@@ -384,7 +384,7 @@ export default function Sidebar() {
                         <div className="p-6 border-t border-blue-500">
                             <Link
                                 method="post"
-                                href={route("logout")}
+                                href={route("guru.logout")}
                                 as="button"
                                 onClick={() => setIsMobileMenuOpen(false)}
                                 className="w-full flex items-center px-4 py-3 text-white hover:text-blue-200 hover:bg-blue-700 rounded-lg transition-colors duration-200"

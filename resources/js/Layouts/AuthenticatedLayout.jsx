@@ -7,6 +7,7 @@ export default function AuthenticatedLayout({ children }) {
     
     // Check if user is a teacher (guru)
     const isTeacher = auth?.user?.role === 'guru';
+    console.log('User role:', auth?.user?.role);
 
     return (
         <div className="min-h-screen bg-gray-100 md:flex">

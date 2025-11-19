@@ -66,6 +66,9 @@ Route::domain(env('APP_TEACHER_DOMAIN'))->group(function () {
         return redirect()->route('login');
     });
 
+    Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])
+        ->name('guru.logout');
+
     Route::middleware(['auth', 'verified'])->group(function () {
         // Route::get('/dashboard', function () {
         //     return Inertia::render('Guru/GuruDashboard', [
