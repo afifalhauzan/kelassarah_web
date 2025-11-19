@@ -28,7 +28,7 @@ class CourseController extends Controller
                 'totalModules' => $course->materials()->count() + $course->quizzes()->count(), 
             ]);
 
-        return inertia('Courses', [ 
+        return inertia('Guru/TambahCourse', [ 
             'courses' => $courses,
         ]);
     }
@@ -47,7 +47,7 @@ class CourseController extends Controller
 
         $course = Course::create($validated);
 
-        return inertia('Course/Index', [
+        return inertia('Guru/TambahCourse', [
             'courses' => Course::where('is_published', true)
                 ->orderBy('order', 'asc')
                 ->get()
@@ -111,7 +111,7 @@ class CourseController extends Controller
 
         $lessons = $materials->merge($quizzes)->sortBy('order')->values();
 
-        return inertia('Course/Show', [
+        return inertia('Guru/TambahCourse', [
             'course' => [
                 'id' => $course->id,
                 'title' => $course->title,
@@ -134,7 +134,7 @@ class CourseController extends Controller
 
         $course->update($validated);
 
-        return inertia('Course/Show', [
+        return inertia('Guru/TambahCourse', [
             'course' => [
                 'id' => $course->id,
                 'title' => $course->title,
@@ -161,7 +161,7 @@ class CourseController extends Controller
     {
         $course->delete();
         
-        return inertia('Course/Index', [
+        return inertia('Guru/TambahCourse', [
             'courses' => Course::where('is_published', true)
                 ->orderBy('order', 'asc')
                 ->get()
