@@ -1,8 +1,10 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import { Head, Link, router } from "@inertiajs/react";
+import { Head, Link, router, usePage } from "@inertiajs/react";
 import { useState } from 'react';
 
-export default function TambahCourse({ courses = [], message = '' }) {
+export default function TambahCourse({ courses = [] }) {
+    const { flash } = usePage().props;
+    const message = flash?.message;
     const [showCreateForm, setShowCreateForm] = useState(false);
     const [formData, setFormData] = useState({
         title: '',

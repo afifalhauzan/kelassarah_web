@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CourseController;
+use App\Http\Controllers\CourseGuruController;
 use App\Http\Controllers\MaterialController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ChatMessageController;
@@ -70,6 +71,7 @@ Route::domain(env('APP_TEACHER_DOMAIN'))->group(function () {
         ->name('guru.logout');
 
     Route::middleware(['auth', 'verified'])->group(function () {
+        // Teacher Dashboard
         // Route::get('/dashboard', function () {
         //     return Inertia::render('Guru/GuruDashboard', [
         //         'message' => 'Welcome, Guru.'
@@ -82,22 +84,7 @@ Route::domain(env('APP_TEACHER_DOMAIN'))->group(function () {
         Route::delete('/profile', [ProfileController::class, 'destroy'])->name('guru.profile.destroy');
 
         // Course Management for teachers
-        Route::get('/course', function () {
-            $courses = Course::orderBy('order', 'asc')->get()->map(fn ($c) => [
-                'id' => $c->id,
-                'title' => $c->title,
-                'thumbnail_url' => $c->thumbnail_url,
-                'description' => $c->description,
-                'order' => $c->order,
-                'is_published' => $c->is_published,
-                'knowledge_prompt' => $c->knowledge_prompt,
-                'welcome_message' => $c->welcome_message,
-                'created_at' => $c->created_at
-            ]);
-            return Inertia::render('Guru/TambahCourse', [
-                'courses' => $courses
-            ]);
-        })->name('guru.course.create');
+        Route::get('/course', [CourseGuruController::class, 'index'])->name('guru.course.create');
         
         // Add edit route
         Route::get('/course/edit/{course}', function (Course $course) {
@@ -115,9 +102,9 @@ Route::domain(env('APP_TEACHER_DOMAIN'))->group(function () {
                 ]
             ]);
         })->name('guru.course.edit');
-        Route::post('/course/add', [CourseController::class, 'store'])->name('guru.course.store');
-        Route::put('/course/{course}', [CourseController::class, 'update'])->name('guru.course.update');
-        Route::delete('/course/{course}', [CourseController::class, 'destroy'])->name('guru.course.destroy');
+        Route::post('/course/add', [CourseGuruController::class, 'store'])->name('guru.course.store');
+        Route::put('/course/{course}', [CourseGuruController::class, 'update'])->name('guru.course.update');
+        Route::delete('/course/{course}', [CourseGuruController::class, 'destroy'])->name('guru.course.destroy');
 
         // Material Management for teachers
         Route::get('/tambah-materi', function () {
