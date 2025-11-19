@@ -11,9 +11,6 @@ class CourseSeeder extends Seeder
 {
     public function run(): void
     {
-        $pdfLink = 'https://pdfjs-express.s3-us-west-2.amazonaws.com/docs/choosing-a-pdf-viewer.pdf';
-        $videoLink = 'https://www.youtube.com/watch?v=dQw4w9WgXcQ';
-
         $coursesData = [
             [
                 'title' => 'Orientasi Jurnalis Muda - Memahami Lanskap Pergerakan',
@@ -45,6 +42,8 @@ class CourseSeeder extends Seeder
             ],
         ];
 
+        $pdfLink = 'https://pdfjs-express.s3-us-west-2.amazonaws.com/docs/choosing-a-pdf-viewer.pdf';
+        $videoLink = 'https://www.youtube.com/watch?v=dQw4w9WgXcQ';
 
         foreach ($coursesData as $data) {
             $course = Course::create([
