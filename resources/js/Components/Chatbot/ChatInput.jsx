@@ -1,11 +1,22 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useChat } from "@/Context/ChatContext";
 
 export default function ChatInput() {
-    const { sendMessage, chatStatus } = useChat();
+    const { sendMessage, chatStatus, isOpen } = useChat();
     const [inputValue, setInputValue] = useState("");
+    const inputRef = useRef(null);
     
     const isLoading = chatStatus === "pending";
+
+    // Focus input when chat opens
+    useEffect(() => {
+        if (isOpen && inputRef.current) {
+            // Small delay to ensure the chat widget is fully rendered
+            setTimeout(() => {
+                inputRef.current?.focus();
+            }, 100);
+        }
+    }, [isOpen]);
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -23,6 +34,7 @@ export default function ChatInput() {
         <div className="shrink-0 border-t p-4">
             <form onSubmit={handleSubmit} className="relative">
                 <input
+                    ref={inputRef}
                     type="text"
                     placeholder={isLoading ? "Menunggu respons..." : "Tanyakan apa saja"}
                     className={`w-full pl-10 pr-12 py-2 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 ${

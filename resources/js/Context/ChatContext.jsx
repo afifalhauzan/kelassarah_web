@@ -15,6 +15,37 @@ export function ChatProvider({ children }) {
     const waitingForAssistantRef = useRef(false); // Track if we're waiting for assistant response
     const pollingCounterRef = useRef(0); // Add counter to track polling attempts
 
+    useEffect(() => {
+        const handleGlobalShortcut = (event) => {
+            // Cek kombinasi tombol: Ctrl + Shift + H
+            // (Anda bisa ganti 'h' dengan key lain jika mau)
+            if (event.ctrlKey && event.shiftKey && event.key.toLowerCase() === 'h') {
+                // Mencegah aksi default browser (misal: buka History)
+                event.preventDefault();
+                
+                // Toggle chat (buka jika tutup, tutup jika buka)
+                setisOpen(prev => !prev);
+                
+                // Opsional: Fokus ke input chat setelah dibuka
+                // (Butuh ref ke input element jika mau implementasi ini)
+            }
+            
+            // Alternatif: Tombol ESC untuk menutup chat jika sedang terbuka
+            if (event.key === 'Escape' && isOpen) {
+                event.preventDefault();
+                setisOpen(false);
+            }
+        };
+
+        // Pasang event listener ke window
+        window.addEventListener('keydown', handleGlobalShortcut);
+
+        // Cleanup: Hapus event listener saat unmount
+        return () => {
+            window.removeEventListener('keydown', handleGlobalShortcut);
+        };
+    }, [isOpen]);
+
     // Convert API message format to ChatContext format
     const convertApiMessage = useCallback((apiMessage) => {
         return {
