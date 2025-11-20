@@ -19,7 +19,7 @@ export default function VideoNativeViewer({ videoUrl, subtitleUrl }) {
     return (
         <div className="w-full aspect-video bg-black rounded-lg overflow-hidden relative">
             <ReactPlayer
-                url={videoUrl}
+                url={videoUrl} // URL dari database/seeder
                 width="100%"
                 height="100%"
                 controls={true} 

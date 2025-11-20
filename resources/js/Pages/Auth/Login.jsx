@@ -14,8 +14,14 @@ export default function Login({ status, canResetPassword }) {
         remember: false,
     });
 
-    const submit = (e) => {
+    const submit = async (e) => {
         e.preventDefault();
+
+        await fetch('/sanctum/csrf-cookie', {
+            method: 'GET',
+            credentials: 'include'
+        });
+
 
         post(route('login'), {
             onFinish: () => reset('password'),

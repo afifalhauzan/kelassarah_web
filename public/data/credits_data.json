@@ -1,48 +1,48 @@
 [
   {
     "name": "Afiif Al Hauzaan Alfian",
-    "role": "Tech Lead & Frontend Developer",
+    "role": "Tech & Creative Lead, Frontend Engineer",
     "contact": "https://www.linkedin.com/in/afiif-al-hauzaan-alfian/",
     "type": "dev"
   },
   {
     "name": "Arif Ammar Sya'bani",
-    "role": "Frontend Developer",
+    "role": "Frontend Engineer",
     "contact": "https://www.linkedin.com/in/reynarifammar/",
     "type": "dev"
   },
   {
     "name": "Achmad Hasbil Wafi Rahmawan",
-    "role": "Backend Developer",
+    "role": "Backend Engineer",
     "contact": "https://www.linkedin.com/in/achmad-hasbil/",
     "type": "dev"
   },
   {
     "name": "Shananda Putri Aisyah",
-    "role": "UI/UX Designer",
+    "role": "UI Designer",
     "contact": "https://www.linkedin.com/in/shanandaputriaisyah/",
     "type": "dev"
   },
   {
     "name": "Naila Rahma Ningrum",
-    "role": "UI/UX Designer",
+    "role": "UX Researcher",
     "contact": "https://www.linkedin.com/in/nailarahn/",
     "type": "dev"
   },
   {
     "name": "Ghefira Addien Mifta Mu'afa",
-    "role": "UI/UX Designer",
+    "role": "UI Designer",
     "contact": "https://www.linkedin.com/in/ghefira-addien-mifta-mu-afa/",
     "type": "dev"
   },
   {
     "name": "Alexander Immanuel Widjanarko",
-    "role": "Team & Content Lead",
+    "role": "Product Manager & Content Lead",
     "contact": "https://www.linkedin.com/in/alexander-imanuel-widjanarko/",
     "type": "content"
   },{
     "name": "Isri Amirul Haq",
-    "role": "Education Specialist",
+    "role": "Instructional Designer",
     "contact": "https://www.linkedin.com/in/isri-amirul-haq-430924289/",
     "type": "content"
   },
@@ -50,6 +50,24 @@
     "name": "Yuven Reksa Pradana",
     "role": "Content Manager & Consultant",
     "contact": "https://www.linkedin.com/in/yuvenr/",
+    "type": "content"
+  },
+  {
+    "name": "Rayhan Wira Pamungkas",
+    "role": "Creative Team (Video & Animation)",
+    "contact": "https://www.instagram.com/rayhanwiraa/",
+    "type": "content"
+  },
+  {
+    "name": "Zahra Nurul Haniyyah Anas",
+    "role": "Creative Team (Graphic Design)",
+    "contact": "https://www.instagram.com/haniyyahans/",
+    "type": "content"
+  },
+  {
+    "name": "Dipo Hadi Bawono",
+    "role": "Administrative & Content Support",
+    "contact": "https://www.instagram.com/dipohadib/",
     "type": "content"
   }
 ]
