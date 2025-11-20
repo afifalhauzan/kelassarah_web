@@ -1,10 +1,74 @@
 import { Link, usePage } from "@inertiajs/react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import ApplicationIcon from "@/Components/shared/ApplicationIcon";
+import { narrator } from "@/Utils/AudioController";
 
 export default function Sidebar() {
     const { auth } = usePage().props;
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+    // --- NARRATOR STATE ---
+    // We use localStorage so the setting persists even if they refresh the page
+    const [isNarratorOn, setIsNarratorOn] = useState(() => {
+        return localStorage.getItem('narrator_mode') === 'true';
+    });
+
+    const toggleNarrator = () => {
+        const newState = !isNarratorOn;
+        setIsNarratorOn(newState);
+        localStorage.setItem('narrator_mode', newState);
+        if (!newState) narrator.stop(); // Stop speaking immediately if turned off
+    };
+
+    useEffect(() => {
+        const handleFocus = (event) => {
+            if (!isNarratorOn) return;
+
+            const el = event.target;
+            // Priority: aria-label -> alt -> text content -> placeholder
+            let textToRead = el.getAttribute('aria-label') ||
+                el.getAttribute('alt') ||
+                el.innerText ||
+                el.getAttribute('placeholder') ||
+                "";
+
+            // Clean text
+            textToRead = textToRead.replace(/\s+/g, ' ').trim();
+
+            // Limit length to save API credits (approx 2 sentences)
+            if (textToRead.length > 200) textToRead = textToRead.substring(0, 200);
+
+            if (textToRead) {
+                narrator.play(textToRead);
+            }
+        };
+
+        // Attach to the document cleanly
+        document.addEventListener('focusin', handleFocus, true);
+        return () => {
+            document.removeEventListener('focusin', handleFocus, true);
+            narrator.stop();
+        };
+    }, [isNarratorOn]);
+
+    const NarratorToggle = ({ mobile = false }) => (
+        <div className={`flex items-center justify-between ${mobile ? 'px-6 py-4 border-b border-blue-500 bg-blue-800/30' : 'px-6 py-4 border-b border-gray-200 bg-gray-50'}`}>
+            <div className="flex items-center space-x-2">
+                <svg className={`w-5 h-5 ${mobile ? 'text-blue-200' : 'text-gray-500'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" />
+                </svg>
+                <span className={`text-sm font-medium ${mobile ? 'text-blue-100' : 'text-gray-700'}`}>
+                    Voice Mode
+                </span>
+            </div>
+            <button
+                onClick={toggleNarrator}
+                className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none ${isNarratorOn ? 'bg-green-500' : (mobile ? 'bg-blue-900' : 'bg-gray-300')}`}
+            >
+                <span className={`${isNarratorOn ? 'translate-x-6' : 'translate-x-1'} inline-block h-4 w-4 transform rounded-full bg-white transition-transform`} />
+            </button>
+        </div>
+    );
 
     const toggleMobileMenu = () => {
         setIsMobileMenuOpen(!isMobileMenuOpen);
@@ -17,7 +81,7 @@ export default function Sidebar() {
     const isBerandaActive = route().current("dashboard");
     const isCoursesActive = route().current("courses");
     const isProfilActive = route().current("profile.edit");
-    
+
     // Teacher route checks
     const isGuruTambahCourseActive = route().current("guru.course.create");
     const isGuruTambahMateriActive = route().current("guru.material.create");
@@ -115,11 +179,10 @@ export default function Sidebar() {
                         <nav className="flex-1 px-4 py-6 space-y-2">
                             <Link
                                 href={route("guru.course.create")}
-                                className={`flex items-center px-4 py-3 rounded-lg transition-colors duration-200 group ${
-                                    isGuruTambahCourseActive
-                                        ? "bg-blue-50 text-blue-600"
-                                        : "text-gray-700 hover:bg-blue-50 hover:text-blue-600"
-                                }`}
+                                className={`flex items-center px-4 py-3 rounded-lg transition-colors duration-200 group ${isGuruTambahCourseActive
+                                    ? "bg-blue-50 text-blue-600"
+                                    : "text-gray-700 hover:bg-blue-50 hover:text-blue-600"
+                                    }`}
                             >
                                 <svg
                                     className="w-5 h-5 mr-3"
@@ -139,11 +202,10 @@ export default function Sidebar() {
 
                             <Link
                                 href={route("guru.material.create")}
-                                className={`flex items-center px-4 py-3 rounded-lg transition-colors duration-200 group ${
-                                    isGuruTambahMateriActive
-                                        ? "bg-blue-50 text-blue-600"
-                                        : "text-gray-700 hover:bg-blue-50 hover:text-blue-600"
-                                }`}
+                                className={`flex items-center px-4 py-3 rounded-lg transition-colors duration-200 group ${isGuruTambahMateriActive
+                                    ? "bg-blue-50 text-blue-600"
+                                    : "text-gray-700 hover:bg-blue-50 hover:text-blue-600"
+                                    }`}
                             >
                                 <svg
                                     className="w-5 h-5 mr-3"
@@ -163,11 +225,10 @@ export default function Sidebar() {
 
                             <Link
                                 href={route("guru.profile.edit")}
-                                className={`flex items-center px-4 py-3 rounded-lg transition-colors duration-200 group ${
-                                    isGuruProfilActive
-                                        ? "bg-blue-50 text-blue-600"
-                                        : "text-gray-700 hover:bg-blue-50 hover:text-blue-600"
-                                }`}
+                                className={`flex items-center px-4 py-3 rounded-lg transition-colors duration-200 group ${isGuruProfilActive
+                                    ? "bg-blue-50 text-blue-600"
+                                    : "text-gray-700 hover:bg-blue-50 hover:text-blue-600"
+                                    }`}
                             >
                                 <svg
                                     className="w-5 h-5 mr-3"
@@ -215,9 +276,8 @@ export default function Sidebar() {
 
                 {/* Mobile Teacher Sidebar */}
                 <div
-                    className={`md:hidden fixed top-0 left-0 h-full w-80 bg-blue-600 shadow-xl z-50 transform transition-transform duration-300 ease-in-out ${
-                        isMobileMenuOpen ? "translate-x-0" : "-translate-x-full"
-                    }`}
+                    className={`md:hidden fixed top-0 left-0 h-full w-80 bg-blue-600 shadow-xl z-50 transform transition-transform duration-300 ease-in-out ${isMobileMenuOpen ? "translate-x-0" : "-translate-x-full"
+                        }`}
                 >
                     <div className="flex flex-col h-full">
                         {/* Mobile Sidebar Header */}
@@ -276,11 +336,10 @@ export default function Sidebar() {
                             <Link
                                 href={route("guru.course.create")}
                                 onClick={() => setIsMobileMenuOpen(false)}
-                                className={`flex items-center px-4 py-3 rounded-lg transition-colors duration-200 ${
-                                    isGuruTambahCourseActive
-                                        ? "bg-blue-700 text-blue-200"
-                                        : "text-white hover:text-blue-200 hover:bg-blue-700"
-                                }`}
+                                className={`flex items-center px-4 py-3 rounded-lg transition-colors duration-200 ${isGuruTambahCourseActive
+                                    ? "bg-blue-700 text-blue-200"
+                                    : "text-white hover:text-blue-200 hover:bg-blue-700"
+                                    }`}
                             >
                                 <svg
                                     className="w-5 h-5 mr-3"
@@ -307,11 +366,10 @@ export default function Sidebar() {
                             <Link
                                 href={route("guru.course.create")}
                                 onClick={() => setIsMobileMenuOpen(false)}
-                                className={`flex items-center px-4 py-3 rounded-lg transition-colors duration-200 ${
-                                    isGuruTambahCourseActive
-                                        ? "bg-blue-700 text-blue-200"
-                                        : "text-white hover:text-blue-200 hover:bg-blue-700"
-                                }`}
+                                className={`flex items-center px-4 py-3 rounded-lg transition-colors duration-200 ${isGuruTambahCourseActive
+                                    ? "bg-blue-700 text-blue-200"
+                                    : "text-white hover:text-blue-200 hover:bg-blue-700"
+                                    }`}
                             >
                                 <svg
                                     className="w-5 h-5 mr-3"
@@ -332,11 +390,10 @@ export default function Sidebar() {
                             <Link
                                 href={route("guru.material.create")}
                                 onClick={() => setIsMobileMenuOpen(false)}
-                                className={`flex items-center px-4 py-3 rounded-lg transition-colors duration-200 ${
-                                    isGuruTambahMateriActive
-                                        ? "bg-blue-700 text-blue-200"
-                                        : "text-white hover:text-blue-200 hover:bg-blue-700"
-                                }`}
+                                className={`flex items-center px-4 py-3 rounded-lg transition-colors duration-200 ${isGuruTambahMateriActive
+                                    ? "bg-blue-700 text-blue-200"
+                                    : "text-white hover:text-blue-200 hover:bg-blue-700"
+                                    }`}
                             >
                                 <svg
                                     className="w-5 h-5 mr-3"
@@ -357,11 +414,10 @@ export default function Sidebar() {
                             <Link
                                 href={route("guru.profile.edit")}
                                 onClick={() => setIsMobileMenuOpen(false)}
-                                className={`flex items-center px-4 py-3 rounded-lg transition-colors duration-200 ${
-                                    isGuruProfilActive
-                                        ? "bg-blue-700 text-blue-200"
-                                        : "text-white hover:text-blue-200 hover:bg-blue-700"
-                                }`}
+                                className={`flex items-center px-4 py-3 rounded-lg transition-colors duration-200 ${isGuruProfilActive
+                                    ? "bg-blue-700 text-blue-200"
+                                    : "text-white hover:text-blue-200 hover:bg-blue-700"
+                                    }`}
                             >
                                 <svg
                                     className="w-5 h-5 mr-3"
@@ -481,24 +537,27 @@ export default function Sidebar() {
 
                     {/* User Info */}
                     {auth?.user && (
-                        <div className="px-6 py-4 border-b border-gray-200 bg-gray-50">
-                            {/* ... (Kode User Info) ... */}
-                            <div className="flex items-center">
-                                <div className="w-10 h-10 bg-blue-400 rounded-full flex items-center justify-center">
-                                    <span className="text-white font-semibold text-lg">
-                                        {auth.user.name.charAt(0).toUpperCase()}
-                                    </span>
-                                </div>
-                                <div className="ml-3">
-                                    <p className="text-sm font-medium text-gray-900">
-                                        {auth.user.name}
-                                    </p>
-                                    <p className="text-xs text-gray-600">
-                                        {auth.user.email}
-                                    </p>
+                        <>
+                            <div className="px-6 py-4 border-b border-gray-200 bg-gray-50">
+                                {/* ... (Kode User Info) ... */}
+                                <div className="flex items-center">
+                                    <div className="w-10 h-10 bg-blue-400 rounded-full flex items-center justify-center">
+                                        <span className="text-white font-semibold text-lg">
+                                            {auth.user.name.charAt(0).toUpperCase()}
+                                        </span>
+                                    </div>
+                                    <div className="ml-3">
+                                        <p className="text-sm font-medium text-gray-900">
+                                            {auth.user.name}
+                                        </p>
+                                        <p className="text-xs text-gray-600">
+                                            {auth.user.email}
+                                        </p>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                            <NarratorToggle />
+                        </>
                     )}
 
                     {/* --- REVISI NAVIGATION LINKS (DESKTOP) --- */}
@@ -506,11 +565,10 @@ export default function Sidebar() {
                         <Link
                             href={route("dashboard")} // 2. Ganti href pake route()
                             // 3. Tambahin logika active state
-                            className={`flex items-center px-4 py-3 rounded-lg transition-colors duration-200 group ${
-                                isBerandaActive
-                                    ? "bg-blue-50 text-blue-600" // <-- Style Aktif
-                                    : "text-gray-700 hover:bg-blue-50 hover:text-blue-600" // Style Normal
-                            }`}
+                            className={`flex items-center px-4 py-3 rounded-lg transition-colors duration-200 group ${isBerandaActive
+                                ? "bg-blue-50 text-blue-600" // <-- Style Aktif
+                                : "text-gray-700 hover:bg-blue-50 hover:text-blue-600" // Style Normal
+                                }`}
                         >
                             <svg
                                 className="w-5 h-5 mr-3"
@@ -537,11 +595,10 @@ export default function Sidebar() {
                         <Link
                             href={route("courses")} // 2. Ganti href pake route()
                             // 3. Tambahin logika active state
-                            className={`flex items-center px-4 py-3 rounded-lg transition-colors duration-200 group ${
-                                isCoursesActive
-                                    ? "bg-blue-50 text-blue-600" // <-- Style Aktif
-                                    : "text-gray-700 hover:bg-blue-50 hover:text-blue-600" // Style Normal
-                            }`}
+                            className={`flex items-center px-4 py-3 rounded-lg transition-colors duration-200 group ${isCoursesActive
+                                ? "bg-blue-50 text-blue-600" // <-- Style Aktif
+                                : "text-gray-700 hover:bg-blue-50 hover:text-blue-600" // Style Normal
+                                }`}
                         >
                             <svg
                                 className="w-5 h-5 mr-3"
@@ -562,11 +619,10 @@ export default function Sidebar() {
                         <Link
                             href={route("profile.edit")} // 2. Ganti href pake route()
                             // 3. Tambahin logika active state
-                            className={`flex items-center px-4 py-3 rounded-lg transition-colors duration-200 group ${
-                                isProfilActive
-                                    ? "bg-blue-50 text-blue-600" // <-- Style Aktif
-                                    : "text-gray-700 hover:bg-blue-50 hover:text-blue-600" // Style Normal
-                            }`}
+                            className={`flex items-center px-4 py-3 rounded-lg transition-colors duration-200 group ${isProfilActive
+                                ? "bg-blue-50 text-blue-600" // <-- Style Aktif
+                                : "text-gray-700 hover:bg-blue-50 hover:text-blue-600" // Style Normal
+                                }`}
                         >
                             <svg
                                 className="w-5 h-5 mr-3"
@@ -615,9 +671,8 @@ export default function Sidebar() {
 
             {/* Mobile Sidebar */}
             <div
-                className={`md:hidden fixed top-0 left-0 h-full w-80 bg-blue-600 shadow-xl z-50 transform transition-transform duration-300 ease-in-out ${
-                    isMobileMenuOpen ? "translate-x-0" : "-translate-x-full"
-                }`}
+                className={`md:hidden fixed top-0 left-0 h-full w-80 bg-blue-600 shadow-xl z-50 transform transition-transform duration-300 ease-in-out ${isMobileMenuOpen ? "translate-x-0" : "-translate-x-full"
+                    }`}
             >
                 <div className="flex flex-col h-full">
                     {/* Mobile Sidebar Header */}
@@ -653,6 +708,7 @@ export default function Sidebar() {
 
                     {/* Mobile User Info */}
                     {auth?.user && (
+                        <>
                         <div className="px-6 py-4 border-b border-blue-500">
                             {/* ... (Kode User Info Mobile) ... */}
                             <div className="flex items-center">
@@ -671,6 +727,8 @@ export default function Sidebar() {
                                 </div>
                             </div>
                         </div>
+                        <NarratorToggle mobile={true} />
+                        </>
                     )}
 
                     {/* --- REVISI NAVIGATION LINKS (MOBILE) --- */}
@@ -679,11 +737,10 @@ export default function Sidebar() {
                             href={route("dashboard")} // 2. Ganti href pake route()
                             onClick={() => setIsMobileMenuOpen(false)}
                             // 3. Tambahin logika active state
-                            className={`flex items-center px-4 py-3 rounded-lg transition-colors duration-200 ${
-                                isBerandaActive
-                                    ? "bg-blue-700 text-blue-200" // <-- Style Aktif
-                                    : "text-white hover:text-blue-200 hover:bg-blue-700" // Style Normal
-                            }`}
+                            className={`flex items-center px-4 py-3 rounded-lg transition-colors duration-200 ${isBerandaActive
+                                ? "bg-blue-700 text-blue-200" // <-- Style Aktif
+                                : "text-white hover:text-blue-200 hover:bg-blue-700" // Style Normal
+                                }`}
                         >
                             <svg
                                 className="w-5 h-5 mr-3"
@@ -711,11 +768,10 @@ export default function Sidebar() {
                             href={route("courses")} // 2. Ganti href pake route()
                             onClick={() => setIsMobileMenuOpen(false)}
                             // 3. Tambahin logika active state
-                            className={`flex items-center px-4 py-3 rounded-lg transition-colors duration-200 ${
-                                isCoursesActive
-                                    ? "bg-blue-700 text-blue-200" // <-- Style Aktif
-                                    : "text-white hover:text-blue-200 hover:bg-blue-700" // Style Normal
-                            }`}
+                            className={`flex items-center px-4 py-3 rounded-lg transition-colors duration-200 ${isCoursesActive
+                                ? "bg-blue-700 text-blue-200" // <-- Style Aktif
+                                : "text-white hover:text-blue-200 hover:bg-blue-700" // Style Normal
+                                }`}
                         >
                             <svg
                                 className="w-5 h-5 mr-3"
@@ -737,11 +793,10 @@ export default function Sidebar() {
                             href={route("profile.edit")} // 2. Ganti href pake route()
                             onClick={() => setIsMobileMenuOpen(false)}
                             // 3. Tambahin logika active state
-                            className={`flex items-center px-4 py-3 rounded-lg transition-colors duration-200 ${
-                                isProfilActive
-                                    ? "bg-blue-700 text-blue-200" // <-- Style Aktif
-                                    : "text-white hover:text-blue-200 hover:bg-blue-700" // Style Normal
-                            }`}
+                            className={`flex items-center px-4 py-3 rounded-lg transition-colors duration-200 ${isProfilActive
+                                ? "bg-blue-700 text-blue-200" // <-- Style Aktif
+                                : "text-white hover:text-blue-200 hover:bg-blue-700" // Style Normal
+                                }`}
                         >
                             <svg
                                 className="w-5 h-5 mr-3"

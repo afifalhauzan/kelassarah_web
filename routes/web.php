@@ -7,6 +7,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ChatMessageController;
 use App\Http\Controllers\QuizController;
 use App\Http\Controllers\OnboardingController;
+use App\Http\Controllers\NarratorController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -135,6 +136,8 @@ Route::domain(env('APP_DOMAIN'))->group(function () {
 
     // Student Protected Routes
     Route::middleware(['auth', 'verified'])->group(function () {
+
+        Route::post('/narrate', [NarratorController::class, 'narrate'])->name('narrate');
 
         // Student Dashboard
         Route::get('/dashboard', function () {
