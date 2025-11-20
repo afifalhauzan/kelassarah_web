@@ -1,0 +1,99 @@
+/* Custom Video.js Styling */
+.vjs-custom-skin {
+  font-family: inherit;
+}
+
+/* Custom control bar styling */
+.vjs-custom-skin .vjs-control-bar {
+  background: linear-gradient(to top, rgba(0,0,0,0.7), rgba(0,0,0,0.3), transparent);
+  backdrop-filter: blur(4px);
+}
+
+/* Custom play button */
+.vjs-custom-skin .vjs-big-play-button {
+  background: rgba(37, 99, 235, 0.9); /* Blue-600 with opacity */
+  border: none;
+  border-radius: 50%;
+  width: 80px;
+  height: 80px;
+  font-size: 2rem;
+  transition: all 0.3s ease;
+}
+
+.vjs-custom-skin .vjs-big-play-button:hover {
+  background: rgba(29, 78, 216, 0.9); /* Blue-700 with opacity */
+  transform: scale(1.1);
+}
+
+/* Progress bar styling */
+.vjs-custom-skin .vjs-progress-control .vjs-progress-holder {
+  height: 6px;
+  border-radius: 3px;
+  background: rgba(255,255,255,0.3);
+}
+
+.vjs-custom-skin .vjs-progress-control .vjs-play-progress {
+  background: #2563eb; /* Blue-600 */
+  border-radius: 3px;
+}
+
+.vjs-custom-skin .vjs-progress-control .vjs-load-progress {
+  background: rgba(255,255,255,0.5);
+  border-radius: 3px;
+}
+
+/* Volume slider */
+.vjs-custom-skin .vjs-volume-level {
+  background: #2563eb; /* Blue-600 */
+}
+
+/* Button hover effects */
+.vjs-custom-skin .vjs-button:hover {
+  color: #60a5fa; /* Blue-400 */
+}
+
+/* Subtitles styling */
+.vjs-custom-skin .vjs-text-track-display {
+  font-family: inherit;
+}
+
+.vjs-custom-skin .vjs-text-track-cue {
+  background: rgba(0,0,0,0.8) !important;
+  color: white !important;
+  font-size: 1rem !important;
+  line-height: 1.4 !important;
+  border-radius: 4px !important;
+  padding: 4px 8px !important;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.3) !important;
+}
+
+/* Error display styling */
+.vjs-custom-skin .vjs-error-display {
+  background: rgba(239, 68, 68, 0.9); /* Red-500 with opacity */
+  color: white;
+}
+
+/* Loading spinner */
+.vjs-custom-skin .vjs-loading-spinner {
+  border-top-color: #2563eb; /* Blue-600 */
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  .vjs-custom-skin .vjs-big-play-button {
+    width: 60px;
+    height: 60px;
+    font-size: 1.5rem;
+  }
+  
+  .vjs-custom-skin .vjs-text-track-cue {
+    font-size: 0.875rem !important;
+  }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .vjs-custom-skin .vjs-control-bar {
+    background: linear-gradient(to top, rgba(0,0,0,0.9), rgba(0,0,0,0.5), transparent);
+  }
+}

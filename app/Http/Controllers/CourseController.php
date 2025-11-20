@@ -95,6 +95,7 @@ class CourseController extends Controller
             'material_type' => $material->type, 
             'content_text' => $material->content_text,
             'content_url' => $material->content_url,
+            'subtitle_url' => $material->subtitle_url,
             'is_completed' => false,
         ]);
 

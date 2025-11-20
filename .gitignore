@@ -24,3 +24,4 @@ Homestead.yaml
 Thumbs.db
 compose.yaml
 dump.rdb
+package-lock.json

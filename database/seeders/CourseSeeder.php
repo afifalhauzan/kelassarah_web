@@ -12,7 +12,9 @@ class CourseSeeder extends Seeder
     public function run(): void
     {
         $pdfLink = 'https://pdfjs-express.s3-us-west-2.amazonaws.com/docs/choosing-a-pdf-viewer.pdf';
-        $videoLink = 'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4';
+        $videoLink = 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4';
+        $videoLink2 = asset('videos/video_sample.mp4');
+        $subtitle_url = asset('subtitles/video_sample.vtt');
 
         $coursesData = [
             [
@@ -44,9 +46,6 @@ class CourseSeeder extends Seeder
                 'text_content' => 'Sarekat Islam (SI), awalnya Sarekat Dagang Islam (SDI) yang didirikan pada tahun 1911, dengan cepat berubah menjadi organisasi pergerakan massa terbesar di Hindia Belanda. Di bawah kepemimpinan H.O.S. Cokroaminoto, SI tidak hanya berfokus pada ekonomi tetapi juga politik dan agama. Organisasi ini berhasil menarik jutaan anggota dari berbagai lapisan masyarakat, menjadikannya kekuatan politik pertama yang secara terbuka menantang otoritas kolonial Belanda.'
             ],
         ];
-
-        $pdfLink = 'https://pdfjs-express.s3-us-west-2.amazonaws.com/docs/choosing-a-pdf-viewer.pdf';
-        $videoLink = 'https://www.youtube.com/watch?v=dQw4w9WgXcQ';
 
         foreach ($coursesData as $data) {
             $course = Course::create([
@@ -85,7 +84,8 @@ class CourseSeeder extends Seeder
                 'order' => 3,
                 'is_published' => true,
                 'type' => 'video',
-                'content_url' => $videoLink, 
+                'content_url' => $videoLink2, 
+                'subtitle_url' => $subtitle_url,
                 'content_text' => null
             ]);
         }

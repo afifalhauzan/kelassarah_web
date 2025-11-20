@@ -1,6 +1,6 @@
 import { useState } from "react";
 import PdfViewer from "./PdfViewer";
-import VideoNativeViewer from "./VideoNativeViewer";
+import VideoJsPlayer from "./VideoJsPlayer";
 
 const VideoIcon = () => (
     <svg
@@ -45,6 +45,8 @@ export default function LessonAccordion({ lesson }) {
     const { title, material_type, content_text, content_url, subtitle_url } =
         lesson;
 
+    console.log("Subtitle URL:", subtitle_url);
+
     const icon = material_type === "video" ? <VideoIcon /> : <DocumentIcon />;
 
     return (
@@ -76,7 +78,7 @@ export default function LessonAccordion({ lesson }) {
                 <div className="p-4 bg-gray-50 border-t border-gray-200">
                     {material_type === "video" && (
                         <div className="w-full aspect-video rounded-lg">
-                            <VideoNativeViewer
+                            <VideoJsPlayer
                                 videoUrl={content_url}
                                 subtitleUrl={subtitle_url}
                                 title={title}
