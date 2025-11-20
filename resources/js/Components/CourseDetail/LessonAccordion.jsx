@@ -1,5 +1,6 @@
 import { useState } from "react";
 import PdfViewer from "./PdfViewer";
+import VideoNativeViewer from "./VideoNativeViewer";
 
 const VideoIcon = () => (
     <svg
@@ -41,7 +42,8 @@ const DocumentIcon = () => (
 export default function LessonAccordion({ lesson }) {
     const [isOpen, setIsOpen] = useState(false);
 
-    const { title, material_type, content_text, content_url } = lesson;
+    const { title, material_type, content_text, content_url, subtitle_url } =
+        lesson;
 
     const icon = material_type === "video" ? <VideoIcon /> : <DocumentIcon />;
 
@@ -73,10 +75,12 @@ export default function LessonAccordion({ lesson }) {
             {isOpen && (
                 <div className="p-4 bg-gray-50 border-t border-gray-200">
                     {material_type === "video" && (
-                        <div className="w-full aspect-video bg-gray-200 rounded-lg flex items-center justify-center">
-                            <p className="text-gray-500">
-                                Placeholder Video (Buatin kak 😁)
-                            </p>
+                        <div className="w-full aspect-video rounded-lg">
+                            <VideoNativeViewer
+                                videoUrl={content_url}
+                                subtitleUrl={subtitle_url}
+                                title={title}
+                            />
                         </div>
                     )}
 
