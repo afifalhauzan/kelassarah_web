@@ -6,7 +6,8 @@ const getBubbleText = (status, courseId, isPolling) => {
         case "pending":
             return "Sedang berpikir...";
         case "completed":
-            return "Pertanyaan yang bagus!";
+            const completedTexts = ["Pertanyaan yang bagus!", "Keren!", "Semangat terus!"];
+            return completedTexts[Math.floor(Math.random() * completedTexts.length)];
         case "error":
             return "Maaf, terjadi kesalahan.";
         default:
@@ -20,6 +21,7 @@ const getMascotContent = (status) => {
             return (
                 <DotLottieReact
                     src="mascot_thinking.lottie"
+
                     loop
                     autoplay
                     className="h-auto w-42 -ml-11"
