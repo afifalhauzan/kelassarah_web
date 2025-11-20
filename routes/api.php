@@ -13,4 +13,4 @@ Route::get('/user', function (Request $request) {
 Route::get('/chat/{course_id}', [ChatMessageController::class, 'index']);
 Route::get('/chat/{course_id}/last', [ChatMessageController::class, 'getLastMessage']);
 Route::post('/chat/{course_id}', [ChatMessageController::class, 'store']);
-
+Route::get('/materials/{course_id}/video', [MaterialController::class, 'getVideoMaterial']);
