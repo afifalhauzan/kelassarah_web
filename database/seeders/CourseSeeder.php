@@ -11,6 +11,9 @@ class CourseSeeder extends Seeder
 {
     public function run(): void
     {
+        $pdfLink = 'https://pdfjs-express.s3-us-west-2.amazonaws.com/docs/choosing-a-pdf-viewer.pdf';
+        $videoLink = 'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4';
+
         $coursesData = [
             [
                 'title' => 'Orientasi Jurnalis Muda - Memahami Lanskap Pergerakan',
@@ -82,7 +85,7 @@ class CourseSeeder extends Seeder
                 'order' => 3,
                 'is_published' => true,
                 'type' => 'video',
-                'content_url' => $videoLink,
+                'content_url' => $videoLink, 
                 'content_text' => null
             ]);
         }
