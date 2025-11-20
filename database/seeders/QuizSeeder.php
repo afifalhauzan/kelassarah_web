@@ -8,6 +8,7 @@ use App\Models\Quiz;
 use App\Models\Question;
 use App\Models\Option;
 use App\Models\Course;
+use App\Models\Essay;
 
 class QuizSeeder extends Seeder
 {
@@ -16,6 +17,7 @@ class QuizSeeder extends Seeder
      */
     public function run(): void
     {
+        // Existing multiple choice quizzes for courses with order 1 and 4
         $courses = Course::whereIn('order', [1, 4])->get();
 
         foreach ($courses as $course) {
@@ -26,6 +28,7 @@ class QuizSeeder extends Seeder
                 'content' => 'Uji pemahamanmu tentang materi ' . $course->title,
                 'order' => 99,
                 'is_published' => '1',
+                'type' => null, // Default type for multiple choice
             ]);
 
             // -------- Soal 1 --------
@@ -127,6 +130,31 @@ class QuizSeeder extends Seeder
             Option::create(['question_id' => $q10->id, 'option_text' => 'Persoalan pendidikan demokratis bagi anak.', 'is_correct' => '0']); // Opsi B identik dengan A di PDF
             Option::create(['question_id' => $q10->id, 'option_text' => 'Gerakan kepanduan.', 'is_correct' => '0']);
             Option::create(['question_id' => $q10->id, 'option_text' => 'Pembacaan ikrar Sumpah Pemuda.', 'is_correct' => '0']);
+        }
+
+        // ============================
+        // NEW: Essay Quiz for Course Order = 2
+        // ============================
+        $essayCourse = Course::where('order', 2)->first();
+        
+        if ($essayCourse) {
+            $essayQuiz = Quiz::create([
+                'course_id' => $essayCourse->id,
+                'title' => 'Essay Refleksi - ' . $essayCourse->title,
+                'content' => 'Tugas essay untuk refleksi mendalam tentang materi ' . $essayCourse->title,
+                'order' => 100,
+                'is_published' => '1',
+                'type' => 'essay',
+            ]);
+
+            // Create the essay question
+            Essay::create([
+                'quiz_id' => $essayQuiz->id,
+                'question_text' => 'Kongres Pemuda I (1926) dianggap belum berhasil karena kuatnya “ego kedaerahan”. Namun, hanya dua tahun kemudian (1928), Kongres Pemuda II berhasil mencetuskan Sumpah Pemuda. Analisislah, faktor krusial apa yang berubah dalam kurun waktu dua tahun tersebut yang memungkinkan “penyakit” ego kedaerahan itu dapat diatasi sehingga persatuan dapat terwujud?',
+                'sample_answer' => 'Jawaban yang baik harus mencakup: 1) Pemahaman konsep utama, 2) Analisis kritis, 3) Refleksi personal ',
+                'max_words' => 500,
+                'instructions' => 'Bacalah materi terkait bagaimana peran para Tokoh Pergerakan Nasional. Setelah itu kerjakan soal Kuis 1 untuk memantapkan pemahaman kamu terkait kegagalan kongres pemuda I. Kamu bisa mewawancarai Kak Sarah yang berperan sebagai Tokoh Pergerakan Nasional untuk memperkuat argument kamu.',
+            ]);
         }
     }
 }

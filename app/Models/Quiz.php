@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Question; // <-- 1. TAMBAHIN INI BIAR GAK ERROR
 use App\Models\Course;   // <-- Tambahin juga buat relasi 'course'
+use App\Models\Essay;
 
 class Quiz extends Model
 {
@@ -17,6 +18,7 @@ class Quiz extends Model
         'content',
         'order',
         'is_published',
+        'type',
     ];
 
     public function course()
@@ -27,5 +29,10 @@ class Quiz extends Model
     public function questions()
     {
         return $this->hasMany(Question::class);
+    }
+
+    public function essays()
+    {
+        return $this->hasMany(Essay::class);
     }
 }

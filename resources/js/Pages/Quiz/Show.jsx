@@ -3,9 +3,12 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, Link } from "@inertiajs/react";
 import { MdChevronRight } from "react-icons/md";
 import QuizActive from "@/Components/Quiz/QuizActive";
+import EssayActive from "@/Components/Quiz/EssayActive";
 import QuizResult from "@/Components/Quiz/QuizResult";
 
 function QuizStartScreen({ quiz, onStartClick }) {
+    const isEssay = quiz.type === 'essay';
+    
     return (
         <div>
             <p className="text-sm text-gray-500 mb-6">
@@ -14,29 +17,46 @@ function QuizStartScreen({ quiz, onStartClick }) {
 
             <div className="bg-gray-50 border border-gray-200 rounded-lg p-6">
                 <h2 className="text-2xl font-bold text-gray-800 mb-4">
-                    Selamat Datang, Jurnalis Muda!
+                    {isEssay ? "Selamat Datang di Essay Quiz!" : "Selamat Datang, Jurnalis Muda!"}
                 </h2>
                 <div className="prose max-w-none text-gray-700">
-                    <p>
-                        Sebelum memulai petualanganmu sebagai seorang jurnalis
-                        sejarah, mari kita lihat sejauh mana pemahaman awalmu
-                        tentang peristiwa bersejarah ini. Tes ini tidak akan
-                        memengaruhi nilaimu, jadi kerjakan dengan jujur dan
-                        santai, ya!
-                    </p>
-                    <ul className="list-disc pl-5">
-                        <li>
-                            Bacalah setiap pertanyaan dengan teliti sebelum
-                            menjawab.
-                        </li>
-                        <li>
-                            Pilihlah satu jawaban yang kamu anggap paling benar.
-                        </li>
-                        <li>
-                            Kerjakan secara mandiri untuk mengukur pemahamanmu
-                            sendiri.
-                        </li>
-                    </ul>
+                    {isEssay ? (
+                        <>
+                            <p>
+                                Anda akan mengerjakan soal essay yang memerlukan pemahaman mendalam dan kemampuan analisis. 
+                                Jawablah dengan lengkap dan jelas sesuai dengan pertanyaan yang diberikan.
+                            </p>
+                            <ul className="list-disc pl-5">
+                                <li>Bacalah setiap pertanyaan dengan teliti sebelum menjawab.</li>
+                                <li>Berikan jawaban yang komprehensif dan terstruktur.</li>
+                                <li>Perhatikan batas jumlah kata yang ditetapkan (jika ada).</li>
+                                <li>Jawaban Anda akan dinilai oleh pengajar.</li>
+                            </ul>
+                        </>
+                    ) : (
+                        <>
+                            <p>
+                                Sebelum memulai petualanganmu sebagai seorang jurnalis
+                                sejarah, mari kita lihat sejauh mana pemahaman awalmu
+                                tentang peristiwa bersejarah ini. Tes ini tidak akan
+                                memengaruhi nilaimu, jadi kerjakan dengan jujur dan
+                                santai, ya!
+                            </p>
+                            <ul className="list-disc pl-5">
+                                <li>
+                                    Bacalah setiap pertanyaan dengan teliti sebelum
+                                    menjawab.
+                                </li>
+                                <li>
+                                    Pilihlah satu jawaban yang kamu anggap paling benar.
+                                </li>
+                                <li>
+                                    Kerjakan secara mandiri untuk mengukur pemahamanmu
+                                    sendiri.
+                                </li>
+                            </ul>
+                        </>
+                    )}
                     <p>Semangat!</p>
                 </div>
             </div>
@@ -53,7 +73,7 @@ function QuizStartScreen({ quiz, onStartClick }) {
     );
 }
 
-export default function Show({ course, quiz, questions }) {
+export default function Show({ course, quiz, questions, essays }) {
     const [quizStatus, setQuizStatus] = useState("not_started");
     const [quizResult, setQuizResult] = useState(null);
 
@@ -61,6 +81,8 @@ export default function Show({ course, quiz, questions }) {
         setQuizResult(result);
         setQuizStatus("finished");
     };
+
+    const isEssay = quiz.type === 'essay';
 
     return (
         <AuthenticatedLayout>
@@ -111,7 +133,16 @@ export default function Show({ course, quiz, questions }) {
                                 />
                             )}
 
-                            {quizStatus === "active" && (
+                            {quizStatus === "active" && isEssay && (
+                                <EssayActive
+                                    course={course}
+                                    quiz={quiz}
+                                    essays={essays}
+                                    onFinish={handleQuizFinish}
+                                />
+                            )}
+
+                            {quizStatus === "active" && !isEssay && (
                                 <QuizActive
                                     course={course}
                                     quiz={quiz}
