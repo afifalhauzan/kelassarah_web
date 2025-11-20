@@ -24,6 +24,7 @@
     },
     "dependencies": {
         "@formkit/auto-animate": "^0.9.0",
+        "@lottiefiles/dotlottie-react": "^0.17.7",
         "embla-carousel-react": "^8.6.0",
         "pdfjs-dist": "^5.4.296",
         "react-circular-progressbar": "^2.2.0",

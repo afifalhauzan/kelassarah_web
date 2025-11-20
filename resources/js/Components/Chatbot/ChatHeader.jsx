@@ -1,4 +1,5 @@
 import { useChat } from "@/Context/ChatContext";
+import { DotLottieReact } from '@lottiefiles/dotlottie-react';
 
 const getBubbleText = (status, courseId, isPolling) => {
     switch (status) {
@@ -13,12 +14,25 @@ const getBubbleText = (status, courseId, isPolling) => {
     }
 };
 
-const getMascotSrc = (status) => {
+const getMascotContent = (status) => {
     switch (status) {
         case "pending":
-            return "/chatbot/sarah-pending.svg";
+            return (
+                <DotLottieReact
+                    src="mascot_thinking.lottie"
+                    loop
+                    autoplay
+                    className="h-auto w-42 -ml-11"
+                />
+            );
         default:
-            return "/chatbot/sarah-idle.svg";
+            return (
+                <img
+                    src="/chatbot/sarah-idle.svg"
+                    alt="Kak Sarah"
+                    className="h-25 w-auto -ml-2"
+                />
+            );
     }
 };
 
@@ -26,7 +40,7 @@ export default function ChatHeader({ onClose }) {
     const { chatStatus, chatContextCourseld, isPolling, resetChat, showResetConsent, setShowResetConsent } = useChat();
 
     const bubbleText = getBubbleText(chatStatus, chatContextCourseld, isPolling);
-    const mascotSrc = getMascotSrc(chatStatus);
+    const mascotContent = getMascotContent(chatStatus);
 
     const handleResetClick = () => {
         if (showResetConsent) {
@@ -88,17 +102,11 @@ export default function ChatHeader({ onClose }) {
             </div>
 
             <div className="mt-4 flex items-center space-x-2">
-                <img
-                    src={mascotSrc}
-                    alt={
-                        chatStatus === "pending"
-                            ? "Kak Sarah sedang berpikir"
-                            : "Kak Sarah"
-                    }
-                    className="h-20 w-auto -ml-4"
-                />
+                <div className="object-cover">
+                    {mascotContent}
+                </div>
 
-                <div className="relative rounded-lg bg-slate-200 px-3 py-2 text-sm text-gray-800">
+                <div className={`relative rounded-lg bg-slate-200 px-3 py-2 text-sm text-gray-800 ${chatStatus == 'pending' ? '-ml-10' : ''}`}>
                     {bubbleText}
                     <span
                         className="absolute -left-1 top-1/2 h-2 w-2 -translate-y-1/2 rotate-45 transform bg-slate-200"
