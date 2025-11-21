@@ -13,20 +13,23 @@ class CourseSeeder extends Seeder
     {
         $pdfLink = 'https://pdfjs-express.s3-us-west-2.amazonaws.com/docs/choosing-a-pdf-viewer.pdf';
         $videoLink = 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4';
+        $pdfLinkMateri1 = asset('pdf/Materi_1.pdf');
+        $pdfLinkMateri2 = asset('pdf/Materi_2.pdf');
+        $pdfLinkMateri3 = asset('pdf/Materi_3.pdf');
         $videoLink2 = asset('videos/video_sample.mp4');
         $subtitle_url = asset('subtitles/video_sample.vtt');
 
         $coursesData = [
             [
                 'title' => 'Orientasi Jurnalis Muda - Memahami Lanskap Pergerakan',
-                'description' => 'Baca dan pahami materi terkait Organisasi Pergerakan berikut ini!',
+                'description' => 'Baca dan pahami materi terkait Organisasi Pergerakan berikut ini! Jika sudah, coba tanyakan Asisten Kak Sarah terkait awal perjalanan Anda dalam mempelajari Sejarah Indonesia lebih lanjut, Anda bisa memulai percakapan dengan mengirimkan pesan \'Halo\' di kolom chat.',
                 'order' => 1,
                 'thumbnail_url' => '/images/course_1.jpg',
                 'text_content' => 'Budi Utomo, didirikan pada 20 Mei 1908, adalah organisasi pergerakan nasional modern pertama di Indonesia. Didirikan oleh para pelajar STOVIA di Batavia, organisasi ini awalnya berfokus pada perbaikan pendidikan dan kebudayaan bagi orang Jawa dan Madura. Meskipun awalnya bersifat sosial-budaya, kelahiran Budi Utomo menandai dimulainya era baru dalam perjuangan bangsa, yaitu perjuangan yang terorganisir dan modern, yang kemudian dikenal sebagai Hari Kebangkitan Nasional.'
             ],
             [
                 'title' => 'Misi Investigasi - Menggali Perspektif Para Delegasi',
-                'description' => 'Bacalah materi terkait bagaimana peran para Tokoh Pergerakan Nasional...',
+                'description' => 'Bacalah materi terkait bagaimana peran para Tokoh Pergerakan Nasional dalam merancang Sumpah Pemuda yang kita kenal saat ini! Selanjutnya, coba tanyakan Kak Sarah untuk terkait materi ini, Anda juga bisa berdialog dengan tokoh-tokoh tertentu untuk menggali informasi lebih dalam!',
                 'order' => 2,
                 'thumbnail_url' => '/images/course_2.jpg',
                 'text_content' => 'Kongres Pemuda II, yang diadakan di Batavia (kini Jakarta) pada 27-28 Oktober 1928, adalah momen krusial dalam sejarah pergerakan nasional. Kongres ini dihadiri oleh berbagai organisasi pemuda dari berbagai daerah, seperti Jong Java, Jong Sumatranen Bond, Jong Ambon, dan lainnya. Tujuan utama mereka adalah untuk menemukan cara memperkuat persatuan di antara pemuda-pemudi Indonesia. Hasil paling monumental dari kongres ini adalah ikrar Sumpah Pemuda, yang menegaskan satu tanah air, satu bangsa, dan satu bahasa: Indonesia.'
@@ -60,34 +63,54 @@ class CourseSeeder extends Seeder
 
             Material::create([
                 'course_id' => $course->id,
-                'title' => 'Materi PDF - ' . $data['title'],
-                'order' => 1,
-                'is_published' => true,
-                'type' => 'document',
-                'content_url' => $pdfLink,
-                'content_text' => null
-            ]);
-            
-            Material::create([
-                'course_id' => $course->id,
-                'title' => 'Materi Teks - ' . $data['title'],
+                'title' => 'Materi Teks - Orientasi Jurnalis Muda - Memahami Lanskap Pergerakan',
                 'order' => 2,
                 'is_published' => true,
                 'type' => 'document',
                 'content_url' => null,
                 'content_text' => $data['text_content']
             ]);
-            
+
             Material::create([
                 'course_id' => $course->id,
-                'title' => 'Materi Video - ' . $data['title'],
+                'title' => 'Materi Video - ',
                 'order' => 3,
                 'is_published' => true,
                 'type' => 'video',
-                'content_url' => $videoLink2, 
+                'content_url' => $videoLink2,
                 'subtitle_url' => $subtitle_url,
                 'content_text' => null
             ]);
         }
+
+        Material::create([
+            'course_id' => 1,
+            'title' => 'Materi PDF - Orientasi Jurnalis Muda - Memahami Lanskap Pergerakan',
+            'order' => 1,
+            'is_published' => true,
+            'type' => 'document',
+            'content_url' => $pdfLinkMateri1,
+            'content_text' => null
+        ]);
+
+        Material::create([
+            'course_id' => 2,
+            'title' => 'Materi PDF - Misi Investigasi - Menggali Perspektif Para Delegasi',
+            'order' => 1,
+            'is_published' => true,
+            'type' => 'document',
+            'content_url' => $pdfLinkMateri2,
+            'content_text' => null
+        ]);
+
+        Material::create([
+            'course_id' => 3,
+            'title' => 'Materi PDF - Momen Krusial - Menjadi Saksi Mata di Kongres',
+            'order' => 1,
+            'is_published' => true,
+            'type' => 'document',
+            'content_url' => $pdfLinkMateri3,
+            'content_text' => null
+        ]);
     }
 }
