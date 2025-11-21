@@ -23,11 +23,11 @@ function EmptyState() {
 function PendingIndicator() {
     return (
         <div className="flex items-start space-x-3">
-            <div className="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center shrink-0">
+            <div className="w-11 h-8 rounded-full flex items-center justify-center shrink-0">
                 <img
-                    src="/chatbot/chat-maskot.svg"
+                    src="/chatbot/head_chat.png"
                     alt="Kak Sarah"
-                    className="w-6 h-6"
+                    className=""
                 />
             </div>
             <div className="bg-gray-100 rounded-2xl rounded-tl-none px-4 py-2 max-w-xs">
@@ -41,7 +41,7 @@ function PendingIndicator() {
     );
 }
 
-function ActiveChat({ history, chatStatus }) {
+function ActiveChat({ history, chatStatus, user }) {
     const scrollRef = useRef(null);
     
     useEffect(() => {
@@ -57,6 +57,7 @@ function ActiveChat({ history, chatStatus }) {
                     key={item.id}
                     role={item.role}
                     message={item.message}
+                    user={user}
                 />
             ))}
             
@@ -66,12 +67,12 @@ function ActiveChat({ history, chatStatus }) {
     );
 }
 
-export default function ChatHistory() {
+export default function ChatHistory({ user }) {
     const { history, chatStatus } = useChat();
     
     return history.length === 0 && chatStatus === "idle" ? (
         <EmptyState />
     ) : (
-        <ActiveChat history={history} chatStatus={chatStatus} />
+        <ActiveChat history={history} chatStatus={chatStatus} user={user} />
     );
 }

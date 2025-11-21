@@ -1,8 +1,8 @@
-export default function ChatBubble({ role, message }) {
+export default function ChatBubble({ role, message, user }) {
     const isUser = role === "user";
     const isLoading = message === "Sedang berpikir...";
 
-    const label = isUser ? "Pengguna" : "Kak Sarah";
+    const label = isUser ? (user?.name || "Pengguna") : "Kak Sarah";
 
     return (
         <div

@@ -7,7 +7,7 @@ import ChatHeader from "./ChatHeader";
 import ChatHistory from "./ChatHistory";
 import ChatInput from "./ChatInput";
 
-export default function ChatWidget() {
+export default function ChatWidget({ user }) {
     const { isOpen, setisOpen } = useChat();
     const { isChatHighlighted } = useOnboardingStore();
     const [hasCompletedOnboarding, setHasCompletedOnboarding] = useState(false);
@@ -99,7 +99,7 @@ export default function ChatWidget() {
                 <div className="flex h-full flex-col">
                     <ChatHeader onClose={() => setisOpen(false)} />
 
-                    <ChatHistory />
+                    <ChatHistory user={user} />
 
                     <ChatInput />
                 </div>

@@ -15,7 +15,7 @@ export default function AuthenticatedLayout({ children }) {
             <main className="md:flex-1 pt-16 md:pt-0 h-screen overflow-y-auto min-w-0">{children}</main>
 
             {/* Only show ChatWidget for students (non-guru users) */}
-            {!isTeacher && <ChatWidget />}
+            {!isTeacher && <ChatWidget user={auth?.user} />}
         </div>
     );
 }
