@@ -1,9 +1,9 @@
 import { Link } from '@inertiajs/react';
 
-export default function ProgressCard({ title, progress, lastCourseUrl = '#' }) {
+export default function ProgressCard({ title, progress, lastCourseUrl = 'course/1' }) {
     return (
         <div className="relative bg-blue-500 rounded-2xl p-6 md:p-8 text-white overflow-hidden">
-            <span className="absolute top-0 left-6 bg-blue-600 text-blue-100 text-xs font-semibold px-3 py-1 rounded-b-lg">
+            <span className="absolute top-0 left-6 bg-blue-600 text-blue-100 text-sm font-semibold px-3 py-1 rounded-b-lg">
                 Terakhir Dilihat
             </span>
 
@@ -14,9 +14,9 @@ export default function ProgressCard({ title, progress, lastCourseUrl = '#' }) {
             </div>
 
             <div className="relative z-10">
-                <h3 className="text-2xl font-bold mb-4 pr-10">{title}</h3>
+                <h3 className="text-2xl font-bold mb-4 pr-10 mt-4 ">{title}</h3>
 
-                <div className="w-full bg-blue-400 rounded-full h-2.5 mb-2">
+                {/* <div className="w-full bg-blue-400 rounded-full h-2.5 mb-2">
                     <div 
                         className="bg-white rounded-full h-2.5" 
                         style={{ width: `${progress}%` }}
@@ -24,7 +24,7 @@ export default function ProgressCard({ title, progress, lastCourseUrl = '#' }) {
                 </div>
                 <div className="text-right text-blue-100 text-sm font-medium mb-6">
                     {progress}%
-                </div>
+                </div> */}
 
                 <Link 
                     href={lastCourseUrl}

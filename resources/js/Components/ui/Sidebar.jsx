@@ -2,6 +2,7 @@ import { Link, usePage } from "@inertiajs/react";
 import { useState, useEffect } from "react";
 import ApplicationIcon from "@/Components/shared/ApplicationIcon";
 import { narrator } from "@/Utils/AudioController";
+import { RiHome5Line } from "react-icons/ri";
 
 export default function Sidebar() {
     const { auth } = usePage().props;
@@ -341,25 +342,7 @@ export default function Sidebar() {
                                     : "text-white hover:text-blue-200 hover:bg-blue-700"
                                     }`}
                             >
-                                <svg
-                                    className="w-5 h-5 mr-3"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    viewBox="0 0 24 24"
-                                >
-                                    <path
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        strokeWidth={2}
-                                        d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2H5a2 2 0 00-2-2z"
-                                    />
-                                    <path
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        strokeWidth={2}
-                                        d="M8 5a2 2 0 012-2h4a2 2 0 012 2v4H8V5z"
-                                    />
-                                </svg>
+                                <RiHome5Line className="w-5 h-5 mr-3" />
                                 <span className="font-medium">Beranda</span>
                             </Link>
 
@@ -570,25 +553,7 @@ export default function Sidebar() {
                                 : "text-gray-700 hover:bg-blue-50 hover:text-blue-600" // Style Normal
                                 }`}
                         >
-                            <svg
-                                className="w-5 h-5 mr-3"
-                                fill="none"
-                                stroke="currentColor"
-                                viewBox="0 0 24 24"
-                            >
-                                <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    strokeWidth={2}
-                                    d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2H5a2 2 0 00-2-2z"
-                                />
-                                <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    strokeWidth={2}
-                                    d="M8 5a2 2 0 012-2h4a2 2 0 012 2v4H8V5z"
-                                />
-                            </svg>
+                            <RiHome5Line className="w-5 h-5 mr-3" />
                             <span className="font-medium">Beranda</span>
                         </Link>
 
@@ -742,25 +707,7 @@ export default function Sidebar() {
                                 : "text-white hover:text-blue-200 hover:bg-blue-700" // Style Normal
                                 }`}
                         >
-                            <svg
-                                className="w-5 h-5 mr-3"
-                                fill="none"
-                                stroke="currentColor"
-                                viewBox="0 0 24 24"
-                            >
-                                <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    strokeWidth={2}
-                                    d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2H5a2 2 0 00-2-2z"
-                                />
-                                <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    strokeWidth={2}
-                                    d="M8 5a2 2 0 012-2h4a2 2 0 012 2v4H8V5z"
-                                />
-                            </svg>
+                            <RiHome5Line className="w-5 h-5 mr-3" />
                             <span className="font-medium">Beranda</span>
                         </Link>
 
