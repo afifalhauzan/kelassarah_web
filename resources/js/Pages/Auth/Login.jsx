@@ -38,6 +38,10 @@ export default function Login({ status, canResetPassword }) {
                 </div>
             )}
 
+            <h1 className="text-2xl text-center font-bold text-blue-500 mb-6 mt-2">
+                Masuk ke Akun Siswa/Guru
+            </h1>
+
             <form onSubmit={submit}>
                 {/* 2. This entire block is changed from 'email' to 'username' */}
                 <div>
@@ -83,7 +87,7 @@ export default function Login({ status, canResetPassword }) {
                             }
                         />
                         <span className="ms-2 text-sm text-gray-600">
-                            Remember me
+                            Ingat saya
                         </span>
                     </label>
                 </div>
@@ -94,12 +98,12 @@ export default function Login({ status, canResetPassword }) {
                             href={route('password.request')}
                             className="rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-hidden focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                         >
-                            Forgot your password?
+                            Lupa kata sandi?
                         </Link>
                     )}
 
                     <PrimaryButton className="ms-4" disabled={processing}>
-                        Log in
+                        Masuk
                     </PrimaryButton>
                 </div>
             </form>

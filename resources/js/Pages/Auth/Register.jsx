@@ -25,6 +25,10 @@ export default function Register() {
         <GuestLayout>
             <Head title="Register" />
 
+            <h1 className="text-2xl text-center font-bold text-blue-500 mb-6 mt-2">
+                Daftar Akun Siswa/Guru
+            </h1>
+
             <form onSubmit={submit}>
                 <div>
                     <InputLabel htmlFor="username" value="Username" />
@@ -80,7 +84,7 @@ export default function Register() {
                 <div className="mt-4">
                     <InputLabel
                         htmlFor="password_confirmation"
-                        value="Confirm Password"
+                        value="Konfirmasi Password"
                     />
 
                     <TextInput
@@ -107,11 +111,11 @@ export default function Register() {
                         href={route('login')}
                         className="rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-hidden focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                     >
-                        Already registered?
+                        Sudah terdaftar?
                     </Link>
 
                     <PrimaryButton className="ms-4" disabled={processing}>
-                        Register
+                        Daftar
                     </PrimaryButton>
                 </div>
             </form>

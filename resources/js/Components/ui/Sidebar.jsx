@@ -58,7 +58,7 @@ export default function Sidebar() {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" />
                 </svg>
                 <span className={`text-sm font-medium ${mobile ? 'text-blue-100' : 'text-gray-700'}`}>
-                    Voice Mode
+                    Mode Suara
                 </span>
             </div>
             <button
@@ -268,7 +268,7 @@ export default function Sidebar() {
                                         d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
                                     />
                                 </svg>
-                                <span className="font-medium">Log Out</span>
+                                <span className="font-medium">Keluar</span>
                             </Link>
                         </div>
                     </div>
@@ -360,7 +360,7 @@ export default function Sidebar() {
                                         d="M8 5a2 2 0 012-2h4a2 2 0 012 2v4H8V5z"
                                     />
                                 </svg>
-                                <span className="font-medium">Dashboard</span>
+                                <span className="font-medium">Beranda</span>
                             </Link>
 
                             <Link
@@ -458,7 +458,7 @@ export default function Sidebar() {
                                         d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
                                     />
                                 </svg>
-                                <span className="font-medium">Log Out</span>
+                                <span className="font-medium">Keluar</span>
                             </Link>
                         </div>
                     </div>
@@ -663,7 +663,7 @@ export default function Sidebar() {
                                     d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
                                 />
                             </svg>
-                            <span className="font-medium">Log Out</span>
+                            <span className="font-medium">Keluar</span>
                         </Link>
                     </div>
                 </div>
@@ -761,7 +761,7 @@ export default function Sidebar() {
                                     d="M8 5a2 2 0 012-2h4a2 2 0 012 2v4H8V5z"
                                 />
                             </svg>
-                            <span className="font-medium">Dashboard</span>
+                            <span className="font-medium">Beranda</span>
                         </Link>
 
                         <Link
@@ -786,7 +786,7 @@ export default function Sidebar() {
                                     d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25"
                                 />
                             </svg>
-                            <span className="font-medium">Courses</span>
+                            <span className="font-medium">Kursus</span>
                         </Link>
 
                         <Link
@@ -838,7 +838,7 @@ export default function Sidebar() {
                                     d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
                                 />
                             </svg>
-                            <span className="font-medium">Log Out</span>
+                            <span className="font-medium">Keluar</span>
                         </Link>
                     </div>
                 </div>
