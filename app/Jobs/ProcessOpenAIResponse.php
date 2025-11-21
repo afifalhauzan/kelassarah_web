@@ -308,7 +308,7 @@ class ProcessOpenAIResponse implements ShouldQueue
                 ->make();
 
             $response = $client->chat()->create([
-                'model' => 'gpt-4o-mini',
+                'model' => 'gpt-5-mini',
                 'messages' => $messages,
             ]);
 
