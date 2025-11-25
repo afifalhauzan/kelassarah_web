@@ -42,7 +42,7 @@ export default function TambahCourse({ courses = [] }) {
     };
 
     const handleDelete = (courseId) => {
-        if (confirm('Apakah Anda yakin ingin menghapus course ini?')) {
+        if (confirm('Apakah Anda yakin ingin menghapus kursus ini?')) {
             router.delete(route('guru.course.destroy', courseId));
         }
     };
@@ -57,7 +57,7 @@ export default function TambahCourse({ courses = [] }) {
 
     return (
         <AuthenticatedLayout>
-            <Head title="Kelola Course" />
+            <Head title="Kelola Kursus" />
 
             <div className="py-8">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
@@ -66,8 +66,8 @@ export default function TambahCourse({ courses = [] }) {
                             {/* Header */}
                             <div className="flex justify-between items-center mb-6">
                                 <div>
-                                    <h1 className="text-2xl font-bold text-gray-800">Course</h1>
-                                    <p className="text-sm text-gray-500">1 - {courses.length} of {courses.length}</p>
+                                    <h1 className="text-2xl font-bold text-gray-800">Kursus</h1>
+                                    <p className="text-sm text-gray-500">1 - {courses.length} dari {courses.length}</p>
                                 </div>
                                 <button
                                     onClick={() => setShowCreateForm(!showCreateForm)}
@@ -76,7 +76,7 @@ export default function TambahCourse({ courses = [] }) {
                                     <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
                                     </svg>
-                                    Tambah Course
+                                    Tambah Kursus
                                 </button>
                             </div>
 
@@ -90,11 +90,11 @@ export default function TambahCourse({ courses = [] }) {
                             {/* Create Form */}
                             {showCreateForm && (
                                 <div className="mb-6 p-4 border rounded-lg bg-gray-50">
-                                    <h3 className="text-lg font-semibold mb-4">Tambah Course Baru</h3>
+                                    <h3 className="text-lg font-semibold mb-4">Tambah Kursus Baru</h3>
                                     <form onSubmit={handleCreateSubmit} className="space-y-4">
                                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                             <div>
-                                                <label className="block text-sm font-medium text-gray-700 mb-1">Title</label>
+                                                <label className="block text-sm font-medium text-gray-700 mb-1">Judul</label>
                                                 <input
                                                     type="text"
                                                     name="title"
@@ -105,7 +105,7 @@ export default function TambahCourse({ courses = [] }) {
                                                 />
                                             </div>
                                             <div>
-                                                <label className="block text-sm font-medium text-gray-700 mb-1">Order</label>
+                                                <label className="block text-sm font-medium text-gray-700 mb-1">Urutan</label>
                                                 <input
                                                     type="number"
                                                     name="order"
@@ -117,7 +117,7 @@ export default function TambahCourse({ courses = [] }) {
                                             </div>
                                         </div>
                                         <div>
-                                            <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>
+                                            <label className="block text-sm font-medium text-gray-700 mb-1">Deskripsi</label>
                                             <textarea
                                                 name="description"
                                                 value={formData.description}
@@ -127,7 +127,7 @@ export default function TambahCourse({ courses = [] }) {
                                             />
                                         </div>
                                         <div>
-                                            <label className="block text-sm font-medium text-gray-700 mb-1">Thumbnail URL</label>
+                                            <label className="block text-sm font-medium text-gray-700 mb-1">URL Thumbnail</label>
                                             <input
                                                 type="text"
                                                 name="thumbnail_url"
@@ -144,7 +144,7 @@ export default function TambahCourse({ courses = [] }) {
                                                 onChange={handleInputChange}
                                                 className="mr-2"
                                             />
-                                            <label className="text-sm font-medium text-gray-700">Published</label>
+                                            <label className="text-sm font-medium text-gray-700">Terbitkan</label>
                                         </div>
                                         <div className="flex gap-2">
                                             <button
@@ -152,14 +152,14 @@ export default function TambahCourse({ courses = [] }) {
                                                 disabled={isSubmitting}
                                                 className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg disabled:opacity-50"
                                             >
-                                                {isSubmitting ? 'Creating...' : 'Create Course'}
+                                                {isSubmitting ? 'Membuat...' : 'Buat Kursus'}
                                             </button>
                                             <button
                                                 type="button"
                                                 onClick={() => setShowCreateForm(false)}
                                                 className="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-lg"
                                             >
-                                                Cancel
+                                                Batal
                                             </button>
                                         </div>
                                     </form>
@@ -172,9 +172,9 @@ export default function TambahCourse({ courses = [] }) {
                                     <thead>
                                         <tr className="border-b">
                                             <th className="text-left py-3 px-4 font-medium text-gray-700">No</th>
-                                            <th className="text-left py-3 px-4 font-medium text-gray-700">Nama Course</th>
-                                            <th className="text-left py-3 px-4 font-medium text-gray-700">Description</th>
-                                            <th className="text-left py-3 px-4 font-medium text-gray-700">Order</th>
+                                            <th className="text-left py-3 px-4 font-medium text-gray-700">Nama Kursus</th>
+                                            <th className="text-left py-3 px-4 font-medium text-gray-700">Deskripsi</th>
+                                            <th className="text-left py-3 px-4 font-medium text-gray-700">Urutan</th>
                                             <th className="text-left py-3 px-4 font-medium text-gray-700">Status</th>
                                             <th className="text-left py-3 px-4 font-medium text-gray-700">Aksi</th>
                                         </tr>
@@ -201,7 +201,7 @@ export default function TambahCourse({ courses = [] }) {
                                                                 ? 'bg-green-100 text-green-800' 
                                                                 : 'bg-red-100 text-red-800'
                                                         }`}>
-                                                            {course.is_published ? 'Published' : 'Draft'}
+                                                            {course.is_published ? 'Terbit' : 'Draft'}
                                                         </span>
                                                     </td>
                                                     <td className="py-3 px-4">
@@ -229,7 +229,7 @@ export default function TambahCourse({ courses = [] }) {
                                         ) : (
                                             <tr>
                                                 <td colSpan={6} className="py-8 text-center text-gray-500">
-                                                    Belum ada course. Silakan tambah course baru.
+                                                    Belum ada kursus. Silakan tambah kursus baru.
                                                 </td>
                                             </tr>
                                         )}

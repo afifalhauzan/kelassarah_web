@@ -36,7 +36,7 @@ export default function EditCourse({ course }) {
         router.put(route('guru.course.update', course.id), formData, {
             onSuccess: () => {
                 setIsSubmitting(false);
-                setMessage('Course updated successfully!');
+                setMessage('Kursus berhasil diperbarui!');
                 // Redirect back to course list after 2 seconds
                 setTimeout(() => {
                     router.get(route('guru.course.create'));
@@ -44,7 +44,7 @@ export default function EditCourse({ course }) {
             },
             onError: (errors) => {
                 setIsSubmitting(false);
-                setMessage('Error updating course. Please check the form.');
+                setMessage('Error saat memperbarui kursus. Silakan periksa formulir.');
             }
         });
     };
@@ -59,7 +59,7 @@ export default function EditCourse({ course }) {
 
     return (
         <AuthenticatedLayout>
-            <Head title="Edit Course" />
+            <Head title="Edit Kursus" />
 
             <div className="py-8">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
@@ -68,8 +68,8 @@ export default function EditCourse({ course }) {
                             {/* Header */}
                             <div className="flex justify-between items-center mb-6">
                                 <div>
-                                    <h1 className="text-2xl font-bold text-gray-800">Edit Course</h1>
-                                    <p className="text-sm text-gray-500">Update course information</p>
+                                    <h1 className="text-2xl font-bold text-gray-800">Edit Kursus</h1>
+                                    <p className="text-sm text-gray-500">Perbarui informasi kursus</p>
                                 </div>
                                 <Link
                                     href={route('guru.course.create')}
@@ -78,14 +78,14 @@ export default function EditCourse({ course }) {
                                     <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
                                     </svg>
-                                    Back to Course List
+                                    Kembali ke Daftar Kursus
                                 </Link>
                             </div>
 
                             {/* Success/Error Message */}
                             {message && (
                                 <div className={`mb-4 px-4 py-3 rounded ${
-                                    message.includes('successfully') 
+                                    message.includes('berhasil') 
                                         ? 'bg-green-100 border border-green-400 text-green-700'
                                         : 'bg-red-100 border border-red-400 text-red-700'
                                 }`}>
@@ -99,7 +99,7 @@ export default function EditCourse({ course }) {
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                         <div>
                                             <label className="block text-sm font-medium text-gray-700 mb-2">
-                                                Course Title *
+                                                Judul Kursus *
                                             </label>
                                             <input
                                                 type="text"
@@ -108,12 +108,12 @@ export default function EditCourse({ course }) {
                                                 onChange={handleInputChange}
                                                 required
                                                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                                placeholder="Enter course title"
+                                                placeholder="Masukkan judul kursus"
                                             />
                                         </div>
                                         <div>
                                             <label className="block text-sm font-medium text-gray-700 mb-2">
-                                                Order *
+                                                Urutan *
                                             </label>
                                             <input
                                                 type="number"
@@ -123,14 +123,14 @@ export default function EditCourse({ course }) {
                                                 required
                                                 min="1"
                                                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                                placeholder="Enter course order"
+                                                placeholder="Masukkan urutan kursus"
                                             />
                                         </div>
                                     </div>
 
                                     <div>
                                         <label className="block text-sm font-medium text-gray-700 mb-2">
-                                            Description
+                                            Deskripsi
                                         </label>
                                         <textarea
                                             name="description"
@@ -138,13 +138,13 @@ export default function EditCourse({ course }) {
                                             onChange={handleInputChange}
                                             rows={4}
                                             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                            placeholder="Enter course description"
+                                            placeholder="Masukkan deskripsi kursus"
                                         />
                                     </div>
 
                                     <div>
                                         <label className="block text-sm font-medium text-gray-700 mb-2">
-                                            Thumbnail URL
+                                            URL Thumbnail
                                         </label>
                                         <input
                                             type="text"
@@ -152,13 +152,13 @@ export default function EditCourse({ course }) {
                                             value={formData.thumbnail_url}
                                             onChange={handleInputChange}
                                             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                            placeholder="Enter thumbnail URL"
+                                            placeholder="Masukkan URL thumbnail"
                                         />
                                     </div>
 
                                     <div>
                                         <label className="block text-sm font-medium text-gray-700 mb-2">
-                                            Knowledge Prompt
+                                            Prompt Pengetahuan
                                         </label>
                                         <textarea
                                             name="knowledge_prompt"
@@ -166,13 +166,13 @@ export default function EditCourse({ course }) {
                                             onChange={handleInputChange}
                                             rows={3}
                                             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                            placeholder="Enter knowledge prompt for AI"
+                                            placeholder="Masukkan prompt pengetahuan untuk AI"
                                         />
                                     </div>
 
                                     <div>
                                         <label className="block text-sm font-medium text-gray-700 mb-2">
-                                            Welcome Message
+                                            Pesan Selamat Datang
                                         </label>
                                         <textarea
                                             name="welcome_message"
@@ -180,7 +180,7 @@ export default function EditCourse({ course }) {
                                             onChange={handleInputChange}
                                             rows={3}
                                             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                            placeholder="Enter welcome message for students"
+                                            placeholder="Masukkan pesan selamat datang untuk siswa"
                                         />
                                     </div>
 
@@ -193,7 +193,7 @@ export default function EditCourse({ course }) {
                                             className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2"
                                         />
                                         <label className="ml-2 text-sm font-medium text-gray-700">
-                                            Publish this course (make it visible to students)
+                                            Terbitkan kursus ini (buat terlihat oleh siswa)
                                         </label>
                                     </div>
 
@@ -203,13 +203,13 @@ export default function EditCourse({ course }) {
                                             disabled={isSubmitting}
                                             className="bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded-lg font-medium disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                                         >
-                                            {isSubmitting ? 'Updating...' : 'Update Course'}
+                                            {isSubmitting ? 'Memperbarui...' : 'Perbarui Kursus'}
                                         </button>
                                         <Link
                                             href={route('guru.course.create')}
                                             className="bg-gray-500 hover:bg-gray-600 text-white px-6 py-2 rounded-lg font-medium transition-colors"
                                         >
-                                            Cancel
+                                            Batal
                                         </Link>
                                     </div>
                                 </form>

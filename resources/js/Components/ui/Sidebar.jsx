@@ -210,7 +210,7 @@ export default function Sidebar() {
                                         d="M12 4v16m8-8H4"
                                     />
                                 </svg>
-                                <span className="font-medium">Tambah Course</span>
+                                <span className="font-medium">Tambah Kursus</span>
                             </Link>
 
                             <Link
@@ -378,7 +378,7 @@ export default function Sidebar() {
                                         d="M12 4v16m8-8H4"
                                     />
                                 </svg>
-                                <span className="font-medium">Tambah Course</span>
+                                <span className="font-medium">Tambah Kursus</span>
                             </Link>
 
                             <Link
