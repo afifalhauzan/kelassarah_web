@@ -24,7 +24,7 @@ export default function EssayActive({ course, quiz, essays, onFinish }) {
                 onFinish(result);
             })
             .catch((error) => {
-                console.error("Gagal submit essay:", error);
+                console.error("Gagal submit esai:", error);
                 alert("Gagal mengirim jawaban, coba lagi.");
                 setIsSubmitting(false);
             });

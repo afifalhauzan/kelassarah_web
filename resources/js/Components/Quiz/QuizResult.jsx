@@ -20,7 +20,7 @@ export default function QuizResult({ result = dummyResult }) {
 
                 <div className="bg-blue-50 border border-blue-200 rounded-lg p-6 mb-6">
                     <p className="text-lg text-gray-700 text-center">
-                        Jawaban yang dikirim: <span className="font-bold">{submittedAnswers}</span> dari {totalQuestions} soal essay
+                        Jawaban yang dikirim: <span className="font-bold">{submittedAnswers}</span> dari {totalQuestions} soal esai
                     </p>
                     <p className="text-sm text-blue-700 mt-3 text-center">
                         {message}

@@ -31,12 +31,12 @@ export default function Mascot() {
 
                     {/* Mascot Container */}
                     <div className="flex justify-center mb-12">
-                        <div className="relative max-w-lg w-4/5 md:w-1/2 lg:w-1/3">
+                        <div className="relative max-w-lg w-full">
                             {/* Mascot Image - z-30 */}
                             <img
-                                src="/images/mascot_main.svg"
+                                src="/images/mascot_main_alt.svg"
                                 alt="Kak Sarah mascot with speech bubbles"
-                                className="w-full h-auto object-contain relative z-30"
+                                className="w-full h-auto relative z-30"
                             />
                         </div>
                     </div>

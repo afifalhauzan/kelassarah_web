@@ -38,14 +38,14 @@ class CourseSeeder extends Seeder
                 'title' => 'Momen Krusial - Menjadi Saksi Mata di Kongres',
                 'description' => 'Bacalah materi tentang proses kongres pemuda dan hasil dari kongres tersebut pada materi berikut ini! Jika sudah membaca materi, Anda bisa dapat melanjutkan bertanya ke Kak Sarah dan merasakan suasana yang imersif dalam momen-momen puncak Kongres Pemuda II.',
                 'order' => 3,
-                'thumbnail_url' => '/images/course_1.jpg',
+                'thumbnail_url' => '/images/course_3.png',
                 'text_content' => 'Sarekat Islam (SI), awalnya Sarekat Dagang Islam (SDI) yang didirikan pada tahun 1911, dengan cepat berubah menjadi organisasi pergerakan massa terbesar di Hindia Belanda. Di bawah kepemimpinan H.O.S. Cokroaminoto, SI tidak hanya berfokus pada ekonomi tetapi juga politik dan agama. Organisasi ini berhasil menarik jutaan anggota dari berbagai lapisan masyarakat, menjadikannya kekuatan politik pertama yang secara terbuka menantang otoritas kolonial Belanda.'
             ],
             [
                 'title' => 'Proyek Akhir - Artikel Sejarah',
-                'description' => 'Menyelami peran Sarekat Islam sebagai salah satu organisasi massa pertama.Sebagai seorang jurnalis muda, integrasikan seluruh materi yang Anda peroleh dan pengalaman bersama pendampingan Guru dan Kak Sarah yang Anda dapatkan untuk merangkai sebuah karya tulis. Tuliskan sebuah artikel berita sepanjang minmal 200 kata untuk surat kabarmu yang merangkum hasil dan semangat dari Kongres Pemuda II.',
+                'description' => 'Sebagai tahap akhir investigasi, sintesiskan pemahaman kamu mengenai Kongres Pemuda II. Integrasikan perspektif tokoh (M. Yamin/Soegondo) berdasarkan wawancara yang kamu lakukan dan suasana kebatinan kongres ke dalam satu artikel berita yang padu. Tuliskan minimal 200 kata dan diskusikan kerangka tulisan kamu bersama Kak Sarah',
                 'order' => 4,
-                'thumbnail_url' => '/images/course_2.jpg',
+                'thumbnail_url' => '/images/course_4.jpg',
                 'text_content' => 'Sarekat Islam (SI), awalnya Sarekat Dagang Islam (SDI) yang didirikan pada tahun 1911, dengan cepat berubah menjadi organisasi pergerakan massa terbesar di Hindia Belanda. Di bawah kepemimpinan H.O.S. Cokroaminoto, SI tidak hanya berfokus pada ekonomi tetapi juga politik dan agama. Organisasi ini berhasil menarik jutaan anggota dari berbagai lapisan masyarakat, menjadikannya kekuatan politik pertama yang secara terbuka menantang otoritas kolonial Belanda.'
             ],
         ];
@@ -63,25 +63,25 @@ class CourseSeeder extends Seeder
 
             Material::create([
                 'course_id' => $course->id,
-                'title' => 'Materi Teks - Orientasi Jurnalis Muda - Memahami Lanskap Pergerakan',
+                'title' => 'Materi Teks - ' . $data['title'],
                 'order' => 2,
                 'is_published' => true,
                 'type' => 'document',
                 'content_url' => null,
                 'content_text' => $data['text_content']
             ]);
-
-            Material::create([
-                'course_id' => $course->id,
-                'title' => 'Materi Video - ',
-                'order' => 3,
-                'is_published' => true,
-                'type' => 'video',
-                'content_url' => $videoLink2,
-                'subtitle_url' => $subtitle_url,
-                'content_text' => null
-            ]);
         }
+
+        Material::create([
+            'course_id' => 1,
+            'title' => 'Materi Video - Orientasi Jurnalis Muda - Memahami Lanskap Pergerakan',
+            'order' => 3,
+            'is_published' => true,
+            'type' => 'video',
+            'content_url' => $videoLink2,
+            'subtitle_url' => $subtitle_url,
+            'content_text' => null
+        ]);
 
         Material::create([
             'course_id' => 1,

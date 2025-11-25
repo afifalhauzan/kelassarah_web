@@ -44,7 +44,7 @@ export default function Footer() {
                         <div className="flex flex-col space-y-2">
                             <h3 className="text-lg font-semibold mb-3">Sosial Media</h3>
                             <a
-                                href="https://youtu.be/kAfjAYVrv7Y"
+                                href="https://www.youtube.com/watch?v=T3tikrHykd8"
                                 target='_blank'
                                 className="flex items-center space-x-2 text-white/80 hover:text-white transition-colors duration-200"
                             >
@@ -64,7 +64,7 @@ export default function Footer() {
                     <div className="text-center">
                         <Link
                             href="/credits"
-                            className="text-white/80 hover:text-white transition-colors duration-200"
+                            className="underline text-white/80 hover:text-white transition-colors duration-200"
                         >
                             Kak Sarah Chatbot Team, 2025
                         </Link>

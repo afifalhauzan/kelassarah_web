@@ -140,8 +140,8 @@ class QuizSeeder extends Seeder
         if ($essayCourse2) {
             $essayQuiz2 = Quiz::create([
                 'course_id' => $essayCourse2->id,
-                'title' => 'Essay Refleksi - ' . $essayCourse2->title,
-                'content' => 'Tugas essay untuk refleksi mendalam tentang materi ' . $essayCourse2->title,
+                'title' => 'Esai Refleksi - ' . $essayCourse2->title,
+                'content' => 'Tugas esai untuk refleksi mendalam tentang materi ' . $essayCourse2->title,
                 'order' => 100,
                 'is_published' => '1',
                 'type' => 'essay',

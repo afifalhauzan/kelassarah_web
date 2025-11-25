@@ -17,13 +17,13 @@ function QuizStartScreen({ quiz, onStartClick }) {
 
             <div className="bg-gray-50 border border-gray-200 rounded-lg p-6">
                 <h2 className="text-2xl font-bold text-gray-800 mb-4">
-                    {isEssay ? "Selamat Datang di Essay Quiz!" : "Selamat Datang, Jurnalis Muda!"}
+                    {isEssay ? "Selamat Datang di Kuis Esai!" : "Selamat Datang, Jurnalis Muda!"}
                 </h2>
                 <div className="prose max-w-none text-gray-700">
                     {isEssay ? (
                         <>
                             <p>
-                                Anda akan mengerjakan soal essay yang memerlukan pemahaman mendalam dan kemampuan analisis. 
+                                Anda akan mengerjakan soal esai yang memerlukan pemahaman mendalam dan kemampuan analisis. 
                                 Jawablah dengan lengkap dan jelas sesuai dengan pertanyaan yang diberikan.
                             </p>
                             <ul className="list-disc pl-5">
