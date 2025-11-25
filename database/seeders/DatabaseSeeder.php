@@ -11,6 +11,7 @@ use Database\Seeders\UserSiswaSeeder;
 use Database\Seeders\UserGuruSeeder;
 use Database\Seeders\CourseSeeder;
 use Database\Seeders\QuizSeeder;
+use Database\Seeders\InformasiSeeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -26,6 +27,7 @@ class DatabaseSeeder extends Seeder
             QuizSeeder::class,
             UserSiswaSeeder::class,
             UserGuruSeeder::class,
+            InformasiSeeder::class,
         ]);
     }
 }

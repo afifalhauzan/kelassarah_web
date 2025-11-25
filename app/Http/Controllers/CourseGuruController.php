@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Course;
 use App\Models\Quiz;
+use App\Models\Informasi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
@@ -11,6 +12,45 @@ use Illuminate\Support\Facades\Auth;
 class CourseGuruController extends Controller
 {
     public function index()
+    {
+        // Get ALL courses for teachers, not just published ones
+        $courses = Course::orderBy('order', 'asc')
+            ->get()
+            ->map(fn ($course) => [
+                'id' => $course->id,
+                'title' => $course->title,
+                'thumbnail_url' => $course->thumbnail_url,
+                'description' => $course->description,
+                'order' => $course->order,
+                'is_published' => $course->is_published,
+                'knowledge_prompt' => $course->knowledge_prompt,
+                'welcome_message' => $course->welcome_message,
+                'created_at' => $course->created_at,
+                'materials_count' => $course->materials()->count(),
+                'quizzes_count' => $course->quizzes()->count(),
+            ]);
+
+        // Get PDF documents (all documents for teachers)
+        $pdfDocuments = Informasi::where('is_published', true)
+            ->orderBy('order', 'asc')
+            ->get()
+            ->map(fn ($doc) => [
+                'id' => $doc->id,
+                'title' => $doc->title,
+                'description' => $doc->description,
+                'type' => $doc->type,
+                'file_url' => $doc->file_url,
+                'order' => $doc->order,
+                'access' => $doc->access,
+            ]);
+
+        return inertia('Guru/Informasi', [ 
+            'courses' => $courses,
+            'pdfDocuments' => $pdfDocuments,
+        ]);
+    }
+
+    public function course()
     {
         // Get ALL courses for teachers, not just published ones
         $courses = Course::orderBy('order', 'asc')

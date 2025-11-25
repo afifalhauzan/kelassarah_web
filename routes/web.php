@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Models\User;
 use App\Models\Course;
+use App\Models\Informasi;
 
 // Route::get('/', function () {
 // return Inertia::render('Welcome', [
@@ -85,7 +86,10 @@ Route::domain(env('APP_TEACHER_DOMAIN'))->group(function () {
         Route::delete('/profile', [ProfileController::class, 'destroy'])->name('guru.profile.destroy');
 
         // Course Management for teachers
-        Route::get('/course', [CourseGuruController::class, 'index'])->name('guru.course.create');
+        Route::get('/', [CourseGuruController::class, 'index'])->name('guru.main');
+
+        // Course Management for teachers
+        Route::get('/course', [CourseGuruController::class, 'course'])->name('guru.course.create');
         
         // Add edit route
         Route::get('/course/edit/{course}', function (Course $course) {
@@ -156,8 +160,23 @@ Route::domain(env('APP_DOMAIN'))->group(function () {
                     'totalModules' => $course->materials()->count() + $course->quizzes()->count(),
                 ]);
 
+            // Get PDF documents (only public documents for students)
+            $pdfDocuments = Informasi::where('is_published', true)
+                ->whereNull('access')
+                ->orderBy('order', 'asc')
+                ->get()
+                ->map(fn ($doc) => [
+                    'id' => $doc->id,
+                    'title' => $doc->title,
+                    'description' => $doc->description,
+                    'type' => $doc->type,
+                    'file_url' => $doc->file_url,
+                    'order' => $doc->order,
+                ]);
+
             return Inertia::render('Dashboard', [
                 'courses' => $courses,
+                'pdfDocuments' => $pdfDocuments,
                 'showOnboarding' => !$user->has_completed_onboarding
             ]);
         })->name('dashboard');

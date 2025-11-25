@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import ApplicationIcon from "@/Components/shared/ApplicationIcon";
 import { narrator } from "@/Utils/AudioController";
 import { RiHome5Line } from "react-icons/ri";
+import { IoIosInformationCircle } from "react-icons/io";
 
 export default function Sidebar() {
     const { auth } = usePage().props;
@@ -179,6 +180,17 @@ export default function Sidebar() {
                         {/* Teacher Navigation Links */}
                         <nav className="flex-1 px-4 py-6 space-y-2">
                             <Link
+                                href={route("guru.main")}
+                                className={`flex items-center px-4 py-3 rounded-lg transition-colors duration-200 group ${isGuruTambahCourseActive
+                                    ? "bg-blue-50 text-blue-600"
+                                    : "text-gray-700 hover:bg-blue-50 hover:text-blue-600"
+                                    }`}
+                            >
+                                <IoIosInformationCircle className="w-5 h-5 mr-3" />
+                                <span className="font-medium">Informasi</span>
+                            </Link>
+
+                            <Link
                                 href={route("guru.course.create")}
                                 className={`flex items-center px-4 py-3 rounded-lg transition-colors duration-200 group ${isGuruTambahCourseActive
                                     ? "bg-blue-50 text-blue-600"
@@ -335,15 +347,14 @@ export default function Sidebar() {
                         {/* Mobile Teacher Navigation Links */}
                         <nav className="flex-1 px-6 py-6 space-y-4">
                             <Link
-                                href={route("guru.course.create")}
-                                onClick={() => setIsMobileMenuOpen(false)}
-                                className={`flex items-center px-4 py-3 rounded-lg transition-colors duration-200 ${isGuruTambahCourseActive
-                                    ? "bg-blue-700 text-blue-200"
-                                    : "text-white hover:text-blue-200 hover:bg-blue-700"
+                                href={route("guru.main")}
+                                className={`flex items-center px-4 py-3 rounded-lg transition-colors duration-200 group ${isGuruTambahCourseActive
+                                    ? "bg-blue-50 text-blue-600"
+                                    : "text-gray-700 hover:bg-blue-50 hover:text-blue-600"
                                     }`}
                             >
-                                <RiHome5Line className="w-5 h-5 mr-3" />
-                                <span className="font-medium">Beranda</span>
+                                <IoIosInformationCircle className="w-5 h-5 mr-3" />
+                                <span className="font-medium">Informasi</span>
                             </Link>
 
                             <Link

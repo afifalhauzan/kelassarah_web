@@ -7,45 +7,8 @@ import OnboardingOverlay from "@/Components/shared/OnboardingOverlay";
 import PdfDocumentCard from "@/Components/shared/PdfDocumentCard";
 
 // Receive 'courses', 'pdfDocuments' and 'showOnboarding' from props
-export default function Dashboard({ courses = [], pdfDocuments = [], showOnboarding = false }) {
+export default function Informasi({ courses = [], pdfDocuments = [], showOnboarding = false }) {
     const { auth } = usePage().props;
-    
-    // Create a LOCAL state to control the overlay (starts as false, then checks backend)
-    // Always start with false to prevent flash, then update based on API response
-    const [isShowingOnboarding, setIsShowingOnboarding] = useState(false);
-    const [onboardingStatus, setOnboardingStatus] = useState(null);
-    
-    console.log('showOnboarding prop:', showOnboarding);
-    console.log('isShowingOnboarding state:', isShowingOnboarding);
-
-    // Fetch onboarding status from API
-    useEffect(() => {
-        const fetchOnboardingStatus = async () => {
-            try {
-                const response = await fetch('/onboarding/status', {
-                    headers: {
-                        'Accept': 'application/json',
-                        'X-Requested-With': 'XMLHttpRequest',
-                    },
-                });
-                
-                if (response.ok) {
-                    const data = await response.json();
-                    setOnboardingStatus(data);
-                    console.log('Fetched onboarding status:', data);
-                    
-                    // Update local state based on API response
-                    setIsShowingOnboarding(data.should_show_onboarding);
-                } else {
-                    console.error('Failed to fetch onboarding status:', response.status);
-                }
-            } catch (error) {
-                console.error('Error fetching onboarding status:', error);
-            }
-        };
-
-        fetchOnboardingStatus();
-    }, []);
 
     return (
         <AuthenticatedLayout>
@@ -61,16 +24,6 @@ export default function Dashboard({ courses = [], pdfDocuments = [], showOnboard
                             <p className="text-gray-500 mt-1">
                                 Selamat datang kembali di beranda
                             </p>
-
-                            <div className="mt-8">
-                                <ProgressCard
-                                    title="Orientasi Jurnalis Muda - Memahami Lanskap Pergerakan"
-                                    progress={65}
-                                />
-                            </div>
-
-                            {/* Oper data 'courses' asli ke CourseSlider */}
-                            <CourseSlider courses={courses} />
                         </div>
                     </div>
 
@@ -96,14 +49,6 @@ export default function Dashboard({ courses = [], pdfDocuments = [], showOnboard
                     )}
                 </div>
             </div>
-
-            {/* RENDER OVERLAY CONDITIONALLY */}
-            {isShowingOnboarding && (
-                <OnboardingOverlay
-                    // Provide a function so the overlay can close itself
-                    onClose={() => setIsShowingOnboarding(false)}
-                />
-            )}
         </AuthenticatedLayout>
     );
 }
