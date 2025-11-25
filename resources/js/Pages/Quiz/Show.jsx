@@ -7,8 +7,14 @@ import EssayActive from "@/Components/Quiz/EssayActive";
 import QuizResult from "@/Components/Quiz/QuizResult";
 
 function QuizStartScreen({ quiz, onStartClick }) {
-    const isEssay = quiz.type === 'essay';
-    
+    console.log('Quiz object:', quiz);
+    const isPreTest = quiz?.title.toLowerCase().includes('pre');
+    const isPostTest = quiz?.title.toLowerCase().includes('post');
+    const isFinalTest = quiz?.title.toLowerCase().includes('membuat');
+    const isEssay = quiz?.title.toLowerCase().includes('esai');
+
+    console.log('quiz state : ', { isPreTest, isPostTest, isFinalTest, isEssay });
+
     return (
         <div>
             <p className="text-sm text-gray-500 mb-6">
@@ -17,13 +23,16 @@ function QuizStartScreen({ quiz, onStartClick }) {
 
             <div className="bg-gray-50 border border-gray-200 rounded-lg p-6">
                 <h2 className="text-2xl font-bold text-gray-800 mb-4">
-                    {isEssay ? "Selamat Datang di Kuis Esai!" : "Selamat Datang, Jurnalis Muda!"}
+                    {isEssay && "Selamat Datang di Kuis Esai!"}
+                    {isFinalTest && "Tes Akhir - Artikel Jurnalistik!"}
+                    {isPostTest && "Tes Pasca - Evaluasi Pemahaman!"}
+                    {!isEssay && !isFinalTest && !isPostTest && "Selamat Datang, Jurnalis Muda!"}
                 </h2>
                 <div className="prose max-w-none text-gray-700">
-                    {isEssay ? (
+                    {isEssay && (
                         <>
                             <p>
-                                Anda akan mengerjakan soal esai yang memerlukan pemahaman mendalam dan kemampuan analisis. 
+                                Anda akan mengerjakan soal esai yang memerlukan pemahaman mendalam dan kemampuan analisis.
                                 Jawablah dengan lengkap dan jelas sesuai dengan pertanyaan yang diberikan.
                             </p>
                             <ul className="list-disc pl-5">
@@ -33,7 +42,41 @@ function QuizStartScreen({ quiz, onStartClick }) {
                                 <li>Jawaban Anda akan dinilai oleh pengajar.</li>
                             </ul>
                         </>
-                    ) : (
+                    )}
+                    
+                    {isFinalTest && (
+                        <>
+                            <p>
+                                Saatnya menunjukkan kemampuanmu sebagai jurnalis sejarah!
+                                Tes akhir ini akan mengukur sejauh mana kamu telah menguasai
+                                materi dan dapat mengaplikasikan pengetahuan dalam menulis artikel jurnalistik.
+                            </p>
+                            <ul className="list-disc pl-5">
+                                <li>Kerjakan dengan sungguh-sungguh karena ini akan memengaruhi nilai akhirmu.</li>
+                                <li>Terapkan semua pengetahuan yang telah kamu pelajari.</li>
+                                <li>Pastikan jawabanmu mencerminkan kemampuan jurnalistik yang baik.</li>
+                                <li>Waktu pengerjaan terbatas, gunakan dengan bijak.</li>
+                            </ul>
+                        </>
+                    )}
+                    
+                    {isPostTest && (
+                        <>
+                            <p>
+                                Setelah mempelajari materi, mari kita evaluasi pemahamanmu!
+                                Tes ini akan mengukur seberapa baik kamu telah memahami
+                                konsep-konsep yang telah dipelajari dalam modul ini.
+                            </p>
+                            <ul className="list-disc pl-5">
+                                <li>Jawablah berdasarkan pemahaman yang telah kamu peroleh dari pembelajaran.</li>
+                                <li>Hasil tes ini akan menjadi bagian dari penilaianmu.</li>
+                                <li>Kerjakan dengan fokus dan teliti.</li>
+                                <li>Jika ada yang belum jelas, ingat kembali materi yang telah dipelajari.</li>
+                            </ul>
+                        </>
+                    )}
+                    
+                    {isPreTest && (
                         <>
                             <p>
                                 Sebelum memulai petualanganmu sebagai seorang jurnalis
