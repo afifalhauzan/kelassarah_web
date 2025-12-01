@@ -72,58 +72,157 @@ class GenerateOfflinePages extends Command
     {
         $html = $this->createBasePage('Dashboard - Kelas Sarah', 'dashboard', $assetPaths);
         
+        // Progress Card HTML - matching ProgressCard.jsx styling
+        $progressCardHtml = "
+            <div class='relative bg-blue-500 rounded-2xl p-6 md:p-8 text-white overflow-hidden'>
+                <span class='absolute top-0 left-6 bg-blue-600 text-blue-100 text-sm font-semibold px-3 py-1 rounded-b-lg'>
+                    Terakhir Dilihat
+                </span>
+
+                <div class='absolute -right-4 -top-4 w-24 h-24 text-blue-400 opacity-50'>
+                    <svg fill='currentColor' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'>
+                        <path d='M10 3.5c.6 0 1.1.4 1.2.9l.4 1.9c.1.4.4.7.8.8l1.9.4c.5.1.9.6.9 1.2s-.4 1.1-.9 1.2l-1.9.4c-.4.1-.7.4-.8.8l-.4 1.9c-.1.5-.6.9-1.2.9s-1.1-.4-1.2-.9l-.4-1.9c-.1-.4-.4-.7-.8-.8l-1.9-.4c-.5-.1-.9-.6-.9-1.2s.4-1.1.9-1.2l1.9-.4c.4-.1.7-.4.8-.8l.4-1.9c.1-.5.6-.9 1.2-.9z'></path>
+                    </svg>
+                </div>
+
+                <div class='relative z-10'>
+                    <h3 class='text-2xl font-bold mb-4 pr-10 mt-4'>Orientasi Jurnalis Muda - Memahami Lanskap Pergerakan</h3>
+                    <a href='/course/1' class='inline-flex items-center bg-white text-blue-600 font-semibold px-5 py-2.5 rounded-full shadow-lg hover:bg-gray-100 transition'>
+                        <svg class='w-5 h-5 mr-2' fill='currentColor' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'>
+                            <path fill-rule='evenodd' d='M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z' clip-rule='evenodd'></path>
+                        </svg>
+                        Lanjutkan
+                    </a>
+                </div>
+            </div>
+        ";
+
+        // Course Cards HTML - matching CourseCard.jsx styling with simple overflow-x
         $coursesHtml = '';
         foreach ($courses as $course) {
             $coursesHtml .= "
-                <div class='bg-white rounded-lg shadow-md p-4 mb-4'>
-                    <h3 class='text-lg font-semibold text-gray-800'>{$course->title}</h3>
-                    <p class='text-gray-600 mt-2'>{$course->description}</p>
-                    <div class='mt-4'>
-                        <span class='text-sm text-gray-500'>Progress: 0%</span>
-                        <div class='bg-gray-200 rounded-full h-2 mt-1'>
-                            <div class='bg-blue-600 h-2 rounded-full' style='width: 0%'></div>
-                        </div>
+                <div class='shrink-0 w-80'>
+                    <div class='bg-white rounded-xl shadow-lg overflow-hidden transition-transform duration-300 hover:scale-[1.02]'>
+                        <a href='/course/{$course->id}'>
+                            <img
+                                src='{$course->thumbnail_url}'
+                                alt='{$course->title}'
+                                class='w-full h-40 object-cover'
+                            />
+                            <div class='p-5'>
+                                <h3 class='text-lg font-bold text-gray-800 truncate' title='{$course->title}'>
+                                    {$course->title}
+                                </h3>
+                                <p class='text-sm text-gray-500 mt-2 h-10 overflow-hidden line-clamp-2'>
+                                    {$course->description}
+                                </p>
+                            </div>
+                        </a>
                     </div>
-                    <a href='/course/{$course->id}' class='inline-block mt-3 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700'>
-                        Lanjutkan Belajar
-                    </a>
                 </div>
             ";
         }
 
+        // Course Slider Section - matching CourseSlider.jsx styling (without carousel logic)
+        $courseSliderHtml = "
+            <div class='mt-12'>
+                <div class='flex justify-between items-center mb-4'>
+                    <h2 class='text-2xl font-bold text-gray-800'>
+                        Kursus tersedia
+                    </h2>
+                    <div class='flex space-x-2'>
+                        <button class='bg-gray-200 hover:bg-gray-300 rounded-full p-2 transition disabled:opacity-50' disabled>
+                            <svg xmlns='http://www.w3.org/2000/svg' class='h-5 w-5' fill='none' viewBox='0 0 24 24' stroke='currentColor'>
+                                <path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M15 19l-7-7 7-7'></path>
+                            </svg>
+                        </button>
+                        <button class='bg-blue-500 hover:bg-blue-600 text-white rounded-full p-2 transition disabled:opacity-50' disabled>
+                            <svg xmlns='http://www.w3.org/2000/svg' class='h-5 w-5' fill='none' viewBox='0 0 24 24' stroke='currentColor'>
+                                <path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M9 5l7 7-7 7'></path>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+                <div class='overflow-x-auto'>
+                    <div class='flex -ml-2 pb-4'>
+                        {$coursesHtml}
+                    </div>
+                </div>
+            </div>
+        ";
+
+        // PDF Documents HTML - matching PdfDocumentCard.jsx styling
         $pdfHtml = '';
         foreach ($pdfDocuments as $doc) {
             $pdfHtml .= "
-                <div class='bg-gray-50 border rounded-lg p-4 mb-3'>
-                    <h4 class='font-medium text-gray-800'>{$doc->title}</h4>
-                    <p class='text-sm text-gray-600 mt-1'>{$doc->description}</p>
-                    <a href='{$doc->file_url}' class='text-blue-600 hover:underline text-sm mt-2 inline-block'>
-                        📄 Lihat Dokumen
-                    </a>
+                <div class='rounded-lg shadow-md overflow-hidden'>
+                    <div class='flex w-full items-center p-4 bg-blue-600 text-white hover:bg-blue-700 transition'>
+                        <svg class='w-6 h-6 mr-3 text-white' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
+                            <path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z'></path>
+                        </svg>
+                        <div class='text-left flex-1'>
+                            <span class='text-lg font-medium block'>{$doc->title}</span>
+                            <span class='text-sm text-blue-100 block'>{$doc->description}</span>
+                        </div>
+                        <svg class='w-5 h-5 ml-auto transform transition-transform' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
+                            <path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'></path>
+                        </svg>
+                    </div>
+                    <div class='p-4 bg-gray-50 border-t border-gray-200'>
+                        <div class='space-y-3'>
+                            <div class='flex justify-end'>
+                                <a href='{$doc->file_url}' download class='inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition-colors shadow-sm'>
+                                    <svg class='w-4 h-4 mr-2' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
+                                        <path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z'></path>
+                                    </svg>
+                                    Download PDF
+                                </a>
+                            </div>
+                            <div class='bg-white border rounded-lg p-4'>
+                                <p class='text-sm text-gray-600'>📱 Mode 3T - PDF viewer tidak tersedia. Silakan download untuk melihat konten.</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             ";
         }
 
-        $content = "
-            <div class='py-8'>
-                <div class='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
-                    <div class='bg-white rounded-lg shadow-sm p-6 mb-8'>
-                        <h1 class='text-3xl font-bold text-gray-800'>Halo {$user->name}!</h1>
-                        <p class='text-gray-500 mt-1'>Selamat datang kembali di beranda</p>
-                        <div class='mt-6 p-4 bg-yellow-50 border border-yellow-200 rounded-lg'>
-                            <p class='text-sm text-yellow-800'>📱 Mode Offline - Data mungkin tidak terbaru</p>
+        $pdfSection = $pdfDocuments->count() > 0 ? "
+            <div class='mt-8'>
+                <div class='bg-white overflow-hidden shadow-sm sm:rounded-lg'>
+                    <div class='p-6 md:p-8'>
+                        <h2 class='text-2xl font-bold text-gray-800 mb-6'>
+                            Dokumen Pembelajaran
+                        </h2>
+                        <div class='space-y-4'>
+                            {$pdfHtml}
                         </div>
                     </div>
-                    
-                    <div class='bg-white rounded-lg shadow-sm p-6 mb-8'>
-                        <h2 class='text-2xl font-bold text-gray-800 mb-6'>Kursus Anda</h2>
-                        {$coursesHtml}
+                </div>
+            </div>
+        " : '';
+
+        $content = "
+            <div class='py-8'>
+                <div class='max-w-7xl mx-auto sm:px-6 lg:px-8'>
+                    <div class='bg-white overflow-hidden shadow-sm sm:rounded-lg'>
+                        <div class='p-6 md:p-8 text-gray-900'>
+                            <h1 class='text-3xl font-bold text-gray-800'>
+                                Halo {$user->name}!
+                            </h1>
+                            <p class='text-gray-500 mt-1'>
+                                Selamat datang kembali di beranda
+                            </p>
+
+                            <div class='mt-8'>
+                                {$progressCardHtml}
+                            </div>
+
+                            {$courseSliderHtml}
+                        </div>
                     </div>
 
-                    <div class='bg-white rounded-lg shadow-sm p-6'>
-                        <h2 class='text-2xl font-bold text-gray-800 mb-6'>Dokumen Pembelajaran</h2>
-                        {$pdfHtml}
-                    </div>
+                    {$pdfSection}
                 </div>
             </div>
         ";
@@ -164,7 +263,7 @@ class GenerateOfflinePages extends Command
                     </div>
                     
                     <div class='mt-6 p-4 bg-yellow-50 border border-yellow-200 rounded-lg mb-8'>
-                        <p class='text-sm text-yellow-800'>📱 Mode Offline - Untuk mengakses konten kursus, sambungkan ke internet</p>
+                        <p class='text-sm text-yellow-800'>📱 Mode 3T - Untuk mengakses konten kursus, sambungkan ke internet</p>
                     </div>
                     
                     {$coursesHtml}
@@ -187,7 +286,7 @@ class GenerateOfflinePages extends Command
                     <h1 class='text-3xl font-bold text-gray-800 mb-8'>Profil</h1>
                     
                     <div class='mt-6 p-4 bg-yellow-50 border border-yellow-200 rounded-lg mb-8'>
-                        <p class='text-sm text-yellow-800'>📱 Mode Offline - Untuk mengubah profil, sambungkan ke internet</p>
+                        <p class='text-sm text-yellow-800'>📱 Mode 3T - Untuk mengubah profil, sambungkan ke internet</p>
                     </div>
                     
                     <div class='bg-white rounded-lg shadow-sm p-6 mb-6'>
@@ -226,11 +325,15 @@ class GenerateOfflinePages extends Command
     <link rel='stylesheet' href='{$assetPaths['css']}'>
     <style>
         .offline-indicator { position: fixed; top: 0; left: 0; right: 0; background-color: #fbbf24; color: #92400e; padding: 8px; text-align: center; font-size: 14px; z-index: 50; }
+        .line-clamp-2 { overflow: hidden; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
+        .overflow-x-auto { overflow-x: auto; }
+        .overflow-x-auto > .flex { gap: 1rem; padding-left: 0.5rem; padding-right: 0.5rem; }
+        .shrink-0 { flex-shrink: 0; }
     </style>
 </head>
 <body class='font-sans antialiased bg-gray-100'>
     <div class='offline-indicator'>
-        📱 Mode Offline Aktif - Beberapa fitur mungkin tidak tersedia
+        📱 Mode 3T Aktif - Beberapa fitur mungkin tidak tersedia
     </div>
     
     <nav class='bg-white shadow-sm border-b border-gray-200 mt-8'>
