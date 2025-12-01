@@ -32,7 +32,9 @@
                 window.addEventListener('load', function() {
                     console.log('🚀 Window loaded, registering service worker...');
                     
-                    navigator.serviceWorker.register('/build/sw.js')
+                    navigator.serviceWorker.register('/sw.js', {
+                        scope: '/' // Explicitly set scope to root
+                    })
                         .then(function(registration) {
                             console.log('✅ SW registered successfully:', registration);
                             console.log('📍 SW scope:', registration.scope);
