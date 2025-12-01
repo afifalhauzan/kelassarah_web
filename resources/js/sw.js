@@ -1,6 +1,4 @@
 import { cleanupOutdatedCaches, precacheAndRoute } from 'workbox-precaching';
-import { registerRoute } from 'workbox-routing';
-import { NetworkFirst, CacheFirst } from 'workbox-strategies';
 
 // Clean up old caches
 cleanupOutdatedCaches();
@@ -15,139 +13,204 @@ const offlineRoutes = {
     '/profile': '/offline/profile.html'
 };
 
-// Cache static assets (CSS, JS, images)
-registerRoute(
-    ({ request }) => 
-        request.destination === 'style' || 
-        request.destination === 'script' || 
-        request.destination === 'image',
-    new CacheFirst({
-        cacheName: 'static-assets',
-        plugins: [{
-            cacheKeyWillBeUsed: async ({ request }) => {
-                return new URL(request.url).href;
-            }
-        }]
-    })
-);
+// Cache name constants
+const CACHE_NAME = 'kelas-sarah-offline-v1';
+const OFFLINE_PAGE_CACHE = 'offline-pages-v1';
 
-// Listen for skip waiting
-self.addEventListener('message', (event) => {
-    if (event.data && event.data.type === 'SKIP_WAITING') {
-        self.skipWaiting();
-    }
+// Install event - cache offline pages
+self.addEventListener('install', (event) => {
+    console.log('SW: Install event');
+    event.waitUntil(
+        Promise.all([
+            // Cache offline pages
+            caches.open(OFFLINE_PAGE_CACHE).then(cache => {
+                console.log('SW: Caching offline pages');
+                return Promise.all(
+                    Object.values(offlineRoutes).map(url => {
+                        return cache.add(url).catch(err => {
+                            console.log(`SW: Failed to cache ${url}:`, err);
+                        });
+                    })
+                );
+            }),
+            // Skip waiting to activate immediately
+            self.skipWaiting()
+        ])
+    );
 });
 
-// Main fetch event handler
+// Activate event - claim clients
+self.addEventListener('activate', (event) => {
+    console.log('SW: Activate event');
+    event.waitUntil(
+        Promise.all([
+            // Clean old caches
+            caches.keys().then(cacheNames => {
+                return Promise.all(
+                    cacheNames.map(cacheName => {
+                        if (cacheName !== CACHE_NAME && cacheName !== OFFLINE_PAGE_CACHE) {
+                            console.log('SW: Deleting old cache:', cacheName);
+                            return caches.delete(cacheName);
+                        }
+                    })
+                );
+            }),
+            // Claim all clients
+            self.clients.claim()
+        ])
+    );
+});
+
+// Fetch event - intercept all requests
 self.addEventListener('fetch', (event) => {
     const request = event.request;
     const url = new URL(request.url);
     
-    // Skip non-HTTP requests
-    if (!url.protocol.startsWith('http')) return;
-    
-    // Handle Inertia.js XHR requests
-    if (request.headers.get('X-Inertia') || 
-        request.headers.get('X-Requested-With') === 'XMLHttpRequest') {
-        
-        event.respondWith(
-            fetch(request)
-                .catch(async () => {
-                    console.log('🔄 Inertia request failed, serving offline page');
-                    
-                    // Get the offline page for this route
-                    const pathname = url.pathname;
-                    const offlinePage = offlineRoutes[pathname] || '/offline/dashboard.html';
-                    
-                    // Force a full page reload to the offline page
-                    return new Response('', {
-                        status: 409, // Conflict - tells Inertia to do a full page reload
-                        headers: {
-                            'X-Inertia-Location': offlinePage
-                        }
-                    });
-                })
-        );
+    // Skip non-HTTP requests and chrome-extension requests
+    if (!request.url.startsWith('http')) {
         return;
     }
     
-    // Handle regular navigation requests
-    if (request.mode === 'navigate') {
+    // Skip API calls to external domains
+    if (url.origin !== self.location.origin) {
+        return;
+    }
+    
+    console.log('SW: Intercepting request for:', url.pathname);
+    
+    // Handle all requests that might need offline fallback
+    const needsOfflineFallback = 
+        request.mode === 'navigate' || 
+        request.headers.get('X-Inertia') || 
+        request.headers.get('X-Requested-With') === 'XMLHttpRequest' ||
+        url.pathname in offlineRoutes;
+    
+    if (needsOfflineFallback) {
         event.respondWith(
-            fetch(request)
-                .catch(async () => {
-                    console.log('🔄 Navigation failed, serving offline fallback');
-                    
-                    const pathname = url.pathname;
-                    const offlinePage = offlineRoutes[pathname];
-                    
-                    if (offlinePage) {
-                        // Try to get from cache first
-                        try {
-                            const cache = await caches.open('offline-pages');
-                            const cachedResponse = await cache.match(offlinePage);
-                            if (cachedResponse) {
-                                return cachedResponse;
-                            }
-                        } catch (e) {
-                            console.log('Cache miss for offline page');
-                        }
-                        
-                        // Fallback to fetch the offline page
-                        try {
-                            const offlineResponse = await fetch(offlinePage);
-                            return offlineResponse;
-                        } catch (e) {
-                            console.log('Failed to fetch offline page');
-                        }
-                    }
-                    
-                    // Ultimate fallback
-                    return new Response(`
-                        <!DOCTYPE html>
-                        <html>
-                        <head>
-                            <title>Offline - Kelas Sarah</title>
-                            <meta charset="utf-8">
-                            <meta name="viewport" content="width=device-width, initial-scale=1">
-                            <script src="https://cdn.tailwindcss.com"></script>
-                        </head>
-                        <body class="bg-gray-100 min-h-screen flex items-center justify-center">
-                            <div class="text-center p-8">
-                                <div class="mb-6">
-                                    <svg class="w-16 h-16 mx-auto text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192L5.636 18.364M12 2v4m0 12v4m10-10h-4m-12 0H2"></path>
-                                    </svg>
-                                </div>
-                                <h1 class="text-2xl font-bold text-gray-800 mb-4">Sedang Offline</h1>
-                                <p class="text-gray-600 mb-6">Tidak dapat terhubung ke internet. Silakan periksa koneksi Anda.</p>
-                                <button onclick="window.location.reload()" 
-                                        class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-lg font-medium transition-colors">
-                                    Coba Lagi
-                                </button>
-                            </div>
-                        </body>
-                        </html>
-                    `, {
-                        status: 503,
-                        headers: { 'Content-Type': 'text/html' }
-                    });
-                })
+            handleOfflineCapableRequest(request)
+        );
+    } else {
+        // For other requests (static assets), try network first, then cache
+        event.respondWith(
+            fetch(request).catch(() => {
+                return caches.match(request);
+            })
         );
     }
 });
 
-// Preload offline pages into cache
-self.addEventListener('activate', (event) => {
-    event.waitUntil(
-        caches.open('offline-pages').then(cache => {
-            return Promise.all(
-                Object.values(offlineRoutes).map(url => {
-                    return cache.add(url).catch(err => {
-                        console.log(`Failed to cache ${url}:`, err);
-                    });
-                })
-            );
-        })
-    );
+// Handle requests that need offline fallback
+async function handleOfflineCapableRequest(request) {
+    const url = new URL(request.url);
+    const pathname = url.pathname;
+    
+    try {
+        // Try network first
+        console.log('SW: Trying network for:', pathname);
+        const response = await fetch(request);
+        console.log('SW: Network success for:', pathname);
+        return response;
+    } catch (networkError) {
+        console.log('SW: Network failed for:', pathname, 'Error:', networkError);
+        
+        // Determine which offline page to serve
+        let offlinePage = offlineRoutes[pathname];
+        
+        // If no exact match, use default
+        if (!offlinePage) {
+            offlinePage = '/offline/dashboard.html';
+        }
+        
+        console.log('SW: Serving offline page:', offlinePage);
+        
+        // For Inertia requests, force a page reload to the offline page
+        if (request.headers.get('X-Inertia') || 
+            request.headers.get('X-Requested-With') === 'XMLHttpRequest') {
+            
+            console.log('SW: Handling Inertia/XHR request - forcing reload');
+            
+            return new Response('', {
+                status: 409, // Conflict status forces Inertia to reload
+                headers: {
+                    'X-Inertia-Location': offlinePage,
+                    'X-Inertia': 'true'
+                }
+            });
+        }
+        
+        // For navigation requests, serve the offline page directly
+        try {
+            const cache = await caches.open(OFFLINE_PAGE_CACHE);
+            let cachedResponse = await cache.match(offlinePage);
+            
+            if (cachedResponse) {
+                console.log('SW: Serving cached offline page:', offlinePage);
+                return cachedResponse;
+            }
+            
+            // If not in cache, try to fetch it
+            console.log('SW: Offline page not in cache, trying to fetch:', offlinePage);
+            const offlineResponse = await fetch(offlinePage);
+            
+            // Cache it for next time
+            cache.put(offlinePage, offlineResponse.clone());
+            
+            return offlineResponse;
+        } catch (offlineError) {
+            console.log('SW: Failed to serve offline page:', offlineError);
+            
+            // Ultimate fallback - inline HTML
+            return new Response(`
+                <!DOCTYPE html>
+                <html lang="id">
+                <head>
+                    <meta charset="utf-8">
+                    <meta name="viewport" content="width=device-width, initial-scale=1">
+                    <title>Offline - Kelas Sarah</title>
+                    <script src="https://cdn.tailwindcss.com"></script>
+                </head>
+                <body class="bg-gray-100 min-h-screen">
+                    <div class="flex items-center justify-center min-h-screen">
+                        <div class="text-center p-8 max-w-md mx-auto">
+                            <div class="mb-8">
+                                <svg class="w-20 h-20 mx-auto text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192L5.636 18.364M12 2v4m0 12v4m10-10h-4m-12 0H2"></path>
+                                </svg>
+                            </div>
+                            <h1 class="text-3xl font-bold text-gray-800 mb-4">Sedang Offline</h1>
+                            <p class="text-gray-600 mb-8 text-lg">Koneksi internet tidak tersedia. Silakan periksa koneksi Anda dan coba lagi.</p>
+                            <div class="space-y-4">
+                                <button onclick="window.location.reload()" 
+                                        class="w-full bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-lg font-medium transition-colors">
+                                    Coba Lagi
+                                </button>
+                                <div class="text-sm text-gray-500">
+                                    <p>Halaman yang tersedia offline:</p>
+                                    <div class="mt-2 space-y-1">
+                                        <a href="/offline/dashboard.html" class="block text-blue-500 hover:underline">Dashboard</a>
+                                        <a href="/offline/courses.html" class="block text-blue-500 hover:underline">Courses</a>
+                                        <a href="/offline/profile.html" class="block text-blue-500 hover:underline">Profile</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </body>
+                </html>
+            `, {
+                status: 503,
+                headers: { 
+                    'Content-Type': 'text/html; charset=utf-8',
+                    'Cache-Control': 'no-cache'
+                }
+            });
+        }
+    }
+}
+
+// Handle messages from the main thread
+self.addEventListener('message', (event) => {
+    if (event.data && event.data.type === 'SKIP_WAITING') {
+        self.skipWaiting();
+    }
 });

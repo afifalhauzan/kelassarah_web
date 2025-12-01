@@ -26,25 +26,55 @@
         
         <!-- Service Worker Registration -->
         <script>
-            console.log('Checking for service worker support...');
+            console.log('🔧 Checking for service worker support...');
             if ('serviceWorker' in navigator) {
-                console.log('Service Worker is supported');
+                console.log('✅ Service Worker is supported');
                 window.addEventListener('load', function() {
-                    console.log('Window loaded, registering service worker...');
+                    console.log('🚀 Window loaded, registering service worker...');
+                    
                     navigator.serviceWorker.register('/build/sw.js')
                         .then(function(registration) {
                             console.log('✅ SW registered successfully:', registration);
-                            console.log('SW scope:', registration.scope);
-                            console.log('SW state:', registration.installing ? 'installing' : registration.waiting ? 'waiting' : registration.active ? 'active' : 'unknown');
+                            console.log('📍 SW scope:', registration.scope);
                             
-                            // Force update
+                            // Check if there's an existing service worker
+                            if (registration.active && registration.waiting) {
+                                console.log('🔄 New SW waiting, activating...');
+                                registration.waiting.postMessage({ type: 'SKIP_WAITING' });
+                            }
+                            
+                            // Listen for updates
                             registration.addEventListener('updatefound', () => {
-                                console.log('SW update found');
+                                console.log('🔄 SW update found');
+                                const newWorker = registration.installing;
+                                
+                                newWorker.addEventListener('statechange', () => {
+                                    if (newWorker.state === 'installed') {
+                                        console.log('🔄 New SW installed, activating...');
+                                        newWorker.postMessage({ type: 'SKIP_WAITING' });
+                                    }
+                                });
                             });
+                            
+                            // Force immediate activation
+                            if (registration.installing) {
+                                console.log('🔄 SW installing, will activate when ready');
+                            } else if (registration.waiting) {
+                                console.log('🔄 SW waiting, activating now');
+                                registration.waiting.postMessage({ type: 'SKIP_WAITING' });
+                            } else if (registration.active) {
+                                console.log('✅ SW is active and ready');
+                            }
                         })
                         .catch(function(registrationError) {
                             console.error('❌ SW registration failed:', registrationError);
                         });
+                    
+                    // Listen for service worker controller changes
+                    navigator.serviceWorker.addEventListener('controllerchange', () => {
+                        console.log('🔄 SW controller changed - reloading page');
+                        window.location.reload();
+                    });
                 });
             } else {
                 console.log('❌ Service Worker not supported in this browser');
