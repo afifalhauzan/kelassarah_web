@@ -1,11 +1,11 @@
-import { Link } from "@inertiajs/react";
+import SmartLink from '../SmartLink';
 
 export default function CourseGridCard({ course }) {
     const { id, title, description, thumbnail } = course;
 
     return (
         <div className="bg-white rounded-xl shadow-lg overflow-hidden transition-transform duration-300 hover:scale-[1.02]">
-            <Link href={route("course.show", id)}>
+            <SmartLink href={route("course.show", id)}>
                 <img
                     src={thumbnail}
                     alt={title}
@@ -21,7 +21,7 @@ export default function CourseGridCard({ course }) {
                         {description}
                     </p>
                 </div>
-            </Link>
+            </SmartLink>
         </div>
     );
 }

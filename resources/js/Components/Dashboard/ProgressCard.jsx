@@ -1,4 +1,4 @@
-import { Link } from '@inertiajs/react';
+import SmartLink from '../SmartLink';
 
 export default function ProgressCard({ title, progress, lastCourseUrl = 'course/1' }) {
     return (
@@ -26,7 +26,7 @@ export default function ProgressCard({ title, progress, lastCourseUrl = 'course/
                     {progress}%
                 </div> */}
 
-                <Link 
+                <SmartLink 
                     href={lastCourseUrl}
                     className="inline-flex items-center bg-white text-blue-600 font-semibold px-5 py-2.5 rounded-full shadow-lg hover:bg-gray-100 transition"
                 >
@@ -34,7 +34,7 @@ export default function ProgressCard({ title, progress, lastCourseUrl = 'course/
                         <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clipRule="evenodd"></path>
                     </svg>
                     Lanjutkan
-                </Link>
+                </SmartLink>
             </div>
         </div>
     );
