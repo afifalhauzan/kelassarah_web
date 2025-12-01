@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang='id'>
+<head>
+    <meta charset='utf-8'>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <title>Profil - Kelas Sarah</title>
+    <link rel='stylesheet' href='/build/assets/app.css'>
+    <style>
+        .offline-indicator { position: fixed; top: 0; left: 0; right: 0; background-color: #fbbf24; color: #92400e; padding: 8px; text-align: center; font-size: 14px; z-index: 50; }
+    </style>
+</head>
+<body class='font-sans antialiased bg-gray-100'>
+    <div class='offline-indicator'>
+        📱 Mode Offline Aktif - Beberapa fitur mungkin tidak tersedia
+    </div>
+    
+    <nav class='bg-white shadow-sm border-b border-gray-200 mt-8'>
+        <div class='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
+            <div class='flex justify-between h-16'>
+                <div class='flex'>
+                    <div class='flex-shrink-0 flex items-center'>
+                        <h2 class='font-semibold text-xl text-gray-800'>Kelas Sarah</h2>
+                    </div>
+                    <div class='hidden space-x-8 sm:-my-px sm:ml-10 sm:flex'>
+                        <a href='/dashboard' class='inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-500 hover:text-gray-700'>
+                            Dashboard
+                        </a>
+                        <a href='/courses' class='inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-500 hover:text-gray-700'>
+                            Kursus
+                        </a>
+                        <a href='/profile' class='inline-flex items-center px-1 pt-1 text-sm font-medium border-b-2 border-indigo-400 text-gray-900'>
+                            Profil
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+    
+    <main>
+        
+            <div class='py-8'>
+                <div class='max-w-3xl mx-auto px-4 sm:px-6 lg:px-8'>
+                    <h1 class='text-3xl font-bold text-gray-800 mb-8'>Profil</h1>
+                    
+                    <div class='mt-6 p-4 bg-yellow-50 border border-yellow-200 rounded-lg mb-8'>
+                        <p class='text-sm text-yellow-800'>📱 Mode Offline - Untuk mengubah profil, sambungkan ke internet</p>
+                    </div>
+                    
+                    <div class='bg-white rounded-lg shadow-sm p-6 mb-6'>
+                        <h2 class='text-lg font-medium text-gray-900 mb-6'>Informasi Profil</h2>
+                        <div class='space-y-4'>
+                            <div>
+                                <label class='block text-sm font-medium text-gray-700'>Nama</label>
+                                <div class='mt-1 p-3 bg-gray-50 rounded-md text-gray-800'>siswa 1</div>
+                            </div>
+                            <div>
+                                <label class='block text-sm font-medium text-gray-700'>Email</label>
+                                <div class='mt-1 p-3 bg-gray-50 rounded-md text-gray-800'>aisarah1@gmail.com</div>
+                            </div>
+                            <p class='text-sm text-gray-500 mt-4'>
+                                Untuk mengubah informasi profil, sambungkan ke internet dan kunjungi halaman profil.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        
+    </main>
+    
+    <script>
+        // Simple offline navigation
+        document.addEventListener('click', function(e) {
+            if (e.target.tagName === 'A' && e.target.href) {
+                const url = new URL(e.target.href);
+                const offlineRoutes = {
+                    '/dashboard': '/offline/dashboard.html',
+                    '/courses': '/offline/courses.html',
+                    '/profile': '/offline/profile.html'
+                };
+                
+                if (offlineRoutes[url.pathname]) {
+                    e.preventDefault();
+                    window.location.href = offlineRoutes[url.pathname];
+                }
+            }
+        });
+    </script>
+</body>
+</html>

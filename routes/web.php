@@ -134,6 +134,15 @@ Route::domain(env('APP_DOMAIN'))->group(function () {
         return Inertia::render('LandingPage');
     });
 
+    // Serve offline pages for PWA
+    Route::get('/offline/{page}', function ($page) {
+        $filePath = public_path("offline/{$page}.html");
+        if (file_exists($filePath)) {
+            return response()->file($filePath);
+        }
+        abort(404);
+    })->name('offline.page');
+
     Route::get('/credits', function () {
         return Inertia::render('Credits');
     })->name('credits');
