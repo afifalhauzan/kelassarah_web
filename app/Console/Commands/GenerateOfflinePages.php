@@ -26,6 +26,13 @@ class GenerateOfflinePages extends Command
 
         $this->info("Generating offline pages for user: {$user->name}");
 
+        // Get the actual CSS and JS paths from Vite manifest
+        $assetPaths = $this->getViteAssetPaths();
+        if (!$assetPaths) {
+            $this->error("Could not load Vite manifest. Make sure you've run 'npm run build'");
+            return 1;
+        }
+
         // Generate static data (same logic as your routes)
         $courses = Course::where('is_published', true)
             ->orderBy('order', 'asc')
@@ -37,17 +44,33 @@ class GenerateOfflinePages extends Command
             ->get();
 
         // Generate pages
-        $this->generateDashboard($courses, $pdfDocuments, $user);
-        $this->generateCourses($courses, $user);
-        $this->generateProfile($user);
+        $this->generateDashboard($courses, $pdfDocuments, $user, $assetPaths);
+        $this->generateCourses($courses, $user, $assetPaths);
+        $this->generateProfile($user, $assetPaths);
 
         $this->info('✅ Offline pages generated successfully!');
         return 0;
     }
 
-    private function generateDashboard($courses, $pdfDocuments, $user)
+    private function getViteAssetPaths()
     {
-        $html = $this->createBasePage('Dashboard - Kelas Sarah', 'dashboard');
+        $manifestPath = public_path('build/manifest.json');
+        
+        if (!file_exists($manifestPath)) {
+            return null;
+        }
+
+        $manifest = json_decode(file_get_contents($manifestPath), true);
+        
+        return [
+            'css' => '/build/' . ($manifest['resources/js/app.jsx']['css'][0] ?? 'assets/app.css'),
+            'js' => '/build/' . ($manifest['resources/js/app.jsx']['file'] ?? 'assets/app.js')
+        ];
+    }
+
+    private function generateDashboard($courses, $pdfDocuments, $user, $assetPaths)
+    {
+        $html = $this->createBasePage('Dashboard - Kelas Sarah', 'dashboard', $assetPaths);
         
         $coursesHtml = '';
         foreach ($courses as $course) {
@@ -110,9 +133,9 @@ class GenerateOfflinePages extends Command
         $this->info('📄 Generated: dashboard.html');
     }
 
-    private function generateCourses($courses, $user)
+    private function generateCourses($courses, $user, $assetPaths)
     {
-        $html = $this->createBasePage('Kursus - Kelas Sarah', 'courses');
+        $html = $this->createBasePage('Kursus - Kelas Sarah', 'courses', $assetPaths);
         
         $coursesHtml = '';
         foreach ($courses as $course) {
@@ -154,9 +177,9 @@ class GenerateOfflinePages extends Command
         $this->info('📄 Generated: courses.html');
     }
 
-    private function generateProfile($user)
+    private function generateProfile($user, $assetPaths)
     {
-        $html = $this->createBasePage('Profil - Kelas Sarah', 'profile');
+        $html = $this->createBasePage('Profil - Kelas Sarah', 'profile', $assetPaths);
         
         $content = "
             <div class='py-8'>
@@ -192,7 +215,7 @@ class GenerateOfflinePages extends Command
         $this->info('📄 Generated: profile.html');
     }
 
-    private function createBasePage($title, $activeRoute)
+    private function createBasePage($title, $activeRoute, $assetPaths)
     {
         return "<!DOCTYPE html>
 <html lang='id'>
@@ -200,7 +223,7 @@ class GenerateOfflinePages extends Command
     <meta charset='utf-8'>
     <meta name='viewport' content='width=device-width, initial-scale=1'>
     <title>{$title}</title>
-    <link rel='stylesheet' href='/build/assets/app.css'>
+    <link rel='stylesheet' href='{$assetPaths['css']}'>
     <style>
         .offline-indicator { position: fixed; top: 0; left: 0; right: 0; background-color: #fbbf24; color: #92400e; padding: 8px; text-align: center; font-size: 14px; z-index: 50; }
     </style>
