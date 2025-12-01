@@ -1,6 +1,7 @@
 import { Link, usePage } from "@inertiajs/react";
 import { useState, useEffect } from "react";
 import ApplicationIcon from "@/Components/shared/ApplicationIcon";
+import SmartLink from "@/Components/SmartLink"; // Import our SmartLink component
 import { narrator } from "@/Utils/AudioController";
 import { RiHome5Line } from "react-icons/ri";
 import { IoIosInformationCircle } from "react-icons/io";
@@ -95,7 +96,7 @@ export default function Sidebar() {
             <>
                 <div className="md:hidden bg-gray-50/50 backdrop-blur-md border-white/20 px-6 py-4 z-40 fixed w-full top-0 left-0">
                     <div className="max-w-7xl mx-auto flex items-center justify-between">
-                        <Link
+                        <SmartLink
                             href={route("guru.course.create")}
                             className="flex items-center space-x-3"
                         >
@@ -103,7 +104,7 @@ export default function Sidebar() {
                             <span className="text-lg md:text-2xl font-lilita text-blue-400">
                                 Dashboard Guru
                             </span>
-                        </Link>
+                        </SmartLink>
 
                         <button
                             onClick={toggleMobileMenu}
@@ -179,7 +180,7 @@ export default function Sidebar() {
 
                         {/* Teacher Navigation Links */}
                         <nav className="flex-1 px-4 py-6 space-y-2">
-                            <Link
+                            <SmartLink
                                 href={route("guru.main")}
                                 className={`flex items-center px-4 py-3 rounded-lg transition-colors duration-200 group ${isGuruTambahCourseActive
                                     ? "bg-blue-50 text-blue-600"
@@ -188,9 +189,9 @@ export default function Sidebar() {
                             >
                                 <IoIosInformationCircle className="w-5 h-5 mr-3" />
                                 <span className="font-medium">Informasi</span>
-                            </Link>
+                            </SmartLink>
 
-                            <Link
+                            <SmartLink
                                 href={route("guru.course.create")}
                                 className={`flex items-center px-4 py-3 rounded-lg transition-colors duration-200 group ${isGuruTambahCourseActive
                                     ? "bg-blue-50 text-blue-600"
@@ -211,9 +212,9 @@ export default function Sidebar() {
                                     />
                                 </svg>
                                 <span className="font-medium">Tambah Kursus</span>
-                            </Link>
+                            </SmartLink>
 
-                            <Link
+                            <SmartLink
                                 href={route("guru.material.create")}
                                 className={`flex items-center px-4 py-3 rounded-lg transition-colors duration-200 group ${isGuruTambahMateriActive
                                     ? "bg-blue-50 text-blue-600"
@@ -234,9 +235,9 @@ export default function Sidebar() {
                                     />
                                 </svg>
                                 <span className="font-medium">Tambah Materi</span>
-                            </Link>
+                            </SmartLink>
 
-                            <Link
+                            <SmartLink
                                 href={route("guru.profile.edit")}
                                 className={`flex items-center px-4 py-3 rounded-lg transition-colors duration-200 group ${isGuruProfilActive
                                     ? "bg-blue-50 text-blue-600"
@@ -257,12 +258,12 @@ export default function Sidebar() {
                                     />
                                 </svg>
                                 <span className="font-medium">Profile</span>
-                            </Link>
+                            </SmartLink>
                         </nav>
 
                         {/* Logout Button */}
                         <div className="p-4 border-t border-gray-200">
-                            <Link
+                            <SmartLink
                                 method="post"
                                 href={route("guru.logout")}
                                 as="button"
@@ -282,7 +283,7 @@ export default function Sidebar() {
                                     />
                                 </svg>
                                 <span className="font-medium">Keluar</span>
-                            </Link>
+                            </SmartLink>
                         </div>
                     </div>
                 </div>
@@ -346,7 +347,7 @@ export default function Sidebar() {
 
                         {/* Mobile Teacher Navigation Links */}
                         <nav className="flex-1 px-6 py-6 space-y-4">
-                            <Link
+                            <SmartLink
                                 href={route("guru.main")}
                                 className={`flex items-center px-4 py-3 rounded-lg transition-colors duration-200 group ${isGuruTambahCourseActive
                                     ? "bg-blue-50 text-blue-600"
@@ -355,9 +356,9 @@ export default function Sidebar() {
                             >
                                 <IoIosInformationCircle className="w-5 h-5 mr-3" />
                                 <span className="font-medium">Informasi</span>
-                            </Link>
+                            </SmartLink>
 
-                            <Link
+                            <SmartLink
                                 href={route("guru.course.create")}
                                 onClick={() => setIsMobileMenuOpen(false)}
                                 className={`flex items-center px-4 py-3 rounded-lg transition-colors duration-200 ${isGuruTambahCourseActive
@@ -379,9 +380,9 @@ export default function Sidebar() {
                                     />
                                 </svg>
                                 <span className="font-medium">Tambah Kursus</span>
-                            </Link>
+                            </SmartLink>
 
-                            <Link
+                            <SmartLink
                                 href={route("guru.material.create")}
                                 onClick={() => setIsMobileMenuOpen(false)}
                                 className={`flex items-center px-4 py-3 rounded-lg transition-colors duration-200 ${isGuruTambahMateriActive
@@ -403,9 +404,9 @@ export default function Sidebar() {
                                     />
                                 </svg>
                                 <span className="font-medium">Tambah Materi</span>
-                            </Link>
+                            </SmartLink>
 
-                            <Link
+                            <SmartLink
                                 href={route("guru.profile.edit")}
                                 onClick={() => setIsMobileMenuOpen(false)}
                                 className={`flex items-center px-4 py-3 rounded-lg transition-colors duration-200 ${isGuruProfilActive
@@ -427,12 +428,12 @@ export default function Sidebar() {
                                     />
                                 </svg>
                                 <span className="font-medium">Profile</span>
-                            </Link>
+                            </SmartLink>
                         </nav>
 
                         {/* Mobile Logout Button */}
                         <div className="p-6 border-t border-blue-500">
-                            <Link
+                            <SmartLink
                                 method="post"
                                 href={route("guru.logout")}
                                 as="button"
@@ -453,7 +454,7 @@ export default function Sidebar() {
                                     />
                                 </svg>
                                 <span className="font-medium">Keluar</span>
-                            </Link>
+                            </SmartLink>
                         </div>
                     </div>
                 </div>
@@ -467,7 +468,7 @@ export default function Sidebar() {
         <>
             <div className="md:hidden bg-gray-50/50 backdrop-blur-md border-white/20 px-6 py-4 z-40 fixed w-full top-0 left-0">
                 <div className="max-w-7xl mx-auto flex items-center justify-between">
-                    <Link
+                    <SmartLink
                         href={route("dashboard")}
                         className="flex items-center space-x-3"
                     >
@@ -475,8 +476,7 @@ export default function Sidebar() {
                         <span className="text-lg md:text-2xl font-lilita text-blue-400">
                             Dashboard Siswa
                         </span>
-                    </Link>
-
+                    </SmartLink>
                     <button
                         onClick={toggleMobileMenu}
                         className="p-2 bg-gray-50 rounded-lg shadow-lg text-gray-700 hover:bg-blue-50"
@@ -556,7 +556,7 @@ export default function Sidebar() {
 
                     {/* --- REVISI NAVIGATION LINKS (DESKTOP) --- */}
                     <nav className="flex-1 px-4 py-6 space-y-2">
-                        <Link
+                        <SmartLink
                             href={route("dashboard")} // 2. Ganti href pake route()
                             // 3. Tambahin logika active state
                             className={`flex items-center px-4 py-3 rounded-lg transition-colors duration-200 group ${isBerandaActive
@@ -566,9 +566,9 @@ export default function Sidebar() {
                         >
                             <RiHome5Line className="w-5 h-5 mr-3" />
                             <span className="font-medium">Beranda</span>
-                        </Link>
+                        </SmartLink>
 
-                        <Link
+                        <SmartLink
                             href={route("courses")} // 2. Ganti href pake route()
                             // 3. Tambahin logika active state
                             className={`flex items-center px-4 py-3 rounded-lg transition-colors duration-200 group ${isCoursesActive
@@ -590,9 +590,9 @@ export default function Sidebar() {
                                 />
                             </svg>
                             <span className="font-medium">Kursus</span>
-                        </Link>
+                        </SmartLink>
 
-                        <Link
+                        <SmartLink
                             href={route("profile.edit")} // 2. Ganti href pake route()
                             // 3. Tambahin logika active state
                             className={`flex items-center px-4 py-3 rounded-lg transition-colors duration-200 group ${isProfilActive
@@ -614,7 +614,7 @@ export default function Sidebar() {
                                 />
                             </svg>
                             <span className="font-medium">Profil</span>
-                        </Link>
+                        </SmartLink>
                     </nav>
 
                     {/* Logout Button */}
@@ -709,7 +709,7 @@ export default function Sidebar() {
 
                     {/* --- REVISI NAVIGATION LINKS (MOBILE) --- */}
                     <nav className="flex-1 px-6 py-6 space-y-4">
-                        <Link
+                        <SmartLink
                             href={route("dashboard")} // 2. Ganti href pake route()
                             onClick={() => setIsMobileMenuOpen(false)}
                             // 3. Tambahin logika active state
@@ -720,9 +720,9 @@ export default function Sidebar() {
                         >
                             <RiHome5Line className="w-5 h-5 mr-3" />
                             <span className="font-medium">Beranda</span>
-                        </Link>
+                        </SmartLink>
 
-                        <Link
+                        <SmartLink
                             href={route("courses")} // 2. Ganti href pake route()
                             onClick={() => setIsMobileMenuOpen(false)}
                             // 3. Tambahin logika active state
@@ -745,9 +745,9 @@ export default function Sidebar() {
                                 />
                             </svg>
                             <span className="font-medium">Kursus</span>
-                        </Link>
+                        </SmartLink>
 
-                        <Link
+                        <SmartLink
                             href={route("profile.edit")} // 2. Ganti href pake route()
                             onClick={() => setIsMobileMenuOpen(false)}
                             // 3. Tambahin logika active state
@@ -770,13 +770,13 @@ export default function Sidebar() {
                                 />
                             </svg>
                             <span className="font-medium">Profile</span>
-                        </Link>
+                        </SmartLink>
                     </nav>
 
                     {/* Mobile Logout Button */}
                     <div className="p-6 border-t border-blue-500">
                         {/* ... (Kode Logout Mobile) ... */}
-                        <Link
+                        <SmartLink
                             method="post"
                             href={route("logout")}
                             as="button"
@@ -797,7 +797,7 @@ export default function Sidebar() {
                                 />
                             </svg>
                             <span className="font-medium">Keluar</span>
-                        </Link>
+                        </SmartLink>
                     </div>
                 </div>
             </div>
