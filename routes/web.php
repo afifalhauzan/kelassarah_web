@@ -143,9 +143,9 @@ Route::domain(env('APP_DOMAIN'))->group(function () {
         abort(404);
     })->name('offline.page');
 
-    Route::get('/credits', function () {
-        return Inertia::render('Credits');
-    })->name('credits');
+    // Route::get('/credits', function () {
+    //     return Inertia::render('Credits');
+    // })->name('credits');
 
     // Student Protected Routes
     Route::middleware(['auth', 'verified'])->group(function () {
