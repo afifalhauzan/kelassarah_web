@@ -36,7 +36,7 @@ This project involves 6 members, which I managed as the **Tech Lead**.
 
 | Name | Role | Responsibility |
 | :--- | :--- | :--- |
-| **Afiif Al Hauzaan Alfian** | Tech Lead & DevOps | System architecture and VPS deployment |
+| **Afiif Al Hauzaan Alfian** | Tech Lead & DevOps | System architecture, design-to-code fidelity, and VPS deployment |
 | **Arif Ammar Sya’bani** | Frontend Developer | Translating high-fidelity designs into responsive React components |
 | **Achmad Hasbil Wafi R.** | Backend Developer | API endpoint development and database schema management |
 | **Naila Rahma Ningrum** | UI/UX Designer | User research and wireframing for the Socratic interaction flow |
@@ -49,6 +49,52 @@ This project involves 6 members, which I managed as the **Tech Lead**.
 
 * **Top 20 National Finalist** at the Digital Learning Innovation Competition (**LIDM 2025**) organized by Kemendikbudristek.
 * Evaluated among **150+ universities** for technical feasibility, educational impact, and UI/UX excellence.
+
+---
+
+
+## 🛠️ Local Development Setup (Linux)
+
+This project is containerized using **Laravel Sail**. Ensure you have [Docker Desktop](https://www.docker.com/products/docker-desktop/) installed before proceeding.
+
+### 1. Clone the Repository
+```bash
+git clone [https://github.com/afifalhauzan/kelassarah_web.git](https://github.com/afifalhauzan/kelassarah_web.git)
+cd kelassarah_web
+```
+
+### 2. Environment Configuration
+Copy the example environment file and update your credentials.
+```bash
+cp .env.example .env
+```
+
+### 3. Install Dependencies
+Since the project runs in Docker, use a temporary container to install Composer dependencies:
+```bash
+docker run --rm \
+    -u "$(id -u):$(id -g)" \
+    -v "$(pwd):/var/www/html" \
+    -w /var/www/html \
+    laravelsail/php84-composer:latest \
+    composer install --ignore-platform-reqs
+```
+
+### 4. Start the Application
+Launch the development environment in the background:
+```bash
+./vendor/bin/sail up -d
+```
+
+### 5. Environment Configuration
+Generate the application key, run database migrations (with seeders), and compile assets:
+```bash
+./vendor/bin/sail artisan key:generate
+./vendor/bin/sail artisan migrate --seed
+./vendor/bin/sail npm install
+./vendor/bin/sail npm run dev
+```
+The application will be available at http://localhost.
 
 ---
 
