@@ -24,7 +24,7 @@
 | :--- | :--- |
 | **Frontend** | React.js, Tailwind CSS, Inertia.js |
 | **Backend** | Laravel 12 (PHP 8.x) |
-| **AI** | OpenAI API (GPT-5o) |
+| **AI** | OpenAI API (GPT-4o) |
 | **Database** | MySQL + Redis (Queues) |
 | **State Management** | React Context API (Conversation flows & loading states) |
 
