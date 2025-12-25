@@ -48,7 +48,13 @@ This project involves 6 members, which I managed as the **Tech Lead**.
 ## 🏆 Achievement
 
 * **Top 20 National Finalist** at the Digital Learning Innovation Competition (**LIDM 2025**) organized by Kemendikbudristek.
-* Evaluated among **150+ universities** for technical feasibility, educational impact, and UI/UX excellence.
+* Evaluated among **150+ submissions** for technical feasibility, educational impact, and UI/UX excellence.
+
+### 📈 Real-World Testing
+Kak Sarah has been tested in an active classroom environment:
+
+* Successfully handled simultaneous access for **35+ concurrent students** during a live instructional session.
+* With 0% errors, zero rate-limiting issues, and no server constraints.
 
 ---
 
