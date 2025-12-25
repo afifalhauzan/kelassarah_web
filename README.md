@@ -1,59 +1,57 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# 🤖 Kak Sarah — AI-Powered Socratic Tutor Platform
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+**Top 20 National Finalist @ LIDM 2025** (Digital Learning Innovation Competition)
 
-## About Laravel
+[Live Demo](https://kelassarah.id/) | [Design File (Figma)](https://www.figma.com/design/MKpr8cjd89l4G3eqPsCYmD/KAK-SARAH?node-id=0-1&t=pwHcmT7VuPe7c7D2-1)
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+**Kak Sarah** is an AI-integrated Learning Management System (LMS) designed to foster critical thinking. Unlike traditional chatbots that provide direct answers, Kak Sarah utilizes the **Socratic Method**—guiding students through complex topics by asking targeted, scaffolding questions to encourage independent problem-solving.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+---
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## 🚀 Key Technical Highlights
 
-## Learning Laravel
+* **AI Orchestration:** Integrated OpenAI API with structured prompt constraints to ensure the tutor remains in a "Socratic" persona, providing hints and guidance rather than direct solutions.
+* **Seamless Fullstack Architecture:** Built with **Laravel** and **React** via **Inertia.js**, delivering a Single Page Application (SPA) experience with robust server-side routing and authentication.
+* **Progressive Web App (PWA):** Implemented PWA features to ensure accessibility for students in low-bandwidth environments (3T regions), prioritizing inclusive education.
+* **Role-Based Access Control (RBAC):** Developed dedicated dashboards for Students (interactive learning) and Admins (curriculum management).
+* **Production Deployment:** Deployed on a private VPS
+---
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+## 🛠️ Tech Stack
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+| Layer | Technology |
+| :--- | :--- |
+| **Frontend** | React.js, Tailwind CSS, Inertia.js |
+| **Backend** | Laravel (PHP 8.x) |
+| **AI** | OpenAI API (GPT-4o / GPT-3.5-turbo) |
+| **Database** | MySQL |
+| **State Management** | React Context API (Conversation flows & loading states) |
+| **Version Control** | Git |
 
-## Laravel Sponsors
+---
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+## 👥 The Team
 
-### Premium Partners
+This project was a multidisciplinary effort involving 6 members, which I managed as the **Tech Lead**.
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+| Name | Role | Responsibility |
+| :--- | :--- | :--- |
+| **Afiif Al Hauzaan Alfian** | Tech Lead & DevOps | System architecture, AI prompting logic, and VPS deployment |
+| **Arif Ammar Sya’bani** | Frontend Developer | Translating high-fidelity designs into responsive React components |
+| **Achmad Hasbil Wafi R.** | Backend Developer | API endpoint development and database schema management |
+| **Naila Rahma Ningrum** | UI/UX Designer | User research and wireframing for the Socratic interaction flow |
+| **Ghefira Addien M. M.** | UI/UX Designer | High-fidelity design systems and component consistency |
+| **Shananda Putri Aisyah** | UI/UX Designer | Usability testing and visual branding assets |
 
-## Contributing
+---
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+## 🏆 Achievement
 
-## Code of Conduct
+* **Top 20 National Finalist** at the Digital Learning Innovation Competition (**LIDM 2025**) organized by Kemendikbudristek.
+* Evaluated among **150+ universities** for technical feasibility, educational impact, and UI/UX excellence.
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+---
 
-## Security Vulnerabilities
+## 💡 Reflection as Tech Lead
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+> "Managing this project required bridging the gap between pedagogical theory and technical execution. By using Inertia.js, we were able to maintain a high development velocity while ensuring that the Socratic AI felt like a natural, responsive conversation rather than a static form."
