@@ -16,7 +16,7 @@ export default function Mascot() {
                     {/* Title */}
                     <div className="text-center mb-10">
                         <h2 className="font-lilita text-3xl md:text-4xl lg:text-5xl text-white mb-8 tracking-relaxed">
-                            Kenalan Yuk dengan Kak Sarah!
+                            Kenalan Yuk dengan Patih AI!
                         </h2>
                     </div>
 
@@ -35,7 +35,7 @@ export default function Mascot() {
                             {/* Mascot Image - z-30 */}
                             <img
                                 src="/images/mascot_main_alt.svg"
-                                alt="Kak Sarah mascot with speech bubbles"
+                                alt="Patih AI mascot with speech bubbles"
                                 className="w-full h-auto relative z-30"
                             />
                         </div>
@@ -44,7 +44,7 @@ export default function Mascot() {
                     {/* Description */}
                     <div className="text-center max-w-4xl mx-auto">
                         <p className="text-md md:text-lg text-white leading-relaxed">
-                            Aku Kak Sarah, AI cerdas dan ramah yang siap bantu kamu memahami pelajaran dengan
+                            Aku Patih AI, AI cerdas dan ramah yang siap bantu kamu memahami pelajaran dengan
                             <br className="hidden md:block" />
                             cara seru dan personal!
                         </p>

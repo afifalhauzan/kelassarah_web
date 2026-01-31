@@ -6,7 +6,7 @@ import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import { createRoot } from 'react-dom/client';
 import { ChatProvider } from './Context/ChatContext';
 
-const appName = 'Kelas Sarah';
+const appName = import.meta.env.VITE_APP_NAME || 'Kelas Patih';
 
 createInertiaApp({
     title: (title) => `${title} - ${appName}`,

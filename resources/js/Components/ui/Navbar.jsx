@@ -25,7 +25,7 @@ export default function Navbar({ auth }) {
                     <div className="flex items-center space-x-3">
                         <ApplicationIcon className="w-12 h-12 mb-2" />
                         <span className="text-lg md:text-2xl font-lilita text-blue-400">
-                            Kak Sarah Chatbot
+                            Patih AI Chatbot
                         </span>
                     </div>
 
@@ -126,9 +126,8 @@ export default function Navbar({ auth }) {
 
             {/* Mobile Menu Sidebar */}
             <div
-                className={`fixed top-0 left-0 h-full w-80 bg-blue-600 shadow-xl z-50 transform transition-transform duration-300 ease-in-out md:hidden ${
-                    isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full'
-                }`}
+                className={`fixed top-0 left-0 h-full w-80 bg-blue-600 shadow-xl z-50 transform transition-transform duration-300 ease-in-out md:hidden ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full'
+                    }`}
             >
                 <div className="flex flex-col h-full">
                     {/* Mobile Menu Header */}
@@ -136,7 +135,7 @@ export default function Navbar({ auth }) {
                         <div className="flex items-center space-x-3">
                             <ApplicationIcon className="w-8 h-8" />
                             <span className="text-lg font-lilita text-white">
-                                Kak Sarah Chatbot
+                                Patih AI Chatbot
                             </span>
                         </div>
                         <button

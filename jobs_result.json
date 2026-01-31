@@ -1,0 +1,1 @@
+{"error":"SQLSTATE[HY000] [2002] php_network_getaddresses: getaddrinfo for mysql failed: No such host is known.  (Connection: mysql, SQL: select count(*) as aggregate from `failed_jobs`)"}

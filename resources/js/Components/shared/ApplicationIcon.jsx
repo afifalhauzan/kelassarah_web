@@ -2,8 +2,8 @@ export default function ApplicationLogo(props) {
     return (
         <img
             {...props}
-            src="/logo_icon_blue.png"
-            alt="Application Logo"
+            src="/images/patih_logo.png?v=4"
+            alt="Patih AI Logo"
         />
     );
 }

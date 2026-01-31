@@ -16,7 +16,7 @@ class CourseGuruController extends Controller
         // Get ALL courses for teachers, not just published ones
         $courses = Course::orderBy('order', 'asc')
             ->get()
-            ->map(fn ($course) => [
+            ->map(fn($course) => [
                 'id' => $course->id,
                 'title' => $course->title,
                 'thumbnail_url' => $course->thumbnail_url,
@@ -34,7 +34,7 @@ class CourseGuruController extends Controller
         $pdfDocuments = Informasi::where('is_published', true)
             ->orderBy('order', 'asc')
             ->get()
-            ->map(fn ($doc) => [
+            ->map(fn($doc) => [
                 'id' => $doc->id,
                 'title' => $doc->title,
                 'description' => $doc->description,
@@ -44,7 +44,7 @@ class CourseGuruController extends Controller
                 'access' => $doc->access,
             ]);
 
-        return inertia('Guru/Informasi', [ 
+        return inertia('Guru/Informasi', [
             'courses' => $courses,
             'pdfDocuments' => $pdfDocuments,
         ]);
@@ -55,7 +55,7 @@ class CourseGuruController extends Controller
         // Get ALL courses for teachers, not just published ones
         $courses = Course::orderBy('order', 'asc')
             ->get()
-            ->map(fn ($course) => [
+            ->map(fn($course) => [
                 'id' => $course->id,
                 'title' => $course->title,
                 'thumbnail_url' => $course->thumbnail_url,
@@ -69,7 +69,7 @@ class CourseGuruController extends Controller
                 'quizzes_count' => $course->quizzes()->count(),
             ]);
 
-        return inertia('Guru/TambahCourse', [ 
+        return inertia('Guru/TambahCourse', [
             'courses' => $courses,
         ]);
     }
@@ -84,6 +84,8 @@ class CourseGuruController extends Controller
             'knowledge_prompt' => 'nullable|string',
             'welcome_message' => 'nullable|string',
             'thumbnail_url' => 'nullable|string',
+            'is_game_enabled' => 'nullable|boolean',
+            'game_data' => 'nullable|array',
         ]);
 
         $course = Course::create($validated);
@@ -92,33 +94,35 @@ class CourseGuruController extends Controller
         return redirect()->route('guru.course.create')->with('message', 'Course created successfully');
     }
 
-   public function show(Course $course)
+    public function show(Course $course)
     {
         $userId = Auth::id();
         $completedQuizIds = Quiz::where('course_id', $course->id)
-            ->whereHas('questions.userAnswers', fn($query) => 
+            ->whereHas(
+                'questions.userAnswers',
+                fn($query) =>
                 $query->where('user_id', $userId)
             )
             ->pluck('id')
             ->flip();
 
-        $materials = $course->materials()->orderBy('order', 'asc')->get()->map(fn ($material) => [
+        $materials = $course->materials()->orderBy('order', 'asc')->get()->map(fn($material) => [
             'id' => $material->id,
             'title' => $material->title,
             'order' => $material->order,
             'lesson_type' => 'material',
-            'material_type' => $material->type, 
+            'material_type' => $material->type,
             'content_text' => $material->content_text,
             'content_url' => $material->content_url,
             'is_completed' => false,
         ]);
 
-        $quizzes = $course->quizzes()->orderBy('order', 'asc')->get()->map(fn ($quiz) => [
+        $quizzes = $course->quizzes()->orderBy('order', 'asc')->get()->map(fn($quiz) => [
             'id' => $quiz->id,
             'title' => $quiz->title,
             'order' => $quiz->order,
-            'lesson_type' => 'quiz', 
-            'material_type' => null, 
+            'lesson_type' => 'quiz',
+            'material_type' => null,
             'content_text' => null,
             'content_url' => null,
             'is_completed' => $completedQuizIds->has($quiz->id),
@@ -126,11 +130,18 @@ class CourseGuruController extends Controller
 
         $lessons = $materials->merge($quizzes)->sortBy('order')->values();
 
-        return inertia('Guru/TambahCourse', [
+        return inertia('Guru/EditCourse', [
             'course' => [
                 'id' => $course->id,
                 'title' => $course->title,
                 'description' => $course->description,
+                'thumbnail_url' => $course->thumbnail_url,
+                'order' => $course->order,
+                'is_published' => $course->is_published,
+                'knowledge_prompt' => $course->knowledge_prompt,
+                'welcome_message' => $course->welcome_message,
+                'is_game_enabled' => $course->is_game_enabled,
+                'game_data' => $course->game_data,
             ],
             'lessons' => $lessons
         ]);
@@ -148,7 +159,17 @@ class CourseGuruController extends Controller
             'thumbnail_url' => 'sometimes|nullable|string',
         ]);
 
-        $course->update($validated);
+        $course->fill($validated);
+
+        // Handle Game Data Explicitly
+        if ($request->has('is_game_enabled')) {
+            $course->is_game_enabled = $request->boolean('is_game_enabled');
+        }
+        if ($request->has('game_data')) {
+            $course->game_data = $request->input('game_data');
+        }
+
+        $course->save();
 
         // Redirect back to course list with success message
         return redirect()->route('guru.course.create')->with('message', 'Course updated successfully');
@@ -157,8 +178,15 @@ class CourseGuruController extends Controller
     public function destroy(Course $course)
     {
         $course->delete();
-        
+
         // Redirect back to course list with success message
         return redirect()->route('guru.course.create')->with('message', 'Course deleted successfully');
+    }
+    public function createMaterial()
+    {
+        $courses = Course::select('id', 'title')->orderBy('order', 'asc')->get();
+        return inertia('Guru/TambahMateri', [
+            'courses' => $courses
+        ]);
     }
 }

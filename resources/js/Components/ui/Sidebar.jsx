@@ -27,7 +27,24 @@ export default function Sidebar() {
         const handleFocus = (event) => {
             if (!isNarratorOn) return;
 
+            // 1. Check for highlighted/selected text first
+            const selection = window.getSelection().toString().trim();
+            if (selection && selection.length > 0) {
+                console.log("Narrator: Reading selection ->", selection);
+                narrator.play(selection);
+                return;
+            }
+
+            // 2. Fallback to clicked element text
             const el = event.target;
+            console.log("Narrator: User clicked element ->", el.tagName, el);
+
+            // Ignore interactables if they are empty
+            if (['BUTTON', 'A', 'INPUT', 'TEXTAREA'].includes(el.tagName)) {
+                // Let the natural interaction happen unless it has specific aria-label
+                if (!el.getAttribute('aria-label')) return;
+            }
+
             // Priority: aria-label -> alt -> text content -> placeholder
             let textToRead = el.getAttribute('aria-label') ||
                 el.getAttribute('alt') ||
@@ -38,18 +55,20 @@ export default function Sidebar() {
             // Clean text
             textToRead = textToRead.replace(/\s+/g, ' ').trim();
 
-            // Limit length to save API credits (approx 2 sentences)
-            if (textToRead.length > 200) textToRead = textToRead.substring(0, 200);
+            console.log("Narrator: Extracted text ->", textToRead);
 
-            if (textToRead) {
+            // Limit length to save API credits (approx 2 sentences)
+            if (textToRead.length > 300) textToRead = textToRead.substring(0, 300);
+
+            if (textToRead && textToRead.length > 2) {
                 narrator.play(textToRead);
             }
         };
 
         // Attach to the document cleanly
-        document.addEventListener('focusin', handleFocus, true);
+        document.addEventListener('click', handleFocus, true);
         return () => {
-            document.removeEventListener('focusin', handleFocus, true);
+            document.removeEventListener('click', handleFocus, true);
             narrator.stop();
         };
     }, [isNarratorOn]);
@@ -524,7 +543,7 @@ export default function Sidebar() {
                         <ApplicationIcon className="w-10 h-10 mb-2" />
                         <div className="ml-3">
                             <h2 className="text-lg font-lilita text-blue-400">
-                                Kak Sarah Chatbot
+                                Patih AI Chatbot
                             </h2>
                         </div>
                     </div>
@@ -658,7 +677,7 @@ export default function Sidebar() {
                             <ApplicationIcon className="w-8 h-8 text-white" />
                             <div>
                                 <h2 className="text-lg font-lilita text-white">
-                                    Kak Sarah Chatbot
+                                    Patih AI Chatbot
                                 </h2>
                             </div>
                         </div>
@@ -685,25 +704,25 @@ export default function Sidebar() {
                     {/* Mobile User Info */}
                     {auth?.user && (
                         <>
-                        <div className="px-6 py-4 border-b border-blue-500">
-                            {/* ... (Kode User Info Mobile) ... */}
-                            <div className="flex items-center">
-                                <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center">
-                                    <span className="text-blue-600 font-semibold text-lg">
-                                        {auth.user.name.charAt(0).toUpperCase()}
-                                    </span>
-                                </div>
-                                <div className="ml-3">
-                                    <p className="text-sm font-medium text-white">
-                                        {auth.user.name}
-                                    </p>
-                                    <p className="text-xs text-blue-200">
-                                        {auth.user.email}
-                                    </p>
+                            <div className="px-6 py-4 border-b border-blue-500">
+                                {/* ... (Kode User Info Mobile) ... */}
+                                <div className="flex items-center">
+                                    <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center">
+                                        <span className="text-blue-600 font-semibold text-lg">
+                                            {auth.user.name.charAt(0).toUpperCase()}
+                                        </span>
+                                    </div>
+                                    <div className="ml-3">
+                                        <p className="text-sm font-medium text-white">
+                                            {auth.user.name}
+                                        </p>
+                                        <p className="text-xs text-blue-200">
+                                            {auth.user.email}
+                                        </p>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <NarratorToggle mobile={true} />
+                            <NarratorToggle mobile={true} />
                         </>
                     )}
 

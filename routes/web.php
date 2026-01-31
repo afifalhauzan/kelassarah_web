@@ -63,7 +63,8 @@ Route::get('/load-test-write', function () {
     }
 });
 
-Route::domain(env('APP_TEACHER_DOMAIN'))->group(function () {
+// Route::domain(env('APP_TEACHER_DOMAIN'))->group(function () {
+Route::prefix('guru')->group(function () {
 
     Route::get('/', function () {
         return redirect()->route('login');
@@ -90,31 +91,15 @@ Route::domain(env('APP_TEACHER_DOMAIN'))->group(function () {
 
         // Course Management for teachers
         Route::get('/course', [CourseGuruController::class, 'course'])->name('guru.course.create');
-        
+
         // Add edit route
-        Route::get('/course/edit/{course}', function (Course $course) {
-            return Inertia::render('Guru/EditCourse', [
-                'course' => [
-                    'id' => $course->id,
-                    'title' => $course->title,
-                    'thumbnail_url' => $course->thumbnail_url,
-                    'description' => $course->description,
-                    'order' => $course->order,
-                    'is_published' => $course->is_published,
-                    'knowledge_prompt' => $course->knowledge_prompt,
-                    'welcome_message' => $course->welcome_message,
-                    'created_at' => $course->created_at
-                ]
-            ]);
-        })->name('guru.course.edit');
+        Route::get('/course/edit/{course}', [CourseGuruController::class, 'show'])->name('guru.course.edit');
         Route::post('/course/add', [CourseGuruController::class, 'store'])->name('guru.course.store');
         Route::put('/course/{course}', [CourseGuruController::class, 'update'])->name('guru.course.update');
         Route::delete('/course/{course}', [CourseGuruController::class, 'destroy'])->name('guru.course.destroy');
 
         // Material Management for teachers
-        Route::get('/tambah-materi', function () {
-            return Inertia::render('Guru/TambahMateri');
-        })->name('guru.material.create');
+        Route::get('/tambah-materi', [CourseGuruController::class, 'createMaterial'])->name('guru.material.create');
         Route::post('/material', [MaterialController::class, 'store'])->name('guru.material.store');
         Route::put('/material/{material}', [MaterialController::class, 'update'])->name('guru.material.update');
         Route::delete('/material/{material}', [MaterialController::class, 'destroy'])->name('guru.material.destroy');
@@ -127,7 +112,8 @@ Route::domain(env('APP_TEACHER_DOMAIN'))->group(function () {
 |--------------------------------------------------------------------------
 | The Learning Area.
 */
-Route::domain(env('APP_DOMAIN'))->group(function () {
+// Route::domain(env('APP_DOMAIN'))->group(function () {
+Route::middleware('web')->group(function () {
 
     // Public Landing
     Route::get('/', function () {
@@ -174,19 +160,35 @@ Route::domain(env('APP_DOMAIN'))->group(function () {
                 ->whereNull('access')
                 ->orderBy('order', 'asc')
                 ->get()
-                ->map(fn ($doc) => [
+                ->map(fn($doc) => [
                     'id' => $doc->id,
                     'title' => $doc->title,
                     'description' => $doc->description,
                     'type' => $doc->type,
                     'file_url' => $doc->file_url,
-                    'order' => $doc->order,
                 ]);
+
+            // Get last accessed course
+            $lastAccessedCourse = $user->courses()
+                ->where('is_published', true)
+                ->orderByPivot('last_accessed_at', 'desc')
+                ->first();
+
+            $lastAccessedData = null;
+            if ($lastAccessedCourse) {
+                $lastAccessedData = [
+                    'id' => $lastAccessedCourse->id,
+                    'title' => $lastAccessedCourse->title,
+                    'progress' => $lastAccessedCourse->pivot->progress,
+                    // You can add more fields if needed for the card
+                ];
+            }
 
             return Inertia::render('Dashboard', [
                 'courses' => $courses,
                 'pdfDocuments' => $pdfDocuments,
-                'showOnboarding' => !$user->has_completed_onboarding
+                'showOnboarding' => !$user->has_completed_onboarding,
+                'lastAccessedCourse' => $lastAccessedData
             ]);
         })->name('dashboard');
 
@@ -221,6 +223,7 @@ Route::domain(env('APP_DOMAIN'))->group(function () {
         Route::prefix('course')->group(function () {
             Route::get('/', [CourseController::class, 'index'])->name('course.index');
             Route::get('/{course}', [CourseController::class, 'show'])->name('course.show');
+            Route::get('/{course}/game', [CourseController::class, 'game'])->name('course.game');
             // Note: Store/Update/Destroy are technically still here accessible by ID, 
             // but we will secure them via Policy or move them to 'guru' domain later.
             Route::post('/', [CourseController::class, 'store'])->name('course.store');

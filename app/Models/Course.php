@@ -9,7 +9,7 @@ use App\Models\Quiz;
 class Course extends Model
 {
     use HasFactory;
-    
+
     protected $fillable = [
         'title',
         'description',
@@ -18,6 +18,13 @@ class Course extends Model
         'knowledge_prompt',
         'welcome_message',
         'thumbnail_url',
+        'is_game_enabled',
+        'game_data',
+    ];
+
+    protected $casts = [
+        'is_game_enabled' => 'boolean',
+        'game_data' => 'array',
     ];
 
     public function messages()
@@ -33,5 +40,12 @@ class Course extends Model
     public function quizzes()
     {
         return $this->hasMany(Quiz::class);
+    }
+
+    public function users()
+    {
+        return $this->belongsToMany(User::class, 'course_user')
+            ->withPivot('progress', 'last_accessed_at')
+            ->withTimestamps();
     }
 }

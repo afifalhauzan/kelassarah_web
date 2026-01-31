@@ -17,9 +17,9 @@ class UserGuruSeeder extends Seeder
         // Create teacher users
         $teachers = [
             [
-                'name' => 'Bu Sarah Guru',
-                'username' => 'guru.sarah',
-                'email' => 'guru@kelassarah.id',
+                'name' => 'Pak Patih ',
+                'username' => 'guru.patih',
+                'email' => 'guru@kelaspatih.id',
                 'password' => Hash::make('password'),
                 'role' => 'guru',
                 'has_completed_onboarding' => true,

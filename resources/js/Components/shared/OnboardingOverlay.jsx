@@ -13,10 +13,10 @@ export default function OnboardingOverlay({ onClose }) {
     useEffect(() => {
         // Step 3 is "Chat dengan Sarah"
         setIsChatHighlighted(currentStep === 3);
-        
+
         // Set onboarding status to active when component mounts
         setOnboardingStatus(true);
-        
+
         // Cleanup when component unmounts
         return () => {
             setIsChatHighlighted(false);
@@ -26,9 +26,9 @@ export default function OnboardingOverlay({ onClose }) {
 
     const steps = [
         {
-            title: "Selamat Datang di Kelas Sarah!",
-            content: "Halo! Saya Kak Sarah. Mari saya kenalkan platform pembelajaran sejarah yang interaktif ini.",
-            image: "/chatbot/chat-maskot.svg"
+            title: "Selamat Datang di Kelas Patih!",
+            content: "Halo! Saya Patih AI. Mari saya kenalkan platform pembelajaran sejarah yang interaktif ini.",
+            image: "/images/patih_logo.png"
         },
         {
             title: "Jelajahi Kursus Sejarah",
@@ -93,8 +93,8 @@ export default function OnboardingOverlay({ onClose }) {
                                 <div
                                     key={index}
                                     className={`w-2 h-2 rounded-full transition-colors ${index + 1 <= currentStep
-                                            ? 'bg-blue-500'
-                                            : 'bg-gray-300'
+                                        ? 'bg-blue-500'
+                                        : 'bg-gray-300'
                                         }`}
                                 />
                             ))}
@@ -114,8 +114,8 @@ export default function OnboardingOverlay({ onClose }) {
                     {/* Placeholder for image */}
                     <div className="w-24 h-24 rounded-full mx-auto mb-4 flex items-center justify-center">
                         {currentStepData.image ? (
-                            <img 
-                                src={currentStepData.image} 
+                            <img
+                                src={currentStepData.image}
                                 alt={currentStepData.title}
                                 className="w-full h-full object-contain"
                             />

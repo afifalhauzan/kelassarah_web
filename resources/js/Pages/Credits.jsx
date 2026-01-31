@@ -27,11 +27,11 @@ export default function Credits({ auth }) {
 
     return (
         <>
-            <Head title="Tim Kami - Kak Sarah" />
-            
+            <Head title="Tim Kami - Patih AI" />
+
             <div className="bg-gray-50 text-gray-800 selection:bg-indigo-500 selection:text-white mt-10">
                 <Navbar auth={auth} />
-                
+
                 <main className="pt-24 pb-16">
                     <div className="mx-auto max-w-7xl px-6 lg:px-8">
                         {/* Title */}
@@ -48,8 +48,8 @@ export default function Credits({ auth }) {
                             </h2>
                             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
                                 {credits.filter(person => person.type === 'dev').map((person, index) => (
-                                    <div 
-                                        key={index} 
+                                    <div
+                                        key={index}
                                         className="bg-white rounded-xl p-6 box-shadow-default hover:shadow-xl transition-shadow duration-300"
                                     >
                                         <div className="flex justify-between items-start">
@@ -62,12 +62,12 @@ export default function Credits({ auth }) {
                                                     {person.role}
                                                 </p>
                                             </div>
-                                            
+
                                             {/* Right side - Contact */}
                                             <div className="text-right">
-                                                <a 
-                                                    href={person.contact} 
-                                                    target="_blank" 
+                                                <a
+                                                    href={person.contact}
+                                                    target="_blank"
                                                     rel="noopener noreferrer"
                                                     className="text-sm text-blue-500 hover:text-blue-700 break-all transition-colors duration-200"
                                                 >
@@ -87,8 +87,8 @@ export default function Credits({ auth }) {
                             </h2>
                             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
                                 {credits.filter(person => person.type === 'content').map((person, index) => (
-                                    <div 
-                                        key={index} 
+                                    <div
+                                        key={index}
                                         className="bg-white rounded-xl p-6 box-shadow-default hover:shadow-xl transition-shadow duration-300"
                                     >
                                         <div className="flex justify-between items-start">
@@ -101,12 +101,12 @@ export default function Credits({ auth }) {
                                                     {person.role}
                                                 </p>
                                             </div>
-                                            
+
                                             {/* Right side - Contact */}
                                             <div className="text-right">
-                                                <a 
-                                                    href={person.contact} 
-                                                    target="_blank" 
+                                                <a
+                                                    href={person.contact}
+                                                    target="_blank"
                                                     rel="noopener noreferrer"
                                                     className="text-sm text-blue-500 hover:text-blue-700 break-all transition-colors duration-200"
                                                 >

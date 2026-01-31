@@ -49,4 +49,11 @@ class User extends Authenticatable
             'has_completed_onboarding' => 'boolean',
         ];
     }
+
+    public function courses()
+    {
+        return $this->belongsToMany(Course::class, 'course_user')
+            ->withPivot('progress', 'last_accessed_at')
+            ->withTimestamps();
+    }
 }

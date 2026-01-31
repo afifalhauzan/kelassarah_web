@@ -1,3 +1,5 @@
+import axios from 'axios';
+
 class AudioController {
     constructor() {
         this.currentAudio = null;
@@ -22,36 +24,29 @@ class AudioController {
         console.log("Narrator: Requesting audio for ->", text); // DEBUG LOG
 
         this.abortController = new AbortController();
-        const signal = this.abortController.signal;
 
         try {
-            const response = await fetch(route('narrate'), {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                },
-                body: JSON.stringify({ text }),
-                signal: signal
+            const response = await axios.post(route('narrate'), { text }, {
+                responseType: 'blob',
+                signal: this.abortController.signal
             });
 
-            // DEBUG: If server fails, read the JSON error message
-            if (!response.ok) {
-                const errorData = await response.json();
-                console.error("Narrator Error:", errorData);
-                return;
-            }
-
-            const blob = await response.blob();
+            const blob = response.data;
             const url = URL.createObjectURL(blob);
-            
-            if (!signal.aborted) {
+
+            // Double check if we were aborted while waiting
+            if (!this.abortController.signal.aborted) {
                 this.currentAudio = new Audio(url);
                 this.currentAudio.play();
             }
         } catch (err) {
-            if (err.name !== 'AbortError') {
-                console.error("Narrator Fetch Exception:", err);
+            if (axios.isCancel(err) || err.name === 'CanceledError') {
+                console.log("Narrator: Request canceled.");
+            } else {
+                console.error("Narrator Error:", err);
+                if (err.response && err.response.status === 419) {
+                    console.error("CSRF Token Mismatch. Please refresh the page.");
+                }
             }
         }
     }

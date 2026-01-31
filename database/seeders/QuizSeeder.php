@@ -136,7 +136,7 @@ class QuizSeeder extends Seeder
         // Essay Quiz for Course Order = 2
         // ============================
         $essayCourse2 = Course::where('order', 2)->first();
-        
+
         if ($essayCourse2) {
             $essayQuiz2 = Quiz::create([
                 'course_id' => $essayCourse2->id,
@@ -153,7 +153,7 @@ class QuizSeeder extends Seeder
                 'question_text' => 'Kongres Pemuda I (1926) dianggap belum berhasil karena kuatnya "ego kedaerahan". Namun, hanya dua tahun kemudian (1928), Kongres Pemuda II berhasil mencetuskan Sumpah Pemuda. Analisislah, faktor krusial apa yang berubah dalam kurun waktu dua tahun tersebut yang memungkinkan "penyakit" ego kedaerahan itu dapat diatasi sehingga persatuan dapat terwujud?',
                 'sample_answer' => 'Jawaban yang baik harus mencakup: 1) Pemahaman konsep utama, 2) Analisis kritis, 3) Refleksi personal ',
                 'max_words' => 500,
-                'instructions' => 'Bacalah materi terkait bagaimana peran para Tokoh Pergerakan Nasional. Setelah itu kerjakan soal Kuis 1 untuk memantapkan pemahaman kamu terkait kegagalan kongres pemuda I. Kamu bisa mewawancarai Kak Sarah yang berperan sebagai Tokoh Pergerakan Nasional untuk memperkuat argument kamu.',
+                'instructions' => 'Bacalah materi terkait bagaimana peran para Tokoh Pergerakan Nasional. Setelah itu kerjakan soal Kuis 1 untuk memantapkan pemahaman kamu terkait kegagalan kongres pemuda I. Kamu bisa mewawancarai Patih AI yang berperan sebagai Tokoh Pergerakan Nasional untuk memperkuat argument kamu.',
             ]);
         }
 
@@ -161,7 +161,7 @@ class QuizSeeder extends Seeder
         // Essay Quiz for Course Order = 4
         // ============================
         $essayCourse4 = Course::where('order', 4)->first();
-        
+
         if ($essayCourse4) {
             $essayQuiz4 = Quiz::create([
                 'course_id' => $essayCourse4->id,
@@ -175,10 +175,10 @@ class QuizSeeder extends Seeder
             // Create the essay question for course order 4
             Essay::create([
                 'quiz_id' => $essayQuiz4->id,
-                'question_text' => 'Sebagai seorang jurnalis muda, integrasikan seluruh materi yang Anda peroleh dan pengalaman bersama pendampingan Guru dan Kak Sarah yang Anda dapatkan untuk merangkai sebuah karya tulis. Tuliskan sebuah artikel berita sepanjang minmal 200 kata untuk surat kabarmu yang merangkum hasil dan semangat dari Kongres Pemuda II.',
+                'question_text' => 'Sebagai seorang jurnalis muda, integrasikan seluruh materi yang Anda peroleh dan pengalaman bersama pendampingan Guru dan Patih AI yang Anda dapatkan untuk merangkai sebuah karya tulis. Tuliskan sebuah artikel berita sepanjang minmal 200 kata untuk surat kabarmu yang merangkum hasil dan semangat dari Kongres Pemuda II.',
                 'sample_answer' => 'Jawaban yang baik harus mencakup: 1) Pemahaman konteks historis, 2) Analisis relevansi dengan zaman modern, 3) Contoh konkret dari kehidupan sehari-hari, 4) Refleksi personal tentang nilai-nilai persatuan',
                 'max_words' => 600,
-                'instructions' => 'Bacalah seluruh materi pergerakan nasional yang telah dipelajari. Kamu juga bisa berdiskusi dengan Kak Sarah untuk mendapatkan perspektif yang lebih mendalam.',
+                'instructions' => 'Bacalah seluruh materi pergerakan nasional yang telah dipelajari. Kamu juga bisa berdiskusi dengan Patih AI untuk mendapatkan perspektif yang lebih mendalam.',
             ]);
         }
 
@@ -186,7 +186,7 @@ class QuizSeeder extends Seeder
         // NEW: Essay Quiz for Course Order = 2
         // ============================
         // $essayCourse = Course::where('order', 2)->first();
-        
+
         // if ($essayCourse) {
         //     $essayQuiz = Quiz::create([
         //         'course_id' => $essayCourse->id,
@@ -203,7 +203,7 @@ class QuizSeeder extends Seeder
         //         'question_text' => 'Kongres Pemuda I (1926) dianggap belum berhasil karena kuatnya “ego kedaerahan”. Namun, hanya dua tahun kemudian (1928), Kongres Pemuda II berhasil mencetuskan Sumpah Pemuda. Analisislah, faktor krusial apa yang berubah dalam kurun waktu dua tahun tersebut yang memungkinkan “penyakit” ego kedaerahan itu dapat diatasi sehingga persatuan dapat terwujud?',
         //         'sample_answer' => 'Jawaban yang baik harus mencakup: 1) Pemahaman konsep utama, 2) Analisis kritis, 3) Refleksi personal ',
         //         'max_words' => 500,
-        //         'instructions' => 'Bacalah materi terkait bagaimana peran para Tokoh Pergerakan Nasional. Setelah itu kerjakan soal Kuis 1 untuk memantapkan pemahaman kamu terkait kegagalan kongres pemuda I. Kamu bisa mewawancarai Kak Sarah yang berperan sebagai Tokoh Pergerakan Nasional untuk memperkuat argument kamu.',
+        //         'instructions' => 'Bacalah materi terkait bagaimana peran para Tokoh Pergerakan Nasional. Setelah itu kerjakan soal Kuis 1 untuk memantapkan pemahaman kamu terkait kegagalan kongres pemuda I. Kamu bisa mewawancarai Patih AI yang berperan sebagai Tokoh Pergerakan Nasional untuk memperkuat argument kamu.',
         //     ]);
         // }
     }

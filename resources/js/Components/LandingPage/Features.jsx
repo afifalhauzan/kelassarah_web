@@ -17,7 +17,7 @@ export default function Features() {
                 {/* Title */}
                 <div className="text-center mb-16">
                     <h2 className="text-4xl md:text-5xl font-lilita text-blue-400 mb-8">
-                        Kenapa Belajar Bareng Kak Sarah?
+                        Kenapa Belajar Bareng Patih AI?
                     </h2>
                 </div>
 
@@ -33,7 +33,7 @@ export default function Features() {
                                 Pembelajaran Sokratik
                             </h3>
                             <p className="text-sm text-gray-900 mb-2">
-                                Kamu tidak akan "disalahkan". Kak Sarah akan membimbingmu menemukan jawaban yang tepat melalui pertanyaan terpandu.
+                                Kamu tidak akan "disalahkan". Patih AI akan membimbingmu menemukan jawaban yang tepat melalui pertanyaan terpandu.
                             </p>
                         </div>
 
@@ -46,7 +46,7 @@ export default function Features() {
                                 Umpan Balik Personal
                             </h3>
                             <p className="text-sm text-gray-900 mb-2">
-                                Kak Sarah merespons analisismu secara instan, menyesuaikan dengan jawaban spesifik darimu.
+                                Patih AI merespons analisismu secara instan, menyesuaikan dengan jawaban spesifik darimu.
                             </p>
                         </div>
 

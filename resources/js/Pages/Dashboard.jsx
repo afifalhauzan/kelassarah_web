@@ -7,14 +7,14 @@ import OnboardingOverlay from "@/Components/shared/OnboardingOverlay";
 import PdfDocumentCard from "@/Components/shared/PdfDocumentCard";
 
 // Receive 'courses', 'pdfDocuments' and 'showOnboarding' from props
-export default function Dashboard({ courses = [], pdfDocuments = [], showOnboarding = false }) {
+export default function Dashboard({ courses = [], pdfDocuments = [], showOnboarding = false, lastAccessedCourse = null }) {
     const { auth } = usePage().props;
-    
+
     // Create a LOCAL state to control the overlay (starts as false, then checks backend)
     // Always start with false to prevent flash, then update based on API response
     const [isShowingOnboarding, setIsShowingOnboarding] = useState(false);
     const [onboardingStatus, setOnboardingStatus] = useState(null);
-    
+
     console.log('showOnboarding prop:', showOnboarding);
     console.log('isShowingOnboarding state:', isShowingOnboarding);
 
@@ -28,12 +28,12 @@ export default function Dashboard({ courses = [], pdfDocuments = [], showOnboard
                         'X-Requested-With': 'XMLHttpRequest',
                     },
                 });
-                
+
                 if (response.ok) {
                     const data = await response.json();
                     setOnboardingStatus(data);
                     console.log('Fetched onboarding status:', data);
-                    
+
                     // Update local state based on API response
                     setIsShowingOnboarding(data.should_show_onboarding);
                 } else {
@@ -64,8 +64,9 @@ export default function Dashboard({ courses = [], pdfDocuments = [], showOnboard
 
                             <div className="mt-8">
                                 <ProgressCard
-                                    title="Orientasi Jurnalis Muda - Memahami Lanskap Pergerakan"
-                                    progress={65}
+                                    title={lastAccessedCourse ? lastAccessedCourse.title : "Orientasi Jurnalis Muda - Memahami Lanskap Pergerakan"}
+                                    progress={lastAccessedCourse ? lastAccessedCourse.progress : 0}
+                                    lastCourseUrl={lastAccessedCourse ? route('course.show', lastAccessedCourse.id) : route('course.show', 1)}
                                 />
                             </div>
 

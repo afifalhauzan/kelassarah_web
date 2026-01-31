@@ -24,21 +24,24 @@ class MaterialController extends Controller
         return response()->json($materials);
     }
 
-    public function store(Request $request, $courseID)
+    public function store(Request $request)
     {
         $validated = $request->validate([
+            'course_id' => 'required|exists:courses,id',
             'title' => 'required|string|max:255',
             'content' => 'nullable|string',
             'order' => 'required|integer',
             'is_published' => 'nullable|boolean',
             'type' => 'sometimes|in:text,video,document',
-            'content_url' => 'sometimes|nullable|file',  
-            'subtitle_url' => 'sometimes|nullable|file', 
+            'content_url' => 'sometimes|nullable|file',
+            'subtitle_url' => 'sometimes|nullable|file',
         ]);
 
-       try {
+        $courseID = $validated['course_id'];
+
+        try {
             $material = DB::transaction(function () use ($validated, $request, $courseID) {
-                if ($validated['type'] !== 'text') {
+                if (($validated['type'] ?? 'text') !== 'text') {
                     if ($request->hasFile('content_url')) {
                         $pathContentURL = $request->file('content_url')->store('materials', 'public');
                         $validated['content_url'] = $pathContentURL;
@@ -50,18 +53,24 @@ class MaterialController extends Controller
                     }
                 }
 
-                $validated['course_id'] = $courseID;
+                // $validated['course_id'] is already set
 
                 return Material::create($validated);
             });
 
             DB::commit();
-            
-            return response()->json([
-                'success' => true,
-                'message' => 'Material berhasil disimpan.',
-                'data' => $material
-            ], 201);
+
+            // Return JSON if expectation is JSON, or redirect if Inertia
+            // For now, let's return a redirect for the UI form usage
+            if ($request->wantsJson()) {
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Material berhasil disimpan.',
+                    'data' => $material
+                ], 201);
+            }
+
+            return redirect()->route('guru.material.create')->with('message', 'Material berhasil ditambahkan!');
 
         } catch (\Throwable $e) {
             DB::rollBack();
@@ -73,10 +82,14 @@ class MaterialController extends Controller
                 Storage::disk('public')->delete($validated['subtitle_url']);
             }
 
-            return response()->json([
-                'success' => false,
-                'message' => 'Gagal menyimpan material: ' . $e->getMessage(),
-            ], 500);
+            if ($request->wantsJson()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Gagal menyimpan material: ' . $e->getMessage(),
+                ], 500);
+            }
+
+            return back()->with('error', 'Gagal menyimpan material: ' . $e->getMessage());
         }
     }
 
@@ -155,9 +168,8 @@ class MaterialController extends Controller
         }
     }
 
-    public function destroy($courseID, $id)
+    public function destroy(Material $material)
     {
-        $material = Material::with('course')->where('course_id', $courseID)->findOrFail($id);
         $material->delete();
         if ($material->type !== "text") {
             if ($material->content_url && Storage::disk('public')->exists($material->content_url)) {
@@ -167,6 +179,7 @@ class MaterialController extends Controller
                 Storage::disk('public')->delete($material->subtitle_url);
             }
         }
-        return response()->json(null, 204);
+
+        return back()->with('message', 'Material berhasil dihapus.');
     }
 }

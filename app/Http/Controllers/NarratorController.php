@@ -13,9 +13,9 @@ class NarratorController extends Controller
         try {
             // DEBUG: Log that we actually hit the endpoint
             Log::info('Narrator: Endpoint hit.');
-            
+
             $text = $request->input('text');
-            
+
             // DEBUG: Log the text received
             Log::info('Narrator: Text received', ['text' => $text]);
 
@@ -24,12 +24,12 @@ class NarratorController extends Controller
             }
 
             $apiKey = env('ELEVENLABS_API_KEY');
-            $voiceId = env('ELEVENLABS_VOICE_ID', '21m00Tcm4TlvDq8ikWAM'); // Fallback to Rachel
+            $voiceId = env('ELEVENLABS_VOICE_ID', '3rL9ZxRgBgIkh4tcbrEH'); // Fallback to Rachel
 
             // DEBUG: Check if API key is actually loaded
             if (empty($apiKey)) {
                 Log::error('Narrator: API Key is MISSING. Check .env file.');
-                throw new \Exception('Server configuration error: ELEVENLABS_API_KEY is missing.');
+                return response()->json(['error' => 'Configuration Missing', 'message' => 'ELEVENLABS_API_KEY is missing'], 400);
             }
 
             $url = "https://api.elevenlabs.io/v1/text-to-speech/" . $voiceId . "/stream";
@@ -39,13 +39,13 @@ class NarratorController extends Controller
                 'xi-api-key' => $apiKey,
                 'Content-Type' => 'application/json',
             ])->post($url, [
-                'text' => $text,
-                'model_id' => 'eleven_turbo_v2_5',
-                'voice_settings' => [
-                    'stability' => 0.5,
-                    'similarity_boost' => 0.5
-                ]
-            ]);
+                        'text' => $text,
+                        'model_id' => 'eleven_turbo_v2_5',
+                        'voice_settings' => [
+                            'stability' => 0.5,
+                            'similarity_boost' => 0.5
+                        ]
+                    ]);
 
             // DEBUG: Check if ElevenLabs returned an error (like 401 Unauthorized or Quota Exceeded)
             if ($response->failed()) {
@@ -67,9 +67,9 @@ class NarratorController extends Controller
         } catch (\Exception $e) {
             // DEBUG: Catch any PHP crashes and send them to frontend
             Log::error('Narrator: PHP Exception', ['message' => $e->getMessage()]);
-            
+
             return response()->json([
-                'error' => 'Server Exception', 
+                'error' => 'Server Exception',
                 'message' => $e->getMessage(),
                 'file' => $e->getFile(),
                 'line' => $e->getLine()

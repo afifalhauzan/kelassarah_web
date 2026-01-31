@@ -20,8 +20,8 @@ const getMascotContent = (status) => {
         case "pending":
             return (
                 <DotLottieReact
-                    src="mascot_thinking.lottie"
-                    
+                    src="/mascot_thinking.lottie"
+
                     loop
                     autoplay
                     className="h-auto w-42 -ml-11"
@@ -30,9 +30,9 @@ const getMascotContent = (status) => {
         default:
             return (
                 <img
-                    src="/chatbot/sarah-idle.svg"
-                    alt="Kak Sarah"
-                    className="h-25 w-auto -ml-2"
+                    src="/chatbot/head_chat.png"
+                    alt="Patih AI"
+                    className="h-16 w-auto -ml-2 rounded-full"
                 />
             );
     }
@@ -57,7 +57,7 @@ export default function ChatHeader({ onClose }) {
     return (
         <div className="shrink-0 border-b px-4 pt-4">
             <div className="flex items-center justify-between">
-                <button 
+                <button
                     onClick={handleResetClick}
                     className={`text-gray-500 hover:text-gray-700 ${showResetConsent ? 'text-red-500 hover:text-red-700' : ''}`}
                     title={showResetConsent ? 'Click again to confirm reset' : 'Reset chat history'}
@@ -79,7 +79,7 @@ export default function ChatHeader({ onClose }) {
                 </button>
 
                 <h3 className="font-bold text-lg md:flex-1 md:text-center">
-                    Kak Sarah
+                    Patih AI
                 </h3>
 
                 <button
@@ -118,7 +118,7 @@ export default function ChatHeader({ onClose }) {
                     ></span>
                 </div>
             </div>
-            
+
             {showResetConsent && (
                 <div className="mt-2 text-xs text-red-600 text-center">
                     Click reset again to confirm

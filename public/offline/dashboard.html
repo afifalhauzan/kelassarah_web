@@ -1,38 +1,71 @@
 <!DOCTYPE html>
 <html lang='id'>
+
 <head>
     <meta charset='utf-8'>
     <meta name='viewport' content='width=device-width, initial-scale=1'>
-    <title>Dashboard - Kelas Sarah</title>
+    <title>Dashboard - Kelas Patih</title>
     <link rel='stylesheet' href='/build/assets/app-B2yUeiqP.css'>
     <style>
-        .offline-indicator { position: fixed; top: 0; left: 0; right: 0; background-color: #fbbf24; color: #92400e; padding: 8px; text-align: center; font-size: 14px; z-index: 50; }
-        .line-clamp-2 { overflow: hidden; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
-        .overflow-x-auto { overflow-x: auto; }
-        .overflow-x-auto > .flex { gap: 1rem; padding-left: 0.5rem; padding-right: 0.5rem; }
-        .shrink-0 { flex-shrink: 0; }
+        .offline-indicator {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background-color: #fbbf24;
+            color: #92400e;
+            padding: 8px;
+            text-align: center;
+            font-size: 14px;
+            z-index: 50;
+        }
+
+        .line-clamp-2 {
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 2;
+        }
+
+        .overflow-x-auto {
+            overflow-x: auto;
+        }
+
+        .overflow-x-auto>.flex {
+            gap: 1rem;
+            padding-left: 0.5rem;
+            padding-right: 0.5rem;
+        }
+
+        .shrink-0 {
+            flex-shrink: 0;
+        }
     </style>
 </head>
+
 <body class='font-sans antialiased bg-gray-100'>
     <div class='offline-indicator'>
         📱 Mode 3T Aktif - Beberapa fitur mungkin tidak tersedia
     </div>
-    
+
     <nav class='bg-white shadow-sm border-b border-gray-200 mt-8'>
         <div class='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
             <div class='flex justify-between h-16'>
                 <div class='flex'>
                     <div class='flex-shrink-0 flex items-center'>
-                        <h2 class='font-semibold text-xl text-gray-800'>Kelas Sarah</h2>
+                        <h2 class='font-semibold text-xl text-gray-800'>Kelas Patih</h2>
                     </div>
                     <div class='hidden space-x-8 sm:-my-px sm:ml-10 sm:flex'>
-                        <a href='/dashboard' class='inline-flex items-center px-1 pt-1 text-sm font-medium border-b-2 border-indigo-400 text-gray-900'>
+                        <a href='/dashboard'
+                            class='inline-flex items-center px-1 pt-1 text-sm font-medium border-b-2 border-indigo-400 text-gray-900'>
                             Dashboard
                         </a>
-                        <a href='/courses' class='inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-500 hover:text-gray-700'>
+                        <a href='/courses'
+                            class='inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-500 hover:text-gray-700'>
                             Kursus
                         </a>
-                        <a href='/profile' class='inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-500 hover:text-gray-700'>
+                        <a href='/profile'
+                            class='inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-500 hover:text-gray-700'>
                             Profil
                         </a>
                     </div>
@@ -40,267 +73,342 @@
             </div>
         </div>
     </nav>
-    
+
     <main>
-        
-            <div class='py-8'>
-                <div class='max-w-7xl mx-auto sm:px-6 lg:px-8'>
-                    <div class='bg-white overflow-hidden shadow-sm sm:rounded-lg'>
-                        <div class='p-6 md:p-8 text-gray-900'>
-                            <h1 class='text-3xl font-bold text-gray-800'>
-                                Halo siswa 1!
-                            </h1>
-                            <p class='text-gray-500 mt-1'>
-                                Selamat datang kembali di beranda
-                            </p>
 
-                            <div class='mt-8'>
-                                
-            <div class='relative bg-blue-500 rounded-2xl p-6 md:p-8 text-white overflow-hidden'>
-                <span class='absolute top-0 left-6 bg-blue-600 text-blue-100 text-sm font-semibold px-3 py-1 rounded-b-lg'>
-                    Terakhir Dilihat
-                </span>
-
-                <div class='absolute -right-4 -top-4 w-24 h-24 text-blue-400 opacity-50'>
-                    <svg fill='currentColor' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'>
-                        <path d='M10 3.5c.6 0 1.1.4 1.2.9l.4 1.9c.1.4.4.7.8.8l1.9.4c.5.1.9.6.9 1.2s-.4 1.1-.9 1.2l-1.9.4c-.4.1-.7.4-.8.8l-.4 1.9c-.1.5-.6.9-1.2.9s-1.1-.4-1.2-.9l-.4-1.9c-.1-.4-.4-.7-.8-.8l-1.9-.4c-.5-.1-.9-.6-.9-1.2s.4-1.1.9-1.2l1.9-.4c.4-.1.7-.4.8-.8l.4-1.9c.1-.5.6-.9 1.2-.9z'></path>
-                    </svg>
-                </div>
-
-                <div class='relative z-10'>
-                    <h3 class='text-2xl font-bold mb-4 pr-10 mt-4'>Orientasi Jurnalis Muda - Memahami Lanskap Pergerakan</h3>
-                    <a href='/course/1' class='inline-flex items-center bg-white text-blue-600 font-semibold px-5 py-2.5 rounded-full shadow-lg hover:bg-gray-100 transition'>
-                        <svg class='w-5 h-5 mr-2' fill='currentColor' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'>
-                            <path fill-rule='evenodd' d='M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z' clip-rule='evenodd'></path>
-                        </svg>
-                        Lanjutkan
-                    </a>
-                </div>
-            </div>
-        
-                            </div>
-
-                            
-            <div class='mt-12'>
-                <div class='flex justify-between items-center mb-4'>
-                    <h2 class='text-2xl font-bold text-gray-800'>
-                        Kursus tersedia
-                    </h2>
-                    <div class='flex space-x-2'>
-                        <button class='bg-gray-200 hover:bg-gray-300 rounded-full p-2 transition disabled:opacity-50' disabled>
-                            <svg xmlns='http://www.w3.org/2000/svg' class='h-5 w-5' fill='none' viewBox='0 0 24 24' stroke='currentColor'>
-                                <path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M15 19l-7-7 7-7'></path>
-                            </svg>
-                        </button>
-                        <button class='bg-blue-500 hover:bg-blue-600 text-white rounded-full p-2 transition disabled:opacity-50' disabled>
-                            <svg xmlns='http://www.w3.org/2000/svg' class='h-5 w-5' fill='none' viewBox='0 0 24 24' stroke='currentColor'>
-                                <path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M9 5l7 7-7 7'></path>
-                            </svg>
-                        </button>
-                    </div>
-                </div>
-                <div class='overflow-x-auto'>
-                    <div class='flex -ml-2 pb-4'>
-                        
-                <div class='shrink-0 w-80'>
-                    <div class='bg-white rounded-xl shadow-lg overflow-hidden transition-transform duration-300 hover:scale-[1.02]'>
-                        <a href='/course/1'>
-                            <img
-                                src='/images/course_1.jpg'
-                                alt='Bab 1: Orientasi Jurnalis Muda - Memahami Lanskap Pergerakan'
-                                class='w-full h-40 object-cover'
-                            />
-                            <div class='p-5'>
-                                <h3 class='text-lg font-bold text-gray-800 truncate' title='Bab 1: Orientasi Jurnalis Muda - Memahami Lanskap Pergerakan'>
-                                    Bab 1: Orientasi Jurnalis Muda - Memahami Lanskap Pergerakan
-                                </h3>
-                                <p class='text-sm text-gray-500 mt-2 h-10 overflow-hidden line-clamp-2'>
-                                    Baca dan pahami materi terkait Organisasi Pergerakan berikut ini! Jika sudah, coba tanyakan Asisten Kak Sarah terkait awal perjalanan Anda dalam mempelajari Sejarah Indonesia lebih lanjut, Anda bisa memulai percakapan dengan mengirimkan pesan 'Halo' di kolom chat.
-                                </p>
-                            </div>
-                        </a>
-                    </div>
-                </div>
-            
-                <div class='shrink-0 w-80'>
-                    <div class='bg-white rounded-xl shadow-lg overflow-hidden transition-transform duration-300 hover:scale-[1.02]'>
-                        <a href='/course/2'>
-                            <img
-                                src='/images/course_2.jpg'
-                                alt='Bab 2: Misi Investigasi - Menggali Perspektif Para Delegasi'
-                                class='w-full h-40 object-cover'
-                            />
-                            <div class='p-5'>
-                                <h3 class='text-lg font-bold text-gray-800 truncate' title='Bab 2: Misi Investigasi - Menggali Perspektif Para Delegasi'>
-                                    Bab 2: Misi Investigasi - Menggali Perspektif Para Delegasi
-                                </h3>
-                                <p class='text-sm text-gray-500 mt-2 h-10 overflow-hidden line-clamp-2'>
-                                    Bacalah materi terkait bagaimana peran para Tokoh Pergerakan Nasional dalam merancang Sumpah Pemuda yang kita kenal saat ini! Selanjutnya, coba tanyakan Kak Sarah untuk terkait materi ini, Anda juga bisa berdialog dengan tokoh-tokoh tertentu untuk menggali informasi lebih dalam!
-                                </p>
-                            </div>
-                        </a>
-                    </div>
-                </div>
-            
-                <div class='shrink-0 w-80'>
-                    <div class='bg-white rounded-xl shadow-lg overflow-hidden transition-transform duration-300 hover:scale-[1.02]'>
-                        <a href='/course/3'>
-                            <img
-                                src='/images/course_3.png'
-                                alt='Bab 3: Momen Krusial - Menjadi Saksi Mata di Kongres'
-                                class='w-full h-40 object-cover'
-                            />
-                            <div class='p-5'>
-                                <h3 class='text-lg font-bold text-gray-800 truncate' title='Bab 3: Momen Krusial - Menjadi Saksi Mata di Kongres'>
-                                    Bab 3: Momen Krusial - Menjadi Saksi Mata di Kongres
-                                </h3>
-                                <p class='text-sm text-gray-500 mt-2 h-10 overflow-hidden line-clamp-2'>
-                                    Bacalah materi tentang proses kongres pemuda dan hasil dari kongres tersebut pada materi berikut ini! Jika sudah membaca materi, Anda bisa dapat melanjutkan bertanya ke Kak Sarah dan merasakan suasana yang imersif dalam momen-momen puncak Kongres Pemuda II.
-                                </p>
-                            </div>
-                        </a>
-                    </div>
-                </div>
-            
-                <div class='shrink-0 w-80'>
-                    <div class='bg-white rounded-xl shadow-lg overflow-hidden transition-transform duration-300 hover:scale-[1.02]'>
-                        <a href='/course/4'>
-                            <img
-                                src='/images/course_4.jpg'
-                                alt='Bab 4: Proyek Akhir - Artikel Sejarah'
-                                class='w-full h-40 object-cover'
-                            />
-                            <div class='p-5'>
-                                <h3 class='text-lg font-bold text-gray-800 truncate' title='Bab 4: Proyek Akhir - Artikel Sejarah'>
-                                    Bab 4: Proyek Akhir - Artikel Sejarah
-                                </h3>
-                                <p class='text-sm text-gray-500 mt-2 h-10 overflow-hidden line-clamp-2'>
-                                    Sebagai tahap akhir investigasi, sintesiskan pemahaman kamu mengenai Kongres Pemuda II. Integrasikan perspektif tokoh (M. Yamin/Soegondo) berdasarkan wawancara yang kamu lakukan dan suasana kebatinan kongres ke dalam satu artikel berita yang padu. Tuliskan minimal 200 kata dan diskusikan kerangka tulisan kamu bersama Kak Sarah
-                                </p>
-                            </div>
-                        </a>
-                    </div>
-                </div>
-            
-                    </div>
-                </div>
-            </div>
-        
-                        </div>
-                    </div>
-
-                    
-            <div class='mt-8'>
+        <div class='py-8'>
+            <div class='max-w-7xl mx-auto sm:px-6 lg:px-8'>
                 <div class='bg-white overflow-hidden shadow-sm sm:rounded-lg'>
-                    <div class='p-6 md:p-8'>
-                        <h2 class='text-2xl font-bold text-gray-800 mb-6'>
-                            Dokumen Pembelajaran
-                        </h2>
-                        <div class='space-y-4'>
-                            
-                <div class='rounded-lg shadow-md overflow-hidden'>
-                    <div class='flex w-full items-center p-4 bg-blue-600 text-white hover:bg-blue-700 transition'>
-                        <svg class='w-6 h-6 mr-3 text-white' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
-                            <path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z'></path>
-                        </svg>
-                        <div class='text-left flex-1'>
-                            <span class='text-lg font-medium block'>Bahan Ajar</span>
-                            <span class='text-sm text-blue-100 block'>Dokumen bahan ajar untuk pembelajaran</span>
-                        </div>
-                        <svg class='w-5 h-5 ml-auto transform transition-transform' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
-                            <path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'></path>
-                        </svg>
-                    </div>
-                    <div class='p-4 bg-gray-50 border-t border-gray-200'>
-                        <div class='space-y-3'>
-                            <div class='flex justify-end'>
-                                <a href='/pdf/BahanAjar.pdf' download class='inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition-colors shadow-sm'>
-                                    <svg class='w-4 h-4 mr-2' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
-                                        <path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z'></path>
+                    <div class='p-6 md:p-8 text-gray-900'>
+                        <h1 class='text-3xl font-bold text-gray-800'>
+                            Halo siswa 1!
+                        </h1>
+                        <p class='text-gray-500 mt-1'>
+                            Selamat datang kembali di beranda
+                        </p>
+
+                        <div class='mt-8'>
+
+                            <div class='relative bg-blue-500 rounded-2xl p-6 md:p-8 text-white overflow-hidden'>
+                                <span
+                                    class='absolute top-0 left-6 bg-blue-600 text-blue-100 text-sm font-semibold px-3 py-1 rounded-b-lg'>
+                                    Terakhir Dilihat
+                                </span>
+
+                                <div class='absolute -right-4 -top-4 w-24 h-24 text-blue-400 opacity-50'>
+                                    <svg fill='currentColor' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'>
+                                        <path
+                                            d='M10 3.5c.6 0 1.1.4 1.2.9l.4 1.9c.1.4.4.7.8.8l1.9.4c.5.1.9.6.9 1.2s-.4 1.1-.9 1.2l-1.9.4c-.4.1-.7.4-.8.8l-.4 1.9c-.1.5-.6.9-1.2.9s-1.1-.4-1.2-.9l-.4-1.9c-.1-.4-.4-.7-.8-.8l-1.9-.4c-.5-.1-.9-.6-.9-1.2s.4-1.1.9-1.2l1.9-.4c.4-.1.7-.4.8-.8l.4-1.9c.1-.5.6-.9 1.2-.9z'>
+                                        </path>
                                     </svg>
-                                    Download PDF
-                                </a>
+                                </div>
+
+                                <div class='relative z-10'>
+                                    <h3 class='text-2xl font-bold mb-4 pr-10 mt-4'>Orientasi Jurnalis Muda - Memahami
+                                        Lanskap Pergerakan</h3>
+                                    <a href='/course/1'
+                                        class='inline-flex items-center bg-white text-blue-600 font-semibold px-5 py-2.5 rounded-full shadow-lg hover:bg-gray-100 transition'>
+                                        <svg class='w-5 h-5 mr-2' fill='currentColor' viewBox='0 0 20 20'
+                                            xmlns='http://www.w3.org/2000/svg'>
+                                            <path fill-rule='evenodd'
+                                                d='M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z'
+                                                clip-rule='evenodd'></path>
+                                        </svg>
+                                        Lanjutkan
+                                    </a>
+                                </div>
                             </div>
-                            <div class='bg-white border rounded-lg p-4'>
-                                <p class='text-sm text-gray-600'>📱 Mode 3T - PDF viewer tidak tersedia. Silakan download untuk melihat konten.</p>
+
+                        </div>
+
+
+                        <div class='mt-12'>
+                            <div class='flex justify-between items-center mb-4'>
+                                <h2 class='text-2xl font-bold text-gray-800'>
+                                    Kursus tersedia
+                                </h2>
+                                <div class='flex space-x-2'>
+                                    <button
+                                        class='bg-gray-200 hover:bg-gray-300 rounded-full p-2 transition disabled:opacity-50'
+                                        disabled>
+                                        <svg xmlns='http://www.w3.org/2000/svg' class='h-5 w-5' fill='none'
+                                            viewBox='0 0 24 24' stroke='currentColor'>
+                                            <path stroke-linecap='round' stroke-linejoin='round' stroke-width='2'
+                                                d='M15 19l-7-7 7-7'></path>
+                                        </svg>
+                                    </button>
+                                    <button
+                                        class='bg-blue-500 hover:bg-blue-600 text-white rounded-full p-2 transition disabled:opacity-50'
+                                        disabled>
+                                        <svg xmlns='http://www.w3.org/2000/svg' class='h-5 w-5' fill='none'
+                                            viewBox='0 0 24 24' stroke='currentColor'>
+                                            <path stroke-linecap='round' stroke-linejoin='round' stroke-width='2'
+                                                d='M9 5l7 7-7 7'></path>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class='overflow-x-auto'>
+                                <div class='flex -ml-2 pb-4'>
+
+                                    <div class='shrink-0 w-80'>
+                                        <div
+                                            class='bg-white rounded-xl shadow-lg overflow-hidden transition-transform duration-300 hover:scale-[1.02]'>
+                                            <a href='/course/1'>
+                                                <img src='/images/course_1.jpg'
+                                                    alt='Bab 1: Orientasi Jurnalis Muda - Memahami Lanskap Pergerakan'
+                                                    class='w-full h-40 object-cover' />
+                                                <div class='p-5'>
+                                                    <h3 class='text-lg font-bold text-gray-800 truncate'
+                                                        title='Bab 1: Orientasi Jurnalis Muda - Memahami Lanskap Pergerakan'>
+                                                        Bab 1: Orientasi Jurnalis Muda - Memahami Lanskap Pergerakan
+                                                    </h3>
+                                                    <p
+                                                        class='text-sm text-gray-500 mt-2 h-10 overflow-hidden line-clamp-2'>
+                                                        Baca dan pahami materi terkait Organisasi Pergerakan berikut
+                                                        ini! Jika sudah, coba tanyakan Asisten Kak Sarah terkait awal
+                                                        perjalanan Anda dalam mempelajari Sejarah Indonesia lebih
+                                                        lanjut, Anda bisa memulai percakapan dengan mengirimkan pesan
+                                                        'Halo' di kolom chat.
+                                                    </p>
+                                                </div>
+                                            </a>
+                                        </div>
+                                    </div>
+
+                                    <div class='shrink-0 w-80'>
+                                        <div
+                                            class='bg-white rounded-xl shadow-lg overflow-hidden transition-transform duration-300 hover:scale-[1.02]'>
+                                            <a href='/course/2'>
+                                                <img src='/images/course_2.jpg'
+                                                    alt='Bab 2: Misi Investigasi - Menggali Perspektif Para Delegasi'
+                                                    class='w-full h-40 object-cover' />
+                                                <div class='p-5'>
+                                                    <h3 class='text-lg font-bold text-gray-800 truncate'
+                                                        title='Bab 2: Misi Investigasi - Menggali Perspektif Para Delegasi'>
+                                                        Bab 2: Misi Investigasi - Menggali Perspektif Para Delegasi
+                                                    </h3>
+                                                    <p
+                                                        class='text-sm text-gray-500 mt-2 h-10 overflow-hidden line-clamp-2'>
+                                                        Bacalah materi terkait bagaimana peran para Tokoh Pergerakan
+                                                        Nasional dalam merancang Sumpah Pemuda yang kita kenal saat ini!
+                                                        Selanjutnya, coba tanyakan Kak Sarah untuk terkait materi ini,
+                                                        Anda juga bisa berdialog dengan tokoh-tokoh tertentu untuk
+                                                        menggali informasi lebih dalam!
+                                                    </p>
+                                                </div>
+                                            </a>
+                                        </div>
+                                    </div>
+
+                                    <div class='shrink-0 w-80'>
+                                        <div
+                                            class='bg-white rounded-xl shadow-lg overflow-hidden transition-transform duration-300 hover:scale-[1.02]'>
+                                            <a href='/course/3'>
+                                                <img src='/images/course_3.png'
+                                                    alt='Bab 3: Momen Krusial - Menjadi Saksi Mata di Kongres'
+                                                    class='w-full h-40 object-cover' />
+                                                <div class='p-5'>
+                                                    <h3 class='text-lg font-bold text-gray-800 truncate'
+                                                        title='Bab 3: Momen Krusial - Menjadi Saksi Mata di Kongres'>
+                                                        Bab 3: Momen Krusial - Menjadi Saksi Mata di Kongres
+                                                    </h3>
+                                                    <p
+                                                        class='text-sm text-gray-500 mt-2 h-10 overflow-hidden line-clamp-2'>
+                                                        Bacalah materi tentang proses kongres pemuda dan hasil dari
+                                                        kongres tersebut pada materi berikut ini! Jika sudah membaca
+                                                        materi, Anda bisa dapat melanjutkan bertanya ke Kak Sarah dan
+                                                        merasakan suasana yang imersif dalam momen-momen puncak Kongres
+                                                        Pemuda II.
+                                                    </p>
+                                                </div>
+                                            </a>
+                                        </div>
+                                    </div>
+
+                                    <div class='shrink-0 w-80'>
+                                        <div
+                                            class='bg-white rounded-xl shadow-lg overflow-hidden transition-transform duration-300 hover:scale-[1.02]'>
+                                            <a href='/course/4'>
+                                                <img src='/images/course_4.jpg'
+                                                    alt='Bab 4: Proyek Akhir - Artikel Sejarah'
+                                                    class='w-full h-40 object-cover' />
+                                                <div class='p-5'>
+                                                    <h3 class='text-lg font-bold text-gray-800 truncate'
+                                                        title='Bab 4: Proyek Akhir - Artikel Sejarah'>
+                                                        Bab 4: Proyek Akhir - Artikel Sejarah
+                                                    </h3>
+                                                    <p
+                                                        class='text-sm text-gray-500 mt-2 h-10 overflow-hidden line-clamp-2'>
+                                                        Sebagai tahap akhir investigasi, sintesiskan pemahaman kamu
+                                                        mengenai Kongres Pemuda II. Integrasikan perspektif tokoh (M.
+                                                        Yamin/Soegondo) berdasarkan wawancara yang kamu lakukan dan
+                                                        suasana kebatinan kongres ke dalam satu artikel berita yang
+                                                        padu. Tuliskan minimal 200 kata dan diskusikan kerangka tulisan
+                                                        kamu bersama Kak Sarah
+                                                    </p>
+                                                </div>
+                                            </a>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+
+                <div class='mt-8'>
+                    <div class='bg-white overflow-hidden shadow-sm sm:rounded-lg'>
+                        <div class='p-6 md:p-8'>
+                            <h2 class='text-2xl font-bold text-gray-800 mb-6'>
+                                Dokumen Pembelajaran
+                            </h2>
+                            <div class='space-y-4'>
+
+                                <div class='rounded-lg shadow-md overflow-hidden'>
+                                    <div
+                                        class='flex w-full items-center p-4 bg-blue-600 text-white hover:bg-blue-700 transition'>
+                                        <svg class='w-6 h-6 mr-3 text-white' fill='none' stroke='currentColor'
+                                            viewBox='0 0 24 24'>
+                                            <path stroke-linecap='round' stroke-linejoin='round' stroke-width='2'
+                                                d='M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z'>
+                                            </path>
+                                        </svg>
+                                        <div class='text-left flex-1'>
+                                            <span class='text-lg font-medium block'>Bahan Ajar</span>
+                                            <span class='text-sm text-blue-100 block'>Dokumen bahan ajar untuk
+                                                pembelajaran</span>
+                                        </div>
+                                        <svg class='w-5 h-5 ml-auto transform transition-transform' fill='none'
+                                            stroke='currentColor' viewBox='0 0 24 24'>
+                                            <path stroke-linecap='round' stroke-linejoin='round' stroke-width='2'
+                                                d='M19 9l-7 7-7-7'></path>
+                                        </svg>
+                                    </div>
+                                    <div class='p-4 bg-gray-50 border-t border-gray-200'>
+                                        <div class='space-y-3'>
+                                            <div class='flex justify-end'>
+                                                <a href='/pdf/BahanAjar.pdf' download
+                                                    class='inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition-colors shadow-sm'>
+                                                    <svg class='w-4 h-4 mr-2' fill='none' stroke='currentColor'
+                                                        viewBox='0 0 24 24'>
+                                                        <path stroke-linecap='round' stroke-linejoin='round'
+                                                            stroke-width='2'
+                                                            d='M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z'>
+                                                        </path>
+                                                    </svg>
+                                                    Download PDF
+                                                </a>
+                                            </div>
+                                            <div class='bg-white border rounded-lg p-4'>
+                                                <p class='text-sm text-gray-600'>📱 Mode 3T - PDF viewer tidak tersedia.
+                                                    Silakan download untuk melihat konten.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class='rounded-lg shadow-md overflow-hidden'>
+                                    <div
+                                        class='flex w-full items-center p-4 bg-blue-600 text-white hover:bg-blue-700 transition'>
+                                        <svg class='w-6 h-6 mr-3 text-white' fill='none' stroke='currentColor'
+                                            viewBox='0 0 24 24'>
+                                            <path stroke-linecap='round' stroke-linejoin='round' stroke-width='2'
+                                                d='M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z'>
+                                            </path>
+                                        </svg>
+                                        <div class='text-left flex-1'>
+                                            <span class='text-lg font-medium block'>Guidebook</span>
+                                            <span class='text-sm text-blue-100 block'>Panduan penggunaan sistem
+                                                pembelajaran</span>
+                                        </div>
+                                        <svg class='w-5 h-5 ml-auto transform transition-transform' fill='none'
+                                            stroke='currentColor' viewBox='0 0 24 24'>
+                                            <path stroke-linecap='round' stroke-linejoin='round' stroke-width='2'
+                                                d='M19 9l-7 7-7-7'></path>
+                                        </svg>
+                                    </div>
+                                    <div class='p-4 bg-gray-50 border-t border-gray-200'>
+                                        <div class='space-y-3'>
+                                            <div class='flex justify-end'>
+                                                <a href='/pdf/Guidebook.pdf' download
+                                                    class='inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition-colors shadow-sm'>
+                                                    <svg class='w-4 h-4 mr-2' fill='none' stroke='currentColor'
+                                                        viewBox='0 0 24 24'>
+                                                        <path stroke-linecap='round' stroke-linejoin='round'
+                                                            stroke-width='2'
+                                                            d='M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z'>
+                                                        </path>
+                                                    </svg>
+                                                    Download PDF
+                                                </a>
+                                            </div>
+                                            <div class='bg-white border rounded-lg p-4'>
+                                                <p class='text-sm text-gray-600'>📱 Mode 3T - PDF viewer tidak tersedia.
+                                                    Silakan download untuk melihat konten.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class='rounded-lg shadow-md overflow-hidden'>
+                                    <div
+                                        class='flex w-full items-center p-4 bg-blue-600 text-white hover:bg-blue-700 transition'>
+                                        <svg class='w-6 h-6 mr-3 text-white' fill='none' stroke='currentColor'
+                                            viewBox='0 0 24 24'>
+                                            <path stroke-linecap='round' stroke-linejoin='round' stroke-width='2'
+                                                d='M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z'>
+                                            </path>
+                                        </svg>
+                                        <div class='text-left flex-1'>
+                                            <span class='text-lg font-medium block'>LKPD</span>
+                                            <span class='text-sm text-blue-100 block'>Lembar Kerja Peserta Didik</span>
+                                        </div>
+                                        <svg class='w-5 h-5 ml-auto transform transition-transform' fill='none'
+                                            stroke='currentColor' viewBox='0 0 24 24'>
+                                            <path stroke-linecap='round' stroke-linejoin='round' stroke-width='2'
+                                                d='M19 9l-7 7-7-7'></path>
+                                        </svg>
+                                    </div>
+                                    <div class='p-4 bg-gray-50 border-t border-gray-200'>
+                                        <div class='space-y-3'>
+                                            <div class='flex justify-end'>
+                                                <a href='/pdf/LKPD.pdf' download
+                                                    class='inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition-colors shadow-sm'>
+                                                    <svg class='w-4 h-4 mr-2' fill='none' stroke='currentColor'
+                                                        viewBox='0 0 24 24'>
+                                                        <path stroke-linecap='round' stroke-linejoin='round'
+                                                            stroke-width='2'
+                                                            d='M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z'>
+                                                        </path>
+                                                    </svg>
+                                                    Download PDF
+                                                </a>
+                                            </div>
+                                            <div class='bg-white border rounded-lg p-4'>
+                                                <p class='text-sm text-gray-600'>📱 Mode 3T - PDF viewer tidak tersedia.
+                                                    Silakan download untuk melihat konten.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
                             </div>
                         </div>
                     </div>
                 </div>
-            
-                <div class='rounded-lg shadow-md overflow-hidden'>
-                    <div class='flex w-full items-center p-4 bg-blue-600 text-white hover:bg-blue-700 transition'>
-                        <svg class='w-6 h-6 mr-3 text-white' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
-                            <path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z'></path>
-                        </svg>
-                        <div class='text-left flex-1'>
-                            <span class='text-lg font-medium block'>Guidebook</span>
-                            <span class='text-sm text-blue-100 block'>Panduan penggunaan sistem pembelajaran</span>
-                        </div>
-                        <svg class='w-5 h-5 ml-auto transform transition-transform' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
-                            <path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'></path>
-                        </svg>
-                    </div>
-                    <div class='p-4 bg-gray-50 border-t border-gray-200'>
-                        <div class='space-y-3'>
-                            <div class='flex justify-end'>
-                                <a href='/pdf/Guidebook.pdf' download class='inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition-colors shadow-sm'>
-                                    <svg class='w-4 h-4 mr-2' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
-                                        <path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z'></path>
-                                    </svg>
-                                    Download PDF
-                                </a>
-                            </div>
-                            <div class='bg-white border rounded-lg p-4'>
-                                <p class='text-sm text-gray-600'>📱 Mode 3T - PDF viewer tidak tersedia. Silakan download untuk melihat konten.</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            
-                <div class='rounded-lg shadow-md overflow-hidden'>
-                    <div class='flex w-full items-center p-4 bg-blue-600 text-white hover:bg-blue-700 transition'>
-                        <svg class='w-6 h-6 mr-3 text-white' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
-                            <path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z'></path>
-                        </svg>
-                        <div class='text-left flex-1'>
-                            <span class='text-lg font-medium block'>LKPD</span>
-                            <span class='text-sm text-blue-100 block'>Lembar Kerja Peserta Didik</span>
-                        </div>
-                        <svg class='w-5 h-5 ml-auto transform transition-transform' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
-                            <path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'></path>
-                        </svg>
-                    </div>
-                    <div class='p-4 bg-gray-50 border-t border-gray-200'>
-                        <div class='space-y-3'>
-                            <div class='flex justify-end'>
-                                <a href='/pdf/LKPD.pdf' download class='inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition-colors shadow-sm'>
-                                    <svg class='w-4 h-4 mr-2' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
-                                        <path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z'></path>
-                                    </svg>
-                                    Download PDF
-                                </a>
-                            </div>
-                            <div class='bg-white border rounded-lg p-4'>
-                                <p class='text-sm text-gray-600'>📱 Mode 3T - PDF viewer tidak tersedia. Silakan download untuk melihat konten.</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            
-                        </div>
-                    </div>
-                </div>
+
             </div>
-        
-                </div>
-            </div>
-        
+        </div>
+
     </main>
-    
+
     <script>
         // Simple offline navigation
-        document.addEventListener('click', function(e) {
+        document.addEventListener('click', function (e) {
             if (e.target.tagName === 'A' && e.target.href) {
                 const url = new URL(e.target.href);
                 const offlineRoutes = {
@@ -308,7 +416,7 @@
                     '/courses': '/offline/courses.html',
                     '/profile': '/offline/profile.html'
                 };
-                
+
                 if (offlineRoutes[url.pathname]) {
                     e.preventDefault();
                     window.location.href = offlineRoutes[url.pathname];
@@ -317,4 +425,5 @@
         });
     </script>
 </body>
+
 </html>

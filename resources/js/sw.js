@@ -9,12 +9,12 @@ precacheAndRoute(self.__WB_MANIFEST);
 // Define offline route mapping
 const offlineRoutes = {
     '/dashboard': '/offline/dashboard.html',
-    '/courses': '/offline/courses.html', 
+    '/courses': '/offline/courses.html',
     '/profile': '/offline/profile.html'
 };
 
 // Cache name constants
-const CACHE_NAME = 'kelas-sarah-offline-v1';
+const CACHE_NAME = 'kelas-patih-offline-v1';
 const OFFLINE_PAGE_CACHE = 'offline-pages-v1';
 
 // Install event - cache offline pages
@@ -65,22 +65,22 @@ self.addEventListener('activate', (event) => {
 self.addEventListener('fetch', (event) => {
     const request = event.request;
     const url = new URL(request.url);
-    
+
     // Skip non-HTTP requests and chrome-extension requests
     if (!request.url.startsWith('http')) {
         return;
     }
-    
+
     // Skip requests to different origins (CDNs, APIs, etc)
     if (url.origin !== self.location.origin) {
         console.log('🌐 SW: Skipping external request:', url.href);
         return;
     }
-    
+
     console.log(`🔍 SW: Intercepting ${request.method} request for:`, url.pathname);
     console.log('🔍 SW: Request headers:', [...request.headers.entries()]);
     console.log('🔍 SW: Request mode:', request.mode);
-    
+
     // Always intercept requests that might need offline fallback
     event.respondWith(handleRequest(request));
 });
@@ -89,9 +89,9 @@ self.addEventListener('fetch', (event) => {
 async function handleRequest(request) {
     const url = new URL(request.url);
     const pathname = url.pathname;
-    
+
     console.log(`⚡ SW: Handling request for ${pathname}`);
-    
+
     try {
         // Try network first
         console.log(`🌐 SW: Trying network for: ${pathname}`);
@@ -100,31 +100,31 @@ async function handleRequest(request) {
         return response;
     } catch (networkError) {
         console.log(`❌ SW: Network failed for ${pathname}`, networkError);
-        
+
         // Handle different types of requests when offline
-        
+
         // 1. Handle navigation requests
         if (request.mode === 'navigate') {
             return handleNavigationOffline(pathname);
         }
-        
+
         // 2. Handle Inertia.js XHR requests
         if (request.headers.get('X-Inertia') || request.headers.get('X-Requested-With') === 'XMLHttpRequest') {
             return handleInertiaOffline(pathname);
         }
-        
+
         // 3. Handle API requests
         if (pathname.startsWith('/api/') || pathname.includes('/status') || pathname.includes('/onboarding')) {
             return handleApiOffline(pathname);
         }
-        
+
         // 4. Handle static assets
         const cachedResponse = await caches.match(request);
         if (cachedResponse) {
             console.log(`📦 SW: Serving cached asset for ${pathname}`);
             return cachedResponse;
         }
-        
+
         // 5. Default fallback
         return handleDefaultOffline(pathname);
     }
@@ -133,18 +133,18 @@ async function handleRequest(request) {
 // Handle navigation requests when offline
 async function handleNavigationOffline(pathname) {
     console.log(`🧭 SW: Handling navigation offline for ${pathname}`);
-    
+
     const offlinePage = offlineRoutes[pathname] || '/offline/dashboard.html';
-    
+
     try {
         const cache = await caches.open(OFFLINE_PAGE_CACHE);
         let cachedResponse = await cache.match(offlinePage);
-        
+
         if (cachedResponse) {
             console.log(`📄 SW: Serving cached offline page: ${offlinePage}`);
             return cachedResponse;
         }
-        
+
         // Try to fetch offline page
         const offlineResponse = await fetch(offlinePage);
         cache.put(offlinePage, offlineResponse.clone());
@@ -158,9 +158,9 @@ async function handleNavigationOffline(pathname) {
 // Handle Inertia.js requests when offline
 async function handleInertiaOffline(pathname) {
     console.log(`⚛️ SW: Handling Inertia request offline for ${pathname}`);
-    
+
     const offlinePage = offlineRoutes[pathname] || '/offline/dashboard.html';
-    
+
     // Return 409 Conflict to force Inertia to do a full page reload
     return new Response('', {
         status: 409,
@@ -175,7 +175,7 @@ async function handleInertiaOffline(pathname) {
 // Handle API requests when offline
 async function handleApiOffline(pathname) {
     console.log(`🔌 SW: Handling API request offline for ${pathname}`);
-    
+
     // For specific API endpoints, return mock data
     if (pathname === '/onboarding/status') {
         return new Response(JSON.stringify({
@@ -190,7 +190,7 @@ async function handleApiOffline(pathname) {
             }
         });
     }
-    
+
     // Generic API error response
     return new Response(JSON.stringify({
         error: 'Network unavailable',
@@ -252,7 +252,7 @@ function createFallbackResponse() {
         </html>
     `, {
         status: 503,
-        headers: { 
+        headers: {
             'Content-Type': 'text/html; charset=utf-8',
             'Cache-Control': 'no-cache'
         }

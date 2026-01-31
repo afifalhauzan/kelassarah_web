@@ -12,7 +12,7 @@ export default function CTA() {
                             Siap Mulai Perjalanan Belajarmu?
                         </h2>
                         <p className="text-lg md:text-xl text-gray-600 mb-8 leading-relaxed max-w-2xl mx-auto md:mx-0">
-                            Ayo, mulai belajar dengan cara baru yang seru dan interaktif bareng Kak Sarah!
+                            Ayo, mulai belajar dengan cara baru yang seru dan interaktif bareng Patih AI!
                         </p>
 
                         {/* CTA Button - Same as Hero */}
@@ -21,7 +21,7 @@ export default function CTA() {
                                 href={route('register')}
                                 className="bg-blue-400 hover:bg-blue-500 text-white px-6 py-3 rounded-lg font-medium transition-colors duration-200"
                             >
-                                Belajar Sejarah Bersama Kak Sarah
+                                Belajar Sejarah Bersama Patih AI
                             </Link>
                         </div>
                     </div>

@@ -22,14 +22,14 @@ export default function ChatWidget({ user }) {
                         'X-Requested-With': 'XMLHttpRequest',
                     },
                 });
-                
+
                 if (response.ok) {
                     const data = await response.json();
                     console.log('ChatWidget fetched onboarding status:', data);
                     setHasCompletedOnboarding(data.has_completed_onboarding);
                     return data.has_completed_onboarding;
                 }
-            } catch (error) {   
+            } catch (error) {
                 console.error('Error checking onboarding status:', error);
                 // Default to showing chat widget if there's an error
                 setHasCompletedOnboarding(true);
@@ -49,7 +49,7 @@ export default function ChatWidget({ user }) {
                         clearInterval(interval);
                     }
                 }, 1000);
-                
+
                 // Cleanup interval if component unmounts
                 return () => clearInterval(interval);
             }
@@ -83,7 +83,7 @@ export default function ChatWidget({ user }) {
 
                 <img
                     src="/chatbot/chatbot-bubble.svg"
-                    alt="Buka Chat Kak Sarah"
+                    alt="Buka Chat Patih AI"
                     className="h-35 w-auto"
                 />
             </button>

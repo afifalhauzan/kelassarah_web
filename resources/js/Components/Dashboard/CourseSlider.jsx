@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import useEmblaCarousel from "embla-carousel-react";
 import CourseCard from "./CourseCard";
 
@@ -10,6 +10,9 @@ export default function CourseSlider({ courses }) {
         containScroll: "trimSnaps",
     });
 
+    const [prevBtnEnabled, setPrevBtnEnabled] = useState(false);
+    const [nextBtnEnabled, setNextBtnEnabled] = useState(false);
+
     const scrollPrev = useCallback(() => {
         if (emblaApi) emblaApi.scrollPrev();
     }, [emblaApi]);
@@ -17,6 +20,19 @@ export default function CourseSlider({ courses }) {
     const scrollNext = useCallback(() => {
         if (emblaApi) emblaApi.scrollNext();
     }, [emblaApi]);
+
+    const onSelect = useCallback((emblaApi) => {
+        setPrevBtnEnabled(emblaApi.canScrollPrev());
+        setNextBtnEnabled(emblaApi.canScrollNext());
+    }, []);
+
+    useEffect(() => {
+        if (!emblaApi) return;
+
+        onSelect(emblaApi);
+        emblaApi.on("reInit", onSelect);
+        emblaApi.on("select", onSelect);
+    }, [emblaApi, onSelect]);
 
     return (
         <div className="mt-12">
@@ -27,7 +43,11 @@ export default function CourseSlider({ courses }) {
                 <div className="flex space-x-2">
                     <button
                         onClick={scrollPrev}
-                        className="bg-gray-200 hover:bg-gray-300 rounded-full p-2 transition disabled:opacity-50"
+                        disabled={!prevBtnEnabled}
+                        className={`rounded-full p-2 transition ${prevBtnEnabled
+                                ? "bg-blue-500 hover:bg-blue-600 text-white"
+                                : "bg-gray-200 text-gray-400 cursor-not-allowed"
+                            }`}
                     >
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
@@ -46,7 +66,11 @@ export default function CourseSlider({ courses }) {
                     </button>
                     <button
                         onClick={scrollNext}
-                        className="bg-blue-500 hover:bg-blue-600 text-white rounded-full p-2 transition disabled:opacity-50"
+                        disabled={!nextBtnEnabled}
+                        className={`rounded-full p-2 transition ${nextBtnEnabled
+                                ? "bg-blue-500 hover:bg-blue-600 text-white"
+                                : "bg-gray-200 text-gray-400 cursor-not-allowed"
+                            }`}
                     >
                         <svg
                             xmlns="http://www.w3.org/2000/svg"

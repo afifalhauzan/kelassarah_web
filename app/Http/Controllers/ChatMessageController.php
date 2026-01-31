@@ -17,7 +17,7 @@ class ChatMessageController extends Controller
         $messages = ChatMessage::with(['user', 'course'])->where('course_id', $courseId)->where('user_id', $validated['user_id'] ?? auth()->id())->orderBy('created_at', 'desc')->get();
         return response()->json($messages);
     }
-    
+
     public function store(Request $request, $courseId)
     {
         $validated = $request->validate([
@@ -34,7 +34,7 @@ class ChatMessageController extends Controller
         ProcessOpenAIResponse::dispatch($dataPost->id, $validated['user_id'], $validated['course_id'], $validated['content']);
 
         return response()->json([
-            'course_id' => $dataPost['course_id'],
+            'message' => $dataPost,
             'status' => "pending",
         ], 201);
     }

@@ -55,6 +55,21 @@ export default function Show({ course, lessons }) {
                                 </div>
                             </div>
 
+                            {course.is_game_enabled && (
+                                <div className="mt-6">
+                                    <Link
+                                        href={route('course.game', course.id)}
+                                        className="block w-full bg-gradient-to-r from-yellow-400 to-orange-500 hover:from-yellow-500 hover:to-orange-600 text-white font-bold py-4 px-6 rounded-xl shadow-lg transform hover:scale-[1.02] transition-all text-center flex items-center justify-center gap-3"
+                                    >
+                                        <span className="text-2xl">🎮</span>
+                                        <div className="text-left">
+                                            <div className="text-xl font-black">Latihan Soal Investigasi (Game)</div>
+                                            <div className="text-sm opacity-90 font-medium">Bermain sambil belajar dengan webcam interaktif!</div>
+                                        </div>
+                                    </Link>
+                                </div>
+                            )}
+
                             <div className="mt-8">
                                 <h2 className="text-2xl font-bold text-gray-800 mb-6">
                                     Materi & Kuis
@@ -66,6 +81,6 @@ export default function Show({ course, lessons }) {
                     </div>
                 </div>
             </div>
-        </AuthenticatedLayout>
+        </AuthenticatedLayout >
     );
 }
